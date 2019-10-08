@@ -6,23 +6,31 @@
         <div class="headerText">第三节上海国际互联网家居节&第六届中国第六届</div>
       </div>
       <p class="time border">
-        <span class="timeLogo"></span>
+        <span class="timeLogo">
+          <img src="../../../static/images/time.png" alt />
+        </span>
         <span class="timeText">2019.10/20 08:30-2019.10/21 08:30</span>
       </p>
       <p class="map border">
-        <span class="mapLogo"></span>
+        <span class="mapLogo">
+          <img src="../../../static/images/map.png" alt />
+        </span>
         <span class="timeText">北京市海淀区xxxx大厦</span>
       </p>
       <div class="money border">
         <div class="moneyLeft">
-          <span class="moneyLogo"></span>
+          <span class="moneyLogo">
+            <img src="../../../static/images/money.png" alt />
+          </span>
           <span class="timeText">票价</span>
         </div>
         <span class="moneyRight">￥{{money}}/一张</span>
       </div>
       <div class="number border">
         <div class="moneyLeft">
-          <span class="moneyLogo" style="width:26rpx;height:26rpx;"></span>
+          <span class="moneyLogo" style="width:26rpx;height:26rpx;">
+            <img src="../../../static/images/number.png" alt />
+          </span>
           <span class="timeText">数量</span>
         </div>
         <div class="numberEdit">
@@ -34,7 +42,9 @@
     </section>
     <section class="personnel">
       <div class="personnelHeader">
-        <div class="personnelLogo"></div>
+        <div class="personnelLogo">
+          <img src="../../../static/images/tel.png" alt />
+        </div>
         <div class="personnelText">选择参会人员</div>
       </div>
       <div class="personnelList">
@@ -90,7 +100,7 @@ export default {
   },
   methods: {
     off() {
-      if (--this.number <= 1) return (this.number = 1);
+      if (this.number <= 1) return (this.number = 1);
       else this.number--;
     },
     add() {
@@ -155,10 +165,10 @@ export default {
   display: flex;
 }
 .timeLogo {
-  display: block;
+  display: flex;
+  align-self: auto;
   width: 30rpx;
   height: 30rpx;
-  background: red;
   margin-right: 15rpx;
 }
 .timeLogo img {
@@ -173,7 +183,6 @@ export default {
   display: block;
   width: 28rpx;
   height: 34rpx;
-  background: rebeccapurple;
   margin-right: 15rpx;
 }
 .mapLogo img {
@@ -190,7 +199,8 @@ export default {
 .moneyLogo {
   width: 30rpx;
   height: 30rpx;
-  background: red;
+  display: flex;
+  align-self: auto;
   margin-right: 15rpx;
 }
 .moneyLogo img {
@@ -240,7 +250,6 @@ export default {
   width: 33rpx;
   height: 33rpx;
   margin-right: 15rpx;
-  background: red;
 }
 .personnelLogo img {
   width: 100%;

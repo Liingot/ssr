@@ -1,6 +1,8 @@
 <template>
   <div class="signin">
-    <div class="signinBanner"></div>
+    <div class="signinBanner">
+      <img src="../../../static/images/signinBnner.png" alt />
+    </div>
     <div class="main">
       <section class="basic">
         <h3 class="h3">第三节上海国际互联网家居节&第六届中国建材家居产业发展大会</h3>
@@ -10,16 +12,22 @@
         </p>
         <p class="money">￥1000</p>
         <p class="time">
-          <span class="timeLogo"></span>
+          <span class="timeLogo">
+            <img src="../../../static/images/time.png" alt />
+          </span>
           <span class="Text">2019.10/20 08:30-2019.10/21 08:30</span>
         </p>
         <p class="map">
-          <span class="mapLogo"></span>
+          <span class="mapLogo">
+            <img src="../../../static/images/map.png" alt />
+          </span>
           <span class="Text">北京市海淀区xxxx大厦</span>
         </p>
       </section>
       <section class="domain">
-        <div class="domainLogo"></div>
+        <div class="domainLogo">
+          <img src="../../../static/images/home.png" alt />
+        </div>
         <div class="domainText">中国建筑协会</div>
       </section>
       <section class="details">
@@ -31,7 +39,9 @@
     </div>
     <section class="reservation">
       <div class="reservationIcon">
-        <div class="reservationIconLogo"></div>
+        <div class="reservationIconLogo">
+          <img src="../../../static/images/zfreservation.png" alt />
+        </div>
         <p class="reservationIconText">分享</p>
       </div>
       <span class="reser" @click="reser">订座报名</span>
@@ -56,7 +66,6 @@ export default {
 .signinBanner {
   width: 100%;
   height: 350rpx;
-  background: forestgreen;
 }
 .signinBanner img {
   width: 100%;
@@ -96,10 +105,11 @@ export default {
   margin: 50rpx 0;
 }
 .timeLogo {
-  display: block;
+  display: flex;
+  align-self: auto;
+
   width: 30rpx;
   height: 30rpx;
-  background: #0070cc;
   margin-right: 15rpx;
 }
 .timeLogo img {
@@ -118,7 +128,6 @@ export default {
   display: block;
   width: 28rpx;
   height: 34rpx;
-  background: rebeccapurple;
   margin-right: 15rpx;
 }
 .mapLogo img {
@@ -134,9 +143,10 @@ export default {
   align-items: center;
 }
 .domainLogo {
+  display: flex;
+  align-self: auto;
   width: 32rpx;
   height: 30rpx;
-  background: #0070cc;
   margin-right: 15rpx;
 }
 .domainLogo img {
@@ -145,7 +155,7 @@ export default {
 }
 .domainText {
   font-size: 32rpx;
-  color: black;
+  color: #666;
 }
 .details {
   padding: 40rpx 20rpx;
@@ -192,13 +202,13 @@ export default {
   width: 33rpx;
   height: 33rpx;
   margin: 0 auto;
-  background: rebeccapurple;
 }
 .reservationIconLogo img {
   width: 100%;
   height: 100%;
 }
 .reservationIconText {
+  margin-top: 5rpx;
   font-size: 23rpx;
   color: black;
 }

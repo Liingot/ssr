@@ -5,7 +5,9 @@
       <div class="likeTemplate">
         <span class="text">这次会议学到了xxxxx</span>
         <div class="linkNum">
-          <div class="linkLogo"></div>
+          <div class="linkLogo">
+            <img src="/static/images/give.png" alt />
+          </div>
           <span class="linkN">111</span>
         </div>
       </div>
@@ -57,7 +59,6 @@ export default {
   width: 32rpx;
   height: 32rpx;
   margin-right: 5rpx;
-  background: violet;
 }
 .linkLogo img {
   width: 100%;

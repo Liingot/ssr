@@ -4,12 +4,16 @@
     <section class="main">
       <div class="information">
         <div class="informationLeft">
-          <div class="meetingLogo"><img src="../../../static/images/information.jpg" alt=""></div>
+          <div class="meetingLogo">
+            <img src="../../../static/images/information.jpg" alt />
+          </div>
           <h3 class="meetingH3">会议信息</h3>
         </div>
         <div class="informationRight">
           <span>分享给好友</span>
-          <div class="share"><img src="../../../static/images/share.jpg" alt=""></div>
+          <div class="share">
+            <img src="../../../static/images/share.jpg" alt />
+          </div>
         </div>
       </div>
       <div class="list">
@@ -19,14 +23,14 @@
           :key="index"
           @click="details(item)"
         >
-          <div class="listPhoto"></div>
+          <div class="listPhoto"><img src="../../../static/images/index1111.jpg" alt=""></div>
           <div class="listText">
             <div class="listTextTop">123123213123123123123123</div>
             <div class="listTextBottom">
               <span>10月30日 周三</span>
               <div class="info">
                 <div class="infoLogo">
-                  <img src="../../../static/images/map.jpg" alt />
+                  <img src="../../../static/images/map.png" alt />
                 </div>
                 <span>北京</span>
               </div>
@@ -157,7 +161,7 @@ export default {
 .infoLogo {
   width: 28rpx;
   height: 34rpx;
-  margin-right: 5rpx;
+  margin-right: 15rpx;
 }
 .infoLogo img {
   width: 100%;

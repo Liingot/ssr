@@ -6,17 +6,23 @@
         <div class="headerText">第三节上海国际互联网家居节&第六届中国第六届</div>
       </div>
       <p class="time border">
-        <span class="timeLogo"></span>
+        <span class="timeLogo">
+          <img src="../../../static/images/time.png" alt />
+        </span>
         <span class="timeText">2019.10/20 08:30-2019.10/21 08:30</span>
       </p>
       <p class="map border">
-        <span class="mapLogo"></span>
+        <span class="mapLogo">
+          <img src="../../../static/images/map.png" alt />
+        </span>
         <span class="timeText">北京市海淀区xxxx大厦</span>
       </p>
     </section>
     <section class="success">
       <div class="successTop">
-        <div class="successLogo"></div>
+        <div class="successLogo">
+          <img src="../../../static/images/wx.png" alt />
+        </div>
         <div class="text">订座成功！</div>
       </div>
       <p class="successText">订单号：xxxxx，请及时付款，避免座位释放。</p>
@@ -31,7 +37,9 @@
           :class="{'icon':index == 0}"
         >
           <div class="vaswayLogo">
-            <div class="logo"></div>
+            <div class="logo">
+              <img :src="item.img" alt />
+            </div>
             <span class="vaswayText">{{item.title}}</span>
           </div>
           <radio-group @change="radioChange(item)">
@@ -56,8 +64,16 @@ export default {
       wx: true,
       offline: false, //线下支付
       items: [
-        { title: "微信支付", checked: true, img: "" },
-        { title: "线下支付", img: "", checked: false }
+        {
+          title: "微信支付",
+          checked: true,
+          img: "/static/images/wx.png"
+        },
+        {
+          title: "线下支付",
+          img: "/static/images/xx.png",
+          checked: false
+        }
       ]
     };
   },
@@ -129,10 +145,10 @@ export default {
   display: flex;
 }
 .timeLogo {
-  display: block;
+  display: flex;
+  align-self: auto;
   width: 30rpx;
   height: 30rpx;
-  background: red;
   margin-right: 15rpx;
 }
 .timeLogo img {
@@ -147,7 +163,6 @@ export default {
   display: block;
   width: 28rpx;
   height: 34rpx;
-  background: rebeccapurple;
   margin-right: 15rpx;
 }
 .mapLogo img {
@@ -203,9 +218,8 @@ export default {
   align-items: center;
 }
 .successLogo {
-  width: 36rpx;
+  width: 39rpx;
   height: 36rpx;
-  background: red;
   margin-right: 15rpx;
 }
 .successLogo img {
@@ -247,7 +261,6 @@ export default {
 .logo {
   width: 39rpx;
   height: 36rpx;
-  background: greenyellow;
   margin-right: 15rpx;
 }
 .logo img {

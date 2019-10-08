@@ -1,3 +1,15 @@
 <template>
-  <div>我的</div>
+  <div>
+    我的
+    <button @click="login">登录</button>
+  </div>
 </template>
+<script>
+export default {
+  methods: {
+    login() {
+      wx.navigateTo({ url: "../login/main" });
+    }
+  }
+};
+</script>

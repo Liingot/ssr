@@ -4,11 +4,15 @@
       <ul class="mettingUls">
         <li class="lis" v-for="(item,index) in list " :key="index">
           <div class="listContent" @click="go(item.leftText)">
-            <div class="logo"></div>
+            <div class="logo">
+              <img :src="item.leftImg" alt />
+            </div>
             <p class="text">{{item.leftText}}</p>
           </div>
           <div class="listContent" v-if="item.rightText" @click="go(item.rightText)">
-            <div class="logo"></div>
+            <div class="logo">
+              <img :src="item.rightImg" alt />
+            </div>
             <p class="text">{{item.rightText}}</p>
           </div>
         </li>
@@ -24,28 +28,46 @@ export default {
       list: [
         {
           leftText: "会议指南",
-          leftImg: "",
+          leftImg: "/static/images/mett0.png",
           rightText: "报名参会",
-          rightImg: ""
+          rightImg: "/static/images/mett1.png"
         },
         {
           leftText: "议程安排",
-          leftImg: "",
+          leftImg: "/static/images/mett2.png",
           rightText: "会议集锦",
-          rightImg: ""
+          rightImg: "/static/images/mett3.png"
         },
-        { leftText: "品牌企业", leftImg: "" }
+        { leftText: "品牌企业", leftImg: "/static/images/mett4.png" }
       ]
     };
   },
   onLoad(v) {},
   methods: {
     go(v) {
-      if (v === "报名参会") {
-        wx.navigateTo({
-          url: "../signin/main"
-        });
+      switch (v) {
+        case "报名参会":
+          wx.navigateTo({
+            url: "../signin/main"
+          });
+          break;
+        case "会议集锦":
+          wx.navigateTo({
+            url: "../dehighlights/main"
+          });
+          break;
+        case "品牌企业":
+          wx.navigateTo({ url: "../brand/main" });
+        default:
+          wx.navigateTo({
+            url: "../signin/main"
+          });
       }
+      // if (v === "报名参会") {
+      //   wx.navigateTo({
+      //     url: "../signin/main"
+      //   });
+      // }
     }
   }
 };
@@ -72,14 +94,13 @@ export default {
 }
 .listContent {
   width: 48%;
-  background: yellowgreen;
+  background: black;
   padding: 50rpx 0;
   box-sizing: border-box;
 }
 .logo {
   width: 80rpx;
   height: 75rpx;
-  background: wheat;
   margin: 0 auto;
 }
 .logo img {
