@@ -4,23 +4,30 @@
     <section class="main">
       <div class="information">
         <div class="informationLeft">
-          <div class="meetingLogo"></div>
+          <div class="meetingLogo"><img src="../../../static/images/information.jpg" alt=""></div>
           <h3 class="meetingH3">会议信息</h3>
         </div>
         <div class="informationRight">
           <span>分享给好友</span>
-          <div class="share"></div>
+          <div class="share"><img src="../../../static/images/share.jpg" alt=""></div>
         </div>
       </div>
       <div class="list">
-        <section class="listChildren" v-for="(item,index) in 10" :key="index">
+        <section
+          class="listChildren"
+          v-for="(item,index) in 10"
+          :key="index"
+          @click="details(item)"
+        >
           <div class="listPhoto"></div>
           <div class="listText">
             <div class="listTextTop">123123213123123123123123</div>
             <div class="listTextBottom">
               <span>10月30日 周三</span>
               <div class="info">
-                <div class="infoLogo"></div>
+                <div class="infoLogo">
+                  <img src="../../../static/images/map.jpg" alt />
+                </div>
                 <span>北京</span>
               </div>
             </div>
@@ -42,6 +49,11 @@ export default {
   methods: {
     bannerLook(v) {
       //点击banner的回调
+    },
+    details(v) {
+      wx.navigateTo({
+        url: "../meetingContent/main?a=1"
+      });
     }
   }
 };
@@ -85,7 +97,7 @@ export default {
   height: 56rpx;
   border-radius: 15px;
   border: 1px solid #ccc;
-  font-size: 30rpx;
+  font-size: 25rpx;
   color: #0070cc;
   text-align: center;
   padding: 0 25rpx;
@@ -146,7 +158,6 @@ export default {
   width: 28rpx;
   height: 34rpx;
   margin-right: 5rpx;
-  background: tan;
 }
 .infoLogo img {
   width: 100%;

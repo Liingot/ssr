@@ -1,0 +1,347 @@
+<template>
+  <div class="confirm">
+    <section class="shop">
+      <div class="shopHeader">
+        <div class="headerLogo"></div>
+        <div class="headerText">第三节上海国际互联网家居节&第六届中国第六届</div>
+      </div>
+      <p class="time border">
+        <span class="timeLogo"></span>
+        <span class="timeText">2019.10/20 08:30-2019.10/21 08:30</span>
+      </p>
+      <p class="map border">
+        <span class="mapLogo"></span>
+        <span class="timeText">北京市海淀区xxxx大厦</span>
+      </p>
+      <div class="money border">
+        <div class="moneyLeft">
+          <span class="moneyLogo"></span>
+          <span class="timeText">票价</span>
+        </div>
+        <span class="moneyRight">￥{{money}}/一张</span>
+      </div>
+      <div class="number border">
+        <div class="moneyLeft">
+          <span class="moneyLogo" style="width:26rpx;height:26rpx;"></span>
+          <span class="timeText">数量</span>
+        </div>
+        <div class="numberEdit">
+          <span class="off" @click="off">-</span>
+          <span class="num">{{number}}</span>
+          <span class="add" @click="add">+</span>
+        </div>
+      </div>
+    </section>
+    <section class="personnel">
+      <div class="personnelHeader">
+        <div class="personnelLogo"></div>
+        <div class="personnelText">选择参会人员</div>
+      </div>
+      <div class="personnelList">
+        <div class="listTr">
+          <span>姓名</span>
+          <span>手机号</span>
+        </div>
+        <ul class="uls">
+          <li class="lis">
+            <span>张三</span>
+            <span>11111111111</span>
+          </li>
+          <li class="lis">
+            <span>张三</span>
+            <span>11111111111</span>
+          </li>
+          <li class="lis">
+            <span>张三</span>
+            <span>11111111111</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <section class="instructions">
+      <p class="inst">说明</p>
+      <span class="instText">
+        <p>座位预定有效期至会议开始前3天，请及时支付。</p>
+        <p>若未支付，座位将被释放</p>
+      </span>
+    </section>
+    <section class="soft">
+      <div class="sortNum">
+        <span>合计：</span>
+        <span>￥{{soft}}</span>
+      </div>
+      <span class="confir" @click="pay">订座</span>
+    </section>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      money: 1000,
+      number: 1
+    };
+  },
+  computed: {
+    soft() {
+      //总和
+      return this.number * this.money;
+    }
+  },
+  methods: {
+    off() {
+      if (--this.number <= 1) return (this.number = 1);
+      else this.number--;
+    },
+    add() {
+      this.number++;
+    },
+    pay() {
+      wx.setStorage({ key: "soft", data: this.soft });
+      wx.navigateTo({
+        url: "../pay/main" //支付订单
+      });
+    }
+  }
+};
+</script>
+<style  scoped>
+.confirm {
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #0070cc;
+  padding: 40rpx 20rpx 0 20rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+.shop {
+  width: 100%;
+  border-radius: 15rpx;
+  background: white;
+  padding-top: 40rpx;
+  box-sizing: border-box;
+}
+.shopHeader {
+  display: flex;
+  padding: 0 30rpx 40rpx 30rpx;
+  box-sizing: border-box;
+}
+.headerLogo {
+  width: 226rpx;
+  height: 154rpx;
+  margin-right: 30rpx;
+  background: rebeccapurple;
+}
+.headerLogo img {
+  width: 100%;
+  height: 100%;
+}
+.headerText {
+  font-size: 30rpx;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.border {
+  padding: 30rpx;
+  box-sizing: border-box;
+  border-top: 1px solid #f1f1f1;
+  align-items: center;
+  display: flex;
+}
+.timeLogo {
+  display: block;
+  width: 30rpx;
+  height: 30rpx;
+  background: red;
+  margin-right: 15rpx;
+}
+.timeLogo img {
+  width: 100%;
+  height: 100%;
+}
+.timeText {
+  font-size: 30rpx;
+  color: #666;
+}
+.mapLogo {
+  display: block;
+  width: 28rpx;
+  height: 34rpx;
+  background: rebeccapurple;
+  margin-right: 15rpx;
+}
+.mapLogo img {
+  width: 100%;
+  height: 100%;
+}
+.money {
+  justify-content: space-between;
+}
+.moneyLeft {
+  display: flex;
+  align-items: center;
+}
+.moneyLogo {
+  width: 30rpx;
+  height: 30rpx;
+  background: red;
+  margin-right: 15rpx;
+}
+.moneyLogo img {
+  width: 100%;
+  height: 100%;
+}
+.moneyRight {
+  font-size: 33rpx;
+  font-weight: 500;
+}
+.number {
+  justify-content: space-between;
+}
+.numberEdit {
+  display: flex;
+}
+.off,
+.add {
+  display: block;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40rpx;
+  font-size: 30rpx;
+}
+.num {
+  font-size: 30rpx;
+  font-weight: 500;
+  margin: 0 15rpx;
+}
+.off {
+  border: 1px solid #0070cc;
+  color: #0070cc;
+}
+.add {
+  background: #0070cc;
+  color: white;
+}
+.personnelHeader {
+  display: flex;
+  align-items: center;
+  padding: 30rpx 25rpx;
+  box-sizing: border-box;
+}
+.personnelLogo {
+  width: 33rpx;
+  height: 33rpx;
+  margin-right: 15rpx;
+  background: red;
+}
+.personnelLogo img {
+  width: 100%;
+  height: 100%;
+}
+.personnelText {
+  font-size: 30rpx;
+}
+.listTr {
+  border-radius: 10rpx;
+  background: white;
+  text-align: center;
+  display: flex;
+}
+.listTr > span {
+  display: block;
+  width: 50%;
+  font-size: 30rpx;
+  font-weight: 550;
+  line-height: 60rpx;
+}
+.lis {
+  display: flex;
+  background: #f9f9f9;
+  position: relative;
+  text-align: center;
+  border-top: 1px solid #f1f1f1;
+}
+.lis:first-child {
+  border: none;
+}
+.lis > span {
+  display: block;
+  width: 50%;
+  line-height: 60rpx;
+  font-size: 27rpx;
+  color: #666666;
+}
+.instructions {
+  padding: 25rpx;
+  box-sizing: border-box;
+  background: #eaf6ff;
+  border: 1px solid #48a0e8;
+  margin-top: 20rpx;
+}
+.inst {
+  font-size: 26rpx;
+  padding-left: 15rpx;
+  font-weight: 600;
+  color: #48a0e8;
+  position: relative;
+  margin-bottom: 20rpx;
+}
+.inst::before {
+  content: "*";
+  color: #48a0e8;
+  position: absolute;
+  left: -1%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20rpx;
+}
+.instText > p {
+  font-size: 25rpx;
+  color: #666666;
+}
+.soft {
+  width: 100%;
+  height: 100rpx;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: white;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+}
+.softNum {
+  display: flex;
+}
+.sortNum > span:nth-child(1) {
+  font-size: 25rpx;
+  color: #ccc;
+}
+.sortNum > span:nth-child(2) {
+  font-size: 35rpx;
+  font-weight: 600;
+  color: #0070cc;
+}
+.confir {
+  display: block;
+  width: 435rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: white;
+  border-radius: 50rpx;
+  background: #0070cc;
+}
+</style>

@@ -1,0 +1,261 @@
+<template>
+  <div class="pay confirm">
+    <section class="shop">
+      <div class="shopHeader">
+        <div class="headerLogo"></div>
+        <div class="headerText">第三节上海国际互联网家居节&第六届中国第六届</div>
+      </div>
+      <p class="time border">
+        <span class="timeLogo"></span>
+        <span class="timeText">2019.10/20 08:30-2019.10/21 08:30</span>
+      </p>
+      <p class="map border">
+        <span class="mapLogo"></span>
+        <span class="timeText">北京市海淀区xxxx大厦</span>
+      </p>
+    </section>
+    <section class="success">
+      <div class="successTop">
+        <div class="successLogo"></div>
+        <div class="text">订座成功！</div>
+      </div>
+      <p class="successText">订单号：xxxxx，请及时付款，避免座位释放。</p>
+    </section>
+    <section class="vesway">
+      <ul class="veswayUls">
+        <li class="veswayTitle">选择支付方式</li>
+        <li
+          class="veswayIcon"
+          v-for="(item,index) in items"
+          :key="index"
+          :class="{'icon':index == 0}"
+        >
+          <div class="vaswayLogo">
+            <div class="logo"></div>
+            <span class="vaswayText">{{item.title}}</span>
+          </div>
+          <radio-group @change="radioChange(item)">
+            <radio :checked="item.checked"></radio>
+          </radio-group>
+        </li>
+      </ul>
+    </section>
+    <section class="soft">
+      <div class="sortNum">
+        <span>合计：</span>
+        <span>￥{{soft}}</span>
+      </div>
+      <span class="confir" @click="pay">立即支付</span>
+    </section>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      wx: true,
+      offline: false, //线下支付
+      items: [
+        { title: "微信支付", checked: true, img: "" },
+        { title: "线下支付", img: "", checked: false }
+      ]
+    };
+  },
+  computed: {
+    soft() {
+      return wx.getStorageSync("soft");
+    }
+  },
+  methods: {
+    pay() {
+      //立即支付
+    },
+    radioChange(e) {
+      this.items.find(res => {
+        if (res.title == e.title) res.checked = true;
+        else res.checked = false;
+      });
+    }
+  }
+};
+</script>
+<style  scoped>
+.confirm {
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #0070cc;
+  padding: 40rpx 20rpx 0 20rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+.shop {
+  width: 100%;
+  border-radius: 15rpx;
+  background: white;
+  padding-top: 40rpx;
+  box-sizing: border-box;
+}
+.shopHeader {
+  display: flex;
+  padding: 0 30rpx 40rpx 30rpx;
+  box-sizing: border-box;
+}
+.headerLogo {
+  width: 226rpx;
+  height: 154rpx;
+  margin-right: 30rpx;
+  background: rebeccapurple;
+}
+.headerLogo img {
+  width: 100%;
+  height: 100%;
+}
+.headerText {
+  font-size: 30rpx;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.border {
+  padding: 30rpx;
+  box-sizing: border-box;
+  border-top: 1px solid #f1f1f1;
+  align-items: center;
+  display: flex;
+}
+.timeLogo {
+  display: block;
+  width: 30rpx;
+  height: 30rpx;
+  background: red;
+  margin-right: 15rpx;
+}
+.timeLogo img {
+  width: 100%;
+  height: 100%;
+}
+.timeText {
+  font-size: 30rpx;
+  color: #666;
+}
+.mapLogo {
+  display: block;
+  width: 28rpx;
+  height: 34rpx;
+  background: rebeccapurple;
+  margin-right: 15rpx;
+}
+.mapLogo img {
+  width: 100%;
+  height: 100%;
+}
+.soft {
+  width: 100%;
+  height: 100rpx;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: white;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+}
+.softNum {
+  display: flex;
+}
+.sortNum > span:nth-child(1) {
+  font-size: 25rpx;
+  color: #ccc;
+}
+.sortNum > span:nth-child(2) {
+  font-size: 35rpx;
+  font-weight: 600;
+  color: #0070cc;
+}
+.confir {
+  display: block;
+  width: 435rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: white;
+  border-radius: 50rpx;
+  background: #0070cc;
+}
+.success {
+  padding: 35rpx 25rpx;
+  box-sizing: border-box;
+  background: #eaf6ff;
+  border: 1px solid #48a0e8;
+  margin: 20rpx 0;
+}
+.successTop {
+  display: flex;
+  align-items: center;
+}
+.successLogo {
+  width: 36rpx;
+  height: 36rpx;
+  background: red;
+  margin-right: 15rpx;
+}
+.successLogo img {
+  width: 100%;
+  height: 100%;
+}
+.text {
+  font-size: 30rpx;
+  color: #333;
+}
+.successText {
+  margin-top: 20rpx;
+  font-size: 27rpx;
+  color: #666666;
+}
+.vesway {
+  background: white;
+  border-radius: 10rpx;
+}
+.veswayUls > li {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding: 30rpx 20rpx;
+  box-sizing: border-box;
+}
+.veswayTitle {
+  font-size: 32rpx;
+  font-weight: 600;
+}
+.icon {
+  border-top: 1px solid #f1f1f1;
+  border-bottom: 1px solid #f1f1f1;
+}
+.vaswayLogo {
+  display: flex;
+  align-items: center;
+}
+.logo {
+  width: 39rpx;
+  height: 36rpx;
+  background: greenyellow;
+  margin-right: 15rpx;
+}
+.logo img {
+  width: 100%;
+  height: 100%;
+}
+.vaswayText {
+  font-size: 30rpx;
+  font-weight: 500;
+}
+</style>
