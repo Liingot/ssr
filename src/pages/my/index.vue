@@ -21,7 +21,7 @@
           <div class="fallIcon"></div>
         </div>
       </div>
-      <div class="tickContent listChildren">
+      <div class="tickContent listChildren" @click="details">
         <div class="listPhoto">
           <img src="/static/images/index1111.jpg" alt />
         </div>
@@ -128,6 +128,10 @@ export default {
       wx.navigateTo({
         url: "../myTicket/main"
       });
+    },
+    details() {
+      //票券详情
+      wx.navigateTo({ url: "../myTicketDetails/main" });
     }
   }
 };

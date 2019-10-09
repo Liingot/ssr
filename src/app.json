@@ -10,6 +10,7 @@
     "pages/enterprisesEnter/main",
     "pages/paysState/main",
     "pages/myTicket/main",
+    "pages/myTicketDetails/main",
     "pages/login/main",
     "pages/dehighlights/main"
   ],

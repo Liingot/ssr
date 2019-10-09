@@ -5,6 +5,26 @@
       <span class="li"></span>
       <div class="has" :class="{'border_bottom':!addborder}" @click="border('已使用')">已使用（{{has}}）</div>
     </header>
+    <section class="myticketMain">
+      <section class="listChildren" v-for="(item,index) in 2" :key="index" @click="details(item)">
+        <div class="listPhoto">
+          <img src="/static/images/index1111.jpg" alt />
+        </div>
+        <div class="listText">
+          <div class="listTextTop">123123213123123123123123</div>
+          <div class="listTextBottom">
+            <span>10月30日 周三</span>
+            <div class="info">
+              <div class="infoLogo">
+                <img src="/static/images/map.png" alt />
+              </div>
+              <span>北京</span>
+            </div>
+          </div>
+        </div>
+        <div class="filter" :class="{'useClass':addborder , 'hasClass' : !addborder}"></div>
+      </section>
+    </section>
   </div>
 </template>
 <script>
@@ -20,6 +40,10 @@ export default {
     border(v) {
       if (v == "未使用") this.addborder = true;
       else this.addborder = false;
+    },
+    details() {
+      //票卷详情
+      wx.navigateTo({ url: "../myTicketDetails/main" });
     }
   }
 };
@@ -55,5 +79,72 @@ export default {
   height: 30rpx;
   background: #f4f4f4;
   margin-top: 10rpx;
+}
+.myticketMain {
+  padding: 20rpx;
+  box-sizing: border-box;
+  background: #f4f4f4;
+}
+.listChildren {
+  background: white;
+  /* margin-bottom: 10rpx; */
+  border-radius: 15rpx;
+  padding: 30rpx 15rpx;
+  display: flex;
+  position: relative;
+}
+.listPhoto {
+  width: 230rpx;
+  height: 155rpx;
+  border-radius: 5rpx;
+  background: yellowgreen;
+  margin-right: 30rpx;
+}
+.listPhoto img {
+  width: 100%;
+  height: 100%;
+}
+.listTextTop {
+  font-size: 28rpx;
+  font-weight: 600;
+  padding-bottom: 45rpx;
+  box-sizing: border-box;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  word-break: break-all;
+}
+.listTextBottom {
+  font-size: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  color: #999999;
+}
+.info {
+  display: flex;
+}
+.infoLogo {
+  width: 28rpx;
+  height: 34rpx;
+  margin-right: 15rpx;
+}
+.infoLogo img {
+  width: 100%;
+  height: 100%;
+}
+.filter {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 15rpx;
+}
+.useClass {
+  background: rgba(255, 255, 255, 0.5);
+}
+.hasClass {
+  background: rgba(255, 255, 255, 0.8);
 }
 </style>
