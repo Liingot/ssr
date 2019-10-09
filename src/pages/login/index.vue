@@ -32,7 +32,7 @@ export default {
   methods: {
     getCode() {
       if (!this.timer) {
-        this.codeText = 15;
+        this.codeText = 60;
         this.timer = setInterval(() => {
           if (this.codeText > 1) {
             this.codeText--;
@@ -89,6 +89,7 @@ export default {
   font-size: 33rpx;
   font-weight: 550;
   color: #0070cc;
+  text-align: center;
 }
 .bottom {
   padding: 0 20rpx;

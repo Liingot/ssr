@@ -121,7 +121,10 @@ export default {
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background: #0070cc;
+  /* background: #0070cc; */
+  background: url(https://lawfirm-production.oss-cn-beijing.aliyuncs.com/bigBanner.png)
+    no-repeat;
+  background-size: cover;
   padding: 40rpx 20rpx 0 20rpx;
   box-sizing: border-box;
   position: relative;
