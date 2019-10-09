@@ -7,6 +7,9 @@
     "pages/confirm/main",
     "pages/pay/main",
     "pages/brand/main",
+    "pages/enterprisesEnter/main",
+    "pages/paysState/main",
+    "pages/myTicket/main",
     "pages/login/main",
     "pages/dehighlights/main"
   ],
