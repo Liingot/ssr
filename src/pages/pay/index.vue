@@ -84,6 +84,7 @@ export default {
   },
   methods: {
     pay() {
+      wx.navigateTo({ url: "../paysState/main?state=" + "已支付" });
       //立即支付
     },
     radioChange(e) {

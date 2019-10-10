@@ -8,8 +8,8 @@
       <li class="mainLis">
         <span class="text">公司</span>
         <div class="company">
-          <span class="subText">北京细水科技有限公司</span>
-          <div class="el-down"></div>
+          <span class="subText" style="color:#0070cc;">北京细水科技有限公司</span>
+          <!-- <div class="el-down"></div> -->
         </div>
       </li>
       <li class="mainLis">

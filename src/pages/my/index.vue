@@ -2,7 +2,7 @@
   <div class="my">
     <header class="header">
       <div class="headerInfo">
-        <div class="logo"></div>
+        <div class="logo" @click="personal"></div>
         <span class="infotText">
           <p class="company" @click="login">{{company}}</p>
           <p class="name">{{userName}}</p>
@@ -108,8 +108,13 @@ export default {
     }
   },
   methods: {
+    personal() {
+      //个人资料
+      wx.navigateTo({ url: "../personalData/main" });
+    },
     paysState(v) {
-      //支付状态
+      //订单状态
+      wx.navigateTo({ url: "../paysState/main?state=" + v });
     },
     login() {
       if (!this.trck)

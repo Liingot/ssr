@@ -142,9 +142,15 @@ export default {
   border-radius: 15rpx;
 }
 .useClass {
-  background: rgba(255, 255, 255, 0.5);
+  background: url(https://lawfirm-production.oss-cn-beijing.aliyuncs.com/useicon.png)
+      no-repeat right 60%,
+    rgba(255, 255, 255, 0.5);
+  background-size: 20%;
 }
 .hasClass {
-  background: rgba(255, 255, 255, 0.8);
+  background: url(https://lawfirm-production.oss-cn-beijing.aliyuncs.com/hasicon.png)
+      no-repeat right 60%,
+    rgba(255, 255, 255, 0.8);
+  background-size: 20%;
 }
 </style>

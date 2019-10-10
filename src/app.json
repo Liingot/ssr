@@ -11,7 +11,10 @@
     "pages/paysState/main",
     "pages/myTicket/main",
     "pages/myTicketDetails/main",
+    "pages/personalData/main",
     "pages/login/main",
+    "pages/refund/main",
+    "pages/mybrand/main",
     "pages/dehighlights/main"
   ],
   "window": {
