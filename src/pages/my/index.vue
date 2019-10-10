@@ -40,22 +40,22 @@
       </div>
     </section>
     <section class="order">
-      <div class="orderContent" @click="paysState('待支付')">
+      <div class="orderContent" @click="paysState(0)">
         <my-info></my-info>
         <div class="orderIcon"></div>
         <p class="orderText">待支付</p>
       </div>
-      <div class="orderContent" @click="paysState('已支付')">
+      <div class="orderContent" @click="paysState(1)">
         <my-info :num="2"></my-info>
         <div class="orderIcon"></div>
         <p class="orderText">已支付</p>
       </div>
-      <div class="orderContent" @click="paysState('已结束')">
+      <div class="orderContent" @click="paysState(2)">
         <my-info :num="3"></my-info>
         <div class="orderIcon"></div>
         <p class="orderText">已结束</p>
       </div>
-      <div class="orderContent" style="border:none;" @click="paysState('全部订单')">
+      <div class="orderContent" style="border:none;" @click="paysState(3)">
         <div class="orderIcon"></div>
         <p class="orderText">全部订单</p>
       </div>

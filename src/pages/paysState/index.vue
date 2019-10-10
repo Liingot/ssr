@@ -55,7 +55,8 @@ export default {
   },
   onLoad(v) {
     //state判断当前是哪一个状态
-    this.state(v.state);
+    this.borderIndex = v.state;
+    // this.state(v.state);
   },
   methods: {
     refund() {
@@ -64,26 +65,26 @@ export default {
     },
     borderactive(index) {
       this.borderIndex = index;
-    },
-    state(v) {
-      switch (v) {
-        case "待支付":
-          this.borderIndex = 0;
-          break;
-        case "已支付":
-          this.borderIndex = 1;
-          break;
-        case "已结束":
-          this.borderIndex = 2;
-          break;
-        case "全部订单":
-          this.borderIndex = 3;
-          break;
-        default:
-          this.borderIndex = 0;
-          break;
-      }
     }
+    // state(v) {
+    //   switch (v) {
+    //     case "待支付":
+    //       this.borderIndex = 0;
+    //       break;
+    //     case "已支付":
+    //       this.borderIndex = 1;
+    //       break;
+    //     case "已结束":
+    //       this.borderIndex = 2;
+    //       break;
+    //     case "全部订单":
+    //       this.borderIndex = 3;
+    //       break;
+    //     default:
+    //       this.borderIndex = 0;
+    //       break;
+    //   }
+    // }
   }
 };
 </script>
