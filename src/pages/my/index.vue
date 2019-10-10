@@ -62,7 +62,7 @@
     </section>
     <section class="other">
       <ul class="otherUls">
-        <li class="otherLis" v-for="(item,index) in otherList" :key="index">
+        <li class="otherLis" v-for="(item,index) in otherList" :key="index" @click="build(item)">
           <span class="otherText">{{item}}</span>
           <div class="fallIcon"></div>
         </li>
@@ -108,6 +108,16 @@ export default {
     }
   },
   methods: {
+    build(v) {
+      switch (v) {
+        case "我的企业":
+          wx.navigateTo({ url: "../mybrand/main" });
+          break;
+
+        default:
+          break;
+      }
+    },
     personal() {
       //个人资料
       wx.navigateTo({ url: "../personalData/main" });

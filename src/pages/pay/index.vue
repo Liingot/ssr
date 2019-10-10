@@ -37,7 +37,7 @@
           :class="{'icon':index == 0}"
         >
           <div class="vaswayLogo">
-            <div class="logo">
+            <div class="payLogo">
               <img :src="item.img" alt />
             </div>
             <span class="vaswayText">{{item.title}}</span>
@@ -262,12 +262,12 @@ export default {
   display: flex;
   align-items: center;
 }
-.logo {
+.payLogo {
   width: 39rpx;
   height: 36rpx;
   margin-right: 15rpx;
 }
-.logo img {
+.payLogo img {
   width: 100%;
   height: 100%;
 }

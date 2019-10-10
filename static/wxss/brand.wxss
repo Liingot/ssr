@@ -4,11 +4,11 @@
   box-sizing: border-box;
   background: #f4f4f4;
 }
-.uls {
+.branduls {
   display: flex;
   flex-wrap: wrap;
 }
-.lis {
+.brandlis {
   width: 229rpx;
   height: 173rpx;
   border-radius: 15rpx;
@@ -17,10 +17,10 @@
   margin-bottom: 15rpx;
   margin-right: 10rpx;
 }
-.lis:nth-child(3n) {
+.brandlis:nth-child(3n) {
   margin-right: 0;
 }
-.lis img {
+.brandlis img {
   width: 100%;
   height: 100%;
 }

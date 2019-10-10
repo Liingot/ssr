@@ -4,13 +4,13 @@
       <ul class="mettingUls">
         <li class="lis" v-for="(item,index) in list " :key="index">
           <div class="listContent" @click="go(item.leftText)">
-            <div class="logo">
+            <div class="meetinglogo">
               <img :src="item.leftImg" alt />
             </div>
             <p class="text">{{item.leftText}}</p>
           </div>
           <div class="listContent" v-if="item.rightText" @click="go(item.rightText)">
-            <div class="logo">
+            <div class="meetinglogo">
               <img :src="item.rightImg" alt />
             </div>
             <p class="text">{{item.rightText}}</p>
@@ -98,12 +98,12 @@ export default {
   padding: 50rpx 0;
   box-sizing: border-box;
 }
-.logo {
+.meetinglogo {
   width: 80rpx;
   height: 75rpx;
   margin: 0 auto;
 }
-.logo img {
+.meetinglogo img {
   width: 100%;
   height: 100%;
 }

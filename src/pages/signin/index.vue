@@ -3,7 +3,7 @@
     <div class="signinBanner">
       <img src="../../../static/images/signinBnner.png" alt />
     </div>
-    <div class="main">
+    <div class="sinfninmain">
       <section class="basic">
         <h3 class="h3">第三节上海国际互联网家居节&第六届中国建材家居产业发展大会</h3>
         <p class="number">
@@ -71,7 +71,7 @@ export default {
   width: 100%;
   height: 100%;
 }
-.main {
+.sinfninmain {
   background: #f1f1f1;
 }
 .basic {
