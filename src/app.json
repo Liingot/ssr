@@ -2,20 +2,32 @@
   "pages": [
     "pages/index/main",
     "pages/my/main",
-    "pages/meetingContent/main",
-    "pages/signin/main",
-    "pages/confirm/main",
-    "pages/pay/main",
-    "pages/brand/main",
-    "pages/enterprisesEnter/main",
-    "pages/paysState/main",
-    "pages/myTicket/main",
-    "pages/myTicketDetails/main",
-    "pages/personalData/main",
-    "pages/login/main",
-    "pages/refund/main",
-    "pages/mybrand/main",
-    "pages/dehighlights/main"
+    "pages/login/main"
+  ],
+  "subPackages": [
+    {
+      "root": "pages/moduleMeeting/",
+      "pages": [
+        "meetingContent/main",
+        "signin/main",
+        "dehighlights/main",
+        "brand/main",
+        "confirm/main",
+        "pay/main"
+      ]
+    },
+    {
+      "root": "pages/moduleMy/",
+      "pages": [
+        "enterprisesEnter/main",
+        "personalData/main",
+        "mybrand/main",
+        "myTicket/main",
+        "myTicketDetails/main",
+        "paysState/main",
+        "refund/main"
+      ]
+    }
   ],
   "window": {
     "backgroundTextStyle": "light",

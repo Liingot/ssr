@@ -1,7 +1,7 @@
 <template>
   <div class="signin">
     <div class="signinBanner">
-      <img src="../../../static/images/signinBnner.png" alt />
+      <img src="/static/images/signinBnner.png" alt />
     </div>
     <div class="sinfninmain">
       <section class="basic">
@@ -13,20 +13,20 @@
         <p class="money">￥1000</p>
         <p class="time">
           <span class="timeLogo">
-            <img src="../../../static/images/time.png" alt />
+            <img src="/static/images/time.png" alt />
           </span>
           <span class="Text">2019.10/20 08:30-2019.10/21 08:30</span>
         </p>
         <p class="map">
           <span class="mapLogo">
-            <img src="../../../static/images/map.png" alt />
+            <img src="/static/images/map.png" alt />
           </span>
           <span class="Text">北京市海淀区xxxx大厦</span>
         </p>
       </section>
       <section class="domain">
         <div class="domainLogo">
-          <img src="../../../static/images/home.png" alt />
+          <img src="/static/images/home.png" alt />
         </div>
         <div class="domainText">中国建筑协会</div>
       </section>
@@ -40,7 +40,7 @@
     <section class="reservation">
       <div class="reservationIcon">
         <div class="reservationIconLogo">
-          <img src="../../../static/images/zfreservation.png" alt />
+          <img src="/static/images/zfreservation.png" alt />
         </div>
         <p class="reservationIconText">分享</p>
       </div>

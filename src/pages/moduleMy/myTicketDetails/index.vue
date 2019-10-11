@@ -7,13 +7,13 @@
       </div>
       <p class="time border">
         <span class="timeLogo">
-          <img src="../../../static/images/time.png" alt />
+          <img src="/static/images/time.png" alt />
         </span>
         <span class="timeText">2019.10/20 08:30-2019.10/21 08:30</span>
       </p>
       <p class="map border" style="padding-bottom:0;">
         <span class="mapLogo">
-          <img src="../../../static/images/map.png" alt />
+          <img src="/static/images/map.png" alt />
         </span>
         <span class="timeText">北京市海淀区xxxx大厦</span>
       </p>

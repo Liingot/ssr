@@ -142,14 +142,14 @@ export default {
   border-radius: 15rpx;
 }
 .useClass {
-  background: url(https://img-blog.csdnimg.cn/20191010150537433.png)
-      no-repeat right 60%,
+  background: url(https://img-blog.csdnimg.cn/20191010150537433.png) no-repeat
+      right 60%,
     rgba(255, 255, 255, 0.5);
   background-size: 20%;
 }
 .hasClass {
-  background: url(https://img-blog.csdnimg.cn/20191010150450817.png)
-      no-repeat right 60%,
+  background: url(https://img-blog.csdnimg.cn/20191010150450817.png) no-repeat
+      right 60%,
     rgba(255, 255, 255, 0.8);
   background-size: 20%;
 }

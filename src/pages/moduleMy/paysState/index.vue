@@ -17,7 +17,7 @@
         <section class="listChildren">
           <!--  @click="details(item)" -->
           <div class="listPhoto">
-            <img src="../../../static/images/index1111.jpg" alt />
+            <img src="/static/images/index1111.jpg" alt />
           </div>
           <div class="listText">
             <div class="listTextTop">123123213123123123123123</div>
@@ -25,7 +25,7 @@
               <span>10月30日 周三</span>
               <div class="info">
                 <div class="infoLogo">
-                  <img src="../../../static/images/map.png" alt />
+                  <img src="/static/images/map.png" alt />
                 </div>
                 <span>北京</span>
               </div>
@@ -45,7 +45,7 @@
   </div>
 </template>
 <script>
-import "../../../static/wxss/conetnt.wxss";
+import "../../../../static/wxss/conetnt.wxss";
 export default {
   data() {
     return {

@@ -7,20 +7,20 @@
       </div>
       <p class="time border">
         <span class="timeLogo">
-          <img src="../../../static/images/time.png" alt />
+          <img src="/static/images/time.png" alt />
         </span>
         <span class="timeText">2019.10/20 08:30-2019.10/21 08:30</span>
       </p>
       <p class="map border">
         <span class="mapLogo">
-          <img src="../../../static/images/map.png" alt />
+          <img src="/static/images/map.png" alt />
         </span>
         <span class="timeText">北京市海淀区xxxx大厦</span>
       </p>
       <div class="money border">
         <div class="moneyLeft">
           <span class="moneyLogo">
-            <img src="../../../static/images/money.png" alt />
+            <img src="/static/images/money.png" alt />
           </span>
           <span class="timeText">票价</span>
         </div>
@@ -29,7 +29,7 @@
       <div class="number border">
         <div class="moneyLeft">
           <span class="moneyLogo" style="width:26rpx;height:26rpx;">
-            <img src="../../../static/images/number.png" alt />
+            <img src="/static/images/number.png" alt />
           </span>
           <span class="timeText">数量</span>
         </div>
@@ -43,7 +43,7 @@
     <section class="personnel">
       <div class="personnelHeader">
         <div class="personnelLogo">
-          <img src="../../../static/images/tel.png" alt />
+          <img src="/static/images/tel.png" alt />
         </div>
         <div class="personnelText">选择参会人员</div>
       </div>

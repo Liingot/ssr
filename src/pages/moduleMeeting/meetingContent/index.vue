@@ -3,13 +3,18 @@
     <section class="mettingMain">
       <ul class="mettingUls">
         <li class="lis" v-for="(item,index) in list " :key="index">
-          <div class="listContent" @click="go(item.leftText)">
+          <div class="listContent" @click="go(item.leftText)" :class="item.leftClass">
             <div class="meetinglogo">
               <img :src="item.leftImg" alt />
             </div>
             <p class="text">{{item.leftText}}</p>
           </div>
-          <div class="listContent" v-if="item.rightText" @click="go(item.rightText)">
+          <div
+            class="listContent"
+            v-if="item.rightText"
+            @click="go(item.rightText)"
+            :class="item.rightClass"
+          >
             <div class="meetinglogo">
               <img :src="item.rightImg" alt />
             </div>
@@ -29,16 +34,24 @@ export default {
         {
           leftText: "会议指南",
           leftImg: "/static/images/mett0.png",
+          leftClass: "one",
           rightText: "报名参会",
-          rightImg: "/static/images/mett1.png"
+          rightImg: "/static/images/mett1.png",
+          rightClass: "two"
         },
         {
           leftText: "议程安排",
           leftImg: "/static/images/mett2.png",
+          leftClass: "three",
           rightText: "会议集锦",
+          rightClass: "foure",
           rightImg: "/static/images/mett3.png"
         },
-        { leftText: "品牌企业", leftImg: "/static/images/mett4.png" }
+        {
+          leftText: "品牌企业",
+          leftImg: "/static/images/mett4.png",
+          leftClass: "five"
+        }
       ]
     };
   },
@@ -48,26 +61,21 @@ export default {
       switch (v) {
         case "报名参会":
           wx.navigateTo({
-            url: "../signin/main"
+            url: "../../moduleMeeting/signin/main"
           });
           break;
         case "会议集锦":
           wx.navigateTo({
-            url: "../dehighlights/main"
+            url: "../../moduleMeeting/dehighlights/main"
           });
           break;
         case "品牌企业":
-          wx.navigateTo({ url: "../brand/main" });
+          wx.navigateTo({ url: "../../moduleMeeting/brand/main" });
         default:
           wx.navigateTo({
-            url: "../signin/main"
+            url: "../../moduleMeeting/signin/main"
           });
       }
-      // if (v === "报名参会") {
-      //   wx.navigateTo({
-      //     url: "../signin/main"
-      //   });
-      // }
     }
   }
 };
@@ -94,9 +102,53 @@ export default {
 }
 .listContent {
   width: 48%;
-  background: black;
   padding: 50rpx 0;
   box-sizing: border-box;
+}
+.one {
+  background: -webkit-gradient(
+    linear,
+    center top,
+    center bottom,
+    from(rgba(253, 103, 74, 0.8)),
+    to(rgb(253, 103, 74))
+  );
+}
+.two {
+  background: -webkit-gradient(
+    linear,
+    center top,
+    center bottom,
+    from(rgba(255, 126, 165, 0.8)),
+    to(rgb(255, 126, 165))
+  );
+}
+.three {
+  background: -webkit-gradient(
+    linear,
+    center top,
+    center bottom,
+    from(rgba(255, 192, 68, 0.8)),
+    to(rgb(255, 192, 68))
+  );
+}
+.foure {
+  background: -webkit-gradient(
+    linear,
+    center top,
+    center bottom,
+    from(rgba(86, 143, 254, 0.8)),
+    to(rgb(86, 143, 254))
+  );
+}
+.five {
+  background: -webkit-gradient(
+    linear,
+    center top,
+    center bottom,
+    from(rgba(191, 104, 252, 0.8)),
+    to(rgb(191, 104, 252))
+  );
 }
 .meetinglogo {
   width: 80rpx;

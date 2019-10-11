@@ -111,7 +111,7 @@ export default {
     build(v) {
       switch (v) {
         case "我的企业":
-          wx.navigateTo({ url: "../mybrand/main" });
+          wx.navigateTo({ url: "../moduleMy/mybrand/main" });
           break;
 
         default:
@@ -120,11 +120,11 @@ export default {
     },
     personal() {
       //个人资料
-      wx.navigateTo({ url: "../personalData/main" });
+      wx.navigateTo({ url: "../moduleMy/personalData/main" });
     },
     paysState(v) {
       //订单状态
-      wx.navigateTo({ url: "../paysState/main?state=" + v });
+      wx.navigateTo({ url: "../moduleMy/paysState/main?state=" + v });
     },
     login() {
       if (!this.trck)
@@ -135,18 +135,18 @@ export default {
     enter() {
       //公司认证
       wx.navigateTo({
-        url: "../enterprisesEnter/main"
+        url: "../moduleMy/enterprisesEnter/main"
       });
     },
     myTicket() {
       //我的票券
       wx.navigateTo({
-        url: "../myTicket/main"
+        url: "../moduleMy/myTicket/main"
       });
     },
     details() {
       //票券详情
-      wx.navigateTo({ url: "../myTicketDetails/main" });
+      wx.navigateTo({ url: "../moduleMy/myTicketDetails/main" });
     }
   }
 };

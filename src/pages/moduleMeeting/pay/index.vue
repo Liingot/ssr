@@ -7,13 +7,13 @@
       </div>
       <p class="time border">
         <span class="timeLogo">
-          <img src="../../../static/images/time.png" alt />
+          <img src="/static/images/time.png" alt />
         </span>
         <span class="timeText">2019.10/20 08:30-2019.10/21 08:30</span>
       </p>
       <p class="map border">
         <span class="mapLogo">
-          <img src="../../../static/images/map.png" alt />
+          <img src="/static/images/map.png" alt />
         </span>
         <span class="timeText">北京市海淀区xxxx大厦</span>
       </p>
@@ -21,7 +21,7 @@
     <section class="success">
       <div class="successTop">
         <div class="successLogo">
-          <img src="../../../static/images/wx.png" alt />
+          <img src="/static/images/wx.png" alt />
         </div>
         <div class="text">订座成功！</div>
       </div>
@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     pay() {
-      wx.navigateTo({ url: "../paysState/main?state=" + 1 });
+      wx.navigateTo({ url: "../../moduleMy/paysState/main?state=" + 1 });
       //立即支付
     },
     radioChange(e) {

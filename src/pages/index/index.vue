@@ -23,7 +23,9 @@
           :key="index"
           @click="details(item)"
         >
-          <div class="listPhoto"><img src="../../../static/images/index1111.jpg" alt=""></div>
+          <div class="listPhoto">
+            <img src="../../../static/images/index1111.jpg" alt />
+          </div>
           <div class="listText">
             <div class="listTextTop">123123213123123123123123</div>
             <div class="listTextBottom">
@@ -50,13 +52,16 @@ export default {
       bannerList: [1, 2, 3]
     };
   },
+  mounted() {
+    console.log(this.md5({ type: "123" }));
+  },
   methods: {
     bannerLook(v) {
       //点击banner的回调
     },
     details(v) {
       wx.navigateTo({
-        url: "../meetingContent/main?a=1"
+        url: "../moduleMeeting/meetingContent/main"
       });
     }
   }

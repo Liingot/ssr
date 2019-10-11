@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-import "../../../static/wxss/enter.wxss";
+import "../../../../static/wxss/enter.wxss";
 export default {
   data() {
     return {
