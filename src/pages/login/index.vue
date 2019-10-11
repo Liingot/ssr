@@ -4,7 +4,7 @@
     <section class="form">
       <div class="tel">
         <span class="text">手机号</span>
-        <input type="text" class="inputTel" placeholder="请输入手机号" v-model="tel" />
+        <input type="text" class="inputTel" placeholder="请输入手机号" v-model="phone" />
       </div>
       <div class="code">
         <span class="text">验证码</span>
@@ -15,15 +15,23 @@
       </div>
     </section>
     <div class="bottom">
-      <span class="btnLogin">登录</span>
+      <span class="btnLogin" @click="submit">登录</span>
     </div>
   </div>
 </template>
 <script>
+import {
+  hex_md5,
+  b64_md5,
+  str_md5,
+  hex_hmac_md5,
+  b64_hmac_md5,
+  str_hmac_md5
+} from "../../utils/md5";
 export default {
   data() {
     return {
-      tel: "",
+      phone: "",
       code: "",
       codeText: "获取验证码",
       timer: null
@@ -31,8 +39,10 @@ export default {
   },
   methods: {
     getCode() {
+      //倒计时
       if (!this.timer) {
         this.codeText = 60;
+        this.getCodeSms();
         this.timer = setInterval(() => {
           if (this.codeText > 1) {
             this.codeText--;
@@ -46,6 +56,44 @@ export default {
           }
         }, 1000);
       }
+    },
+    submit() {
+      this.axios
+        .post({
+          url: "/api/login",
+          data: {
+            phone: this.phone,
+            code: this.code
+          }
+        })
+        .then(res => {
+          if (res.data.status == "200") {
+            wx.setStorageSync("token", res.data.data.token);
+            wx.reLaunch({
+              url:
+                "../my/main?userInfo=" + JSON.stringify(res.data.data.userInfo)
+            });
+          }
+        });
+    },
+    getCodeSms() {
+      //获取验证码
+      this.axios
+        .post({
+          url: "/api/sms",
+          data: {
+            phone: this.phone
+          }
+        })
+        .then(res => {
+          if ((res.data.status = "200")) {
+            wx.showToast({
+              title: "发送成功",
+              icon: "none",
+              duration: 2000
+            });
+          }
+        });
     }
   }
 };

@@ -2,7 +2,9 @@
   <div class="my">
     <header class="header">
       <div class="headerInfo">
-        <div class="logo" @click="personal"></div>
+        <div class="logo" @click="personal">
+          <img :src="avatarUrl" alt />
+        </div>
         <span class="infotText">
           <p class="company" @click="login">{{company}}</p>
           <p class="name">{{userName}}</p>
@@ -82,6 +84,7 @@ export default {
         "添加到我的小程序",
         "报错反馈"
       ],
+      avatarUrl: "",
       userName: "xxx", //用户姓名
       company: "北京细水有限公司", //公司名字
       avatar: "", //用户头像
@@ -90,10 +93,15 @@ export default {
       stored: false //待审核状态
     };
   },
+  onLoad(v) {
+    // console.log(v);
+  },
   components: { myInfo },
   mounted() {
-    let s = 0; //未登录状态
-    let b = 0; //未认证状态
+    // this.getUserInfo();
+    this.myInfo();
+    // let s = 0; //未登录状态
+    // let b = 0; //未认证状态
     // if (!s) {
     //   this.userName = "登录后体验更多功能";
     //   this.company = "点击登录";
@@ -101,13 +109,29 @@ export default {
     //   this.avatar = ""; //默认头像
     //   return;
     // }
-    if (!b) {
-      this.company = "暂未认证公司";
-      this.avatar = "";
-      this.certification = false; //未认证的时候为false
-    }
+    // if (!b) {
+    //   this.company = "暂未认证公司";
+    //   this.avatar = "";
+    //   this.certification = false; //未认证的时候为false
+    // }
   },
   methods: {
+    getUserInfo() {
+      wx.getUserInfo({
+        success: function(res) {
+          console.log(res);
+          let userInfo = res.userInfo;
+          this.avatarUrl = userInfo.avatarUrl;
+        }
+      });
+    },
+    myInfo() {
+      this.axios
+        .post({
+          url: "/api/personal/index"
+        })
+        .then(res => {});
+    },
     build(v) {
       switch (v) {
         case "我的企业":
@@ -155,8 +179,17 @@ export default {
 .my {
   width: 100%;
   min-height: 100vh;
-  background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
-    no-repeat;
+  /* background: url(
+      https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,
+      type_ZmFuZ3poZW5naGVpdGk,
+      shadow_10,
+      text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,
+      size_16,
+      color_FFFFFF,
+      t_70
+    )
+    no-repeat; */
+  background: #0070cc;
   background-size: cover;
   padding: 50rpx 20rpx 20rpx 20rpx;
   box-sizing: border-box;

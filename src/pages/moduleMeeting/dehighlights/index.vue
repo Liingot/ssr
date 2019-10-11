@@ -1,28 +1,57 @@
 <template>
   <div class="dehighlights">
-    <section class="radioTemplate" v-for="(item,index) in 3" :key="index">
-      <video src="http://static1.gotokeep.com/homepage/5s.mp4" class="video"></video>
-      <div class="likeTemplate">
-        <span class="text">这次会议学到了xxxxx</span>
-        <div class="linkNum">
-          <div class="linkLogo">
-            <img src="/static/images/give.png" alt />
+    <div v-if="dehighList.length">
+      <section class="radioTemplate" v-for="(item,index) in dehighList" :key="index">
+        <video :src="item.video_url" class="video"></video>
+        <div class="likeTemplate">
+          <span class="text">{{item.title}}</span>
+          <div class="linkNum">
+            <div class="linkLogo">
+              <img src="/static/images/give.png" alt />
+            </div>
+            <span class="linkN">{{item.like}}</span>
           </div>
-          <span class="linkN">111</span>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
+    <p class="no" v-else>暂无数据</p>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {};
+    return {
+      dehighList: []
+    };
+  },
+  onLoad(v) {
+    this.init(v.id);
+  },
+  methods: {
+    init(id) {
+      this.axios
+        .post({
+          url: "/api/meeting/video",
+          data: { meeting_id: id }
+        })
+        .then(res => {
+          if (res.data.status == "200") {
+            this.dehighList = res.data.data;
+          }
+        });
+    }
   }
 };
 </script>
 <style  scoped>
+.no {
+  text-align: center;
+  font-size: 35rpx;
+  color: #666;
+  margin-top: 30rpx;
+}
 .dehighlights {
+  min-height: 100vh;
   background: #f4f4f4;
   padding: 20rpx;
   box-sizing: border-box;

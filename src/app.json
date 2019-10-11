@@ -13,7 +13,9 @@
         "dehighlights/main",
         "brand/main",
         "confirm/main",
-        "pay/main"
+        "pay/main",
+        "guide/main",
+        "arrange/main"
       ]
     },
     {

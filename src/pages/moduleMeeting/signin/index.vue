@@ -1,40 +1,38 @@
 <template>
   <div class="signin">
     <div class="signinBanner">
-      <img src="/static/images/signinBnner.png" alt />
+      <img :src="signinData.cover" alt />
     </div>
     <div class="sinfninmain">
       <section class="basic">
-        <h3 class="h3">第三节上海国际互联网家居节&第六届中国建材家居产业发展大会</h3>
+        <h3 class="h3">{{signinData.title}}</h3>
         <p class="number">
-          <span>报名 1200</span>
-          <span>剩余 300</span>
+          <span>报名 {{signinData.apply_number}}</span>
+          <span>剩余 {{signinData.number - signinData.apply_number}}</span>
         </p>
-        <p class="money">￥1000</p>
+        <p class="money">￥{{signinData.amount}}</p>
         <p class="time">
           <span class="timeLogo">
             <img src="/static/images/time.png" alt />
           </span>
-          <span class="Text">2019.10/20 08:30-2019.10/21 08:30</span>
+          <span class="Text">{{start_time}}-{{end_time}}</span>
         </p>
         <p class="map">
           <span class="mapLogo">
             <img src="/static/images/map.png" alt />
           </span>
-          <span class="Text">北京市海淀区xxxx大厦</span>
+          <span class="Text">{{signinData.address}}</span>
         </p>
       </section>
       <section class="domain">
         <div class="domainLogo">
           <img src="/static/images/home.png" alt />
         </div>
-        <div class="domainText">中国建筑协会</div>
+        <div class="domainText">{{signinData.organizer}}</div>
       </section>
       <section class="details">
         <h3 class="detailsH3">会议详情</h3>
-        <div
-          class="detailsText"
-        >xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+        <div class="detailsText">{{signinData.content}}</div>
       </section>
     </div>
     <section class="reservation">
@@ -49,15 +47,59 @@
   </div>
 </template>
 <script>
+import navigationBar from "../../../components/navigationBar";
+
 export default {
   data() {
-    return {};
+    return {
+      item: null,
+      signinData: {}
+    };
+  },
+  components: { navigationBar },
+  computed: {
+    start_time() {
+      //开始时间
+      let start_time = String(this.signinData.start_time).split(":");
+      return `${start_time[0]}:${start_time[1]}`;
+    },
+    end_time() {
+      //结束时间
+      let end_time = String(this.signinData.end_time).split(":");
+      return `${end_time[0]}:${end_time[1]}`;
+    }
+  },
+  onLoad(v) {
+    this.item = JSON.parse(v.item);
+    this.init(this.item.id);
   },
   methods: {
+    init(id) {
+      this.axios
+        .post({
+          url: "/api/meeting/detail",
+          data: { meeting_id: id }
+        })
+        .then(res => {
+          if (res.data.status == "200") {
+            this.signinData = res.data.data;
+          }
+        });
+    },
     reser() {
-      wx.navigateTo({
-        url: "../confirm/main" //确定订单
-      });
+      this.axios
+        .post({
+          url: "/api/order/index",
+          data: { meeting_id: this.item.id }
+        })
+        .then(res => {
+          if (res.data.status == "200") {
+            wx.navigateTo({
+              url: "../confirm/main?meeting_id=" + this.item.meeting_id //确定订单
+            });
+          } else {
+          }
+        });
     }
   }
 };

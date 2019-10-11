@@ -1,5 +1,6 @@
 <template>
   <div class="metting">
+    <navigation-bar :title="'中装商学院'" :back-visible="true" :homeIshide="true" :titleColor="'#666'"></navigation-bar>
     <section class="mettingMain">
       <ul class="mettingUls">
         <li class="lis" v-for="(item,index) in list " :key="index">
@@ -27,6 +28,7 @@
   </div>
 </template>
 <script>
+import navigationBar from "../../../components/navigationBar";
 export default {
   data() {
     return {
@@ -52,25 +54,43 @@ export default {
           leftImg: "/static/images/mett4.png",
           leftClass: "five"
         }
-      ]
+      ],
+      item: null
     };
   },
-  onLoad(v) {},
+  components: { navigationBar },
+  onLoad(v) {
+    this.item = JSON.parse(v.item);
+  },
   methods: {
     go(v) {
       switch (v) {
+        case "会议指南":
+          wx.navigateTo({
+            url: "../../moduleMeeting/guide/main?id=" + this.item.id
+          });
+          break;
+        case "议程安排":
+          wx.navigateTo({
+            url: "../../moduleMeeting/arrange/main?id=" + this.item.id
+          });
+          break;
         case "报名参会":
           wx.navigateTo({
-            url: "../../moduleMeeting/signin/main"
+            url:
+              "../../moduleMeeting/signin/main?item=" +
+              JSON.stringify(this.item)
           });
           break;
         case "会议集锦":
           wx.navigateTo({
-            url: "../../moduleMeeting/dehighlights/main"
+            url: "../../moduleMeeting/dehighlights/main?id=" + this.item.id
           });
           break;
         case "品牌企业":
-          wx.navigateTo({ url: "../../moduleMeeting/brand/main" });
+          wx.navigateTo({
+            url: "../../moduleMeeting/brand/main?id=" + this.item.id
+          });
         default:
           wx.navigateTo({
             url: "../../moduleMeeting/signin/main"

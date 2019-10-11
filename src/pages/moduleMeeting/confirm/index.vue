@@ -92,6 +92,9 @@ export default {
       number: 1
     };
   },
+  onLoad(v){
+    
+  },
   computed: {
     soft() {
       //总和

@@ -5,40 +5,42 @@
       <div class="information">
         <div class="informationLeft">
           <div class="meetingLogo">
-            <img src="../../../static/images/information.jpg" alt />
+            <img src="/static/images/information.jpg" alt />
           </div>
           <h3 class="meetingH3">会议信息</h3>
         </div>
         <div class="informationRight">
           <span>分享给好友</span>
           <div class="share">
-            <img src="../../../static/images/share.jpg" alt />
+            <img src="/static/images/share.jpg" alt />
           </div>
         </div>
       </div>
       <div class="list">
-        <section
-          class="listChildren"
-          v-for="(item,index) in 10"
-          :key="index"
-          @click="details(item)"
-        >
-          <div class="listPhoto">
-            <img src="../../../static/images/index1111.jpg" alt />
-          </div>
-          <div class="listText">
-            <div class="listTextTop">123123213123123123123123</div>
-            <div class="listTextBottom">
-              <span>10月30日 周三</span>
-              <div class="info">
-                <div class="infoLogo">
-                  <img src="../../../static/images/map.png" alt />
+        <scroll-view scroll-y style="height:calc(100vh - 375rpx);" @scrolltolower="lower">
+          <section
+            class="listChildren"
+            v-for="(item,index) in meetingList"
+            :key="index"
+            @click="details(item)"
+          >
+            <div class="listPhoto">
+              <img :src="item.cover" alt />
+            </div>
+            <div class="listText">
+              <div class="listTextTop">{{item.title}}</div>
+              <div class="listTextBottom">
+                <span>{{item.date}} {{item.week}}</span>
+                <div class="info">
+                  <div class="infoLogo">
+                    <img src="/static/images/map.png" alt />
+                  </div>
+                  <span>{{item.address}}</span>
                 </div>
-                <span>北京</span>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </scroll-view>
       </div>
     </section>
   </div>
@@ -49,19 +51,54 @@ export default {
   components: { indexBanner },
   data() {
     return {
-      bannerList: [1, 2, 3]
+      bannerList: [],
+      meetingList: [],
+      currentPage: 1,
+      lastPage: 1 //总的分页数
     };
   },
   mounted() {
-    console.log(this.md5({ type: "123" }));
+    this.init();
   },
   methods: {
+    lower() {
+      //分页
+      this.currentPage++;
+      if (this.currentPage < this.lastPage) this.init(this.currentPage);
+      else {
+        wx.showToast({
+          title: "我是有底线的",
+          icon: "none",
+          duration: 1000
+        });
+        return;
+      }
+    },
+    init(page = 1) {
+      this.axios
+        .post({
+          url: `/api/index`,
+          data: { page: page }
+        })
+        .then(res => {
+          if (res.data.status == "200") {
+            this.meetingList = [
+              ...res.data.data.meetingList.data,
+              ...this.meetingList
+            ];
+            this.bannerList = res.data.data.bannerList; //轮播图
+
+            console.log(this.meetingList);
+            this.lastPage = res.data.data.last_page; //分页的最后一页
+          }
+        });
+    },
     bannerLook(v) {
       //点击banner的回调
     },
     details(v) {
       wx.navigateTo({
-        url: "../moduleMeeting/meetingContent/main"
+        url: "../moduleMeeting/meetingContent/main?item=" + JSON.stringify(v)
       });
     }
   }
@@ -142,6 +179,9 @@ export default {
 .listPhoto img {
   width: 100%;
   height: 100%;
+}
+.listText {
+  width: calc(100% - 260rpx);
 }
 .listTextTop {
   font-size: 28rpx;

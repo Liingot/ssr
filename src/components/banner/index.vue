@@ -9,7 +9,9 @@
       skip-hidden-item-layout="true"
     >
       <swiper-item v-for="(item,index) in bannerList" :key="index" @click="look(item)">
-        <div class="banner">{{item}}</div>
+        <div class="banner">
+          <img :src="item.cover" alt />
+        </div>
       </swiper-item>
     </swiper>
   </div>
@@ -33,8 +35,8 @@ export default {
     switchItem(v) {
       console.log(v);
     },
-    look(v){
-        this.$emit('bannerLook',v)
+    look(v) {
+      this.$emit("bannerLook", v);
     }
   }
 };
