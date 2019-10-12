@@ -1,6 +1,6 @@
 <template>
   <div class="metting">
-    <navigation-bar :title="'中装商学院'" :back-visible="true" :homeIshide="true" :titleColor="'#666'"></navigation-bar>
+    <!-- <navigation-bar :title="'中装商学院'" :back-visible="true" :homeIshide="true" :titleColor="'#666'"></navigation-bar> -->
     <section class="mettingMain">
       <ul class="mettingUls">
         <li class="lis" v-for="(item,index) in list " :key="index">

@@ -8,40 +8,43 @@
         @click="borderactive(index)"
       >{{item}}</div>
     </header>
-    <section class="stateContent">
-      <div class="content" v-for="(item,index) in 2" :key="index">
-        <div class="contentHeader">
-          <div class="icon"></div>
-          <span class="contentheaderText">订单号：88888888</span>
-        </div>
-        <section class="listChildren">
-          <!--  @click="details(item)" -->
-          <div class="listPhoto">
-            <img src="/static/images/index1111.jpg" alt />
+    <section class="stateContent" v-if="list.length">
+      <scroll-view scroll-y style="height:calc(100vh - 30rpx);" @scrolltolower="lower">
+        <div class="content" v-for="(item,index) in list" :key="index">
+          <div class="contentHeader">
+            <div class="icon"></div>
+            <span class="contentheaderText">订单号：88888888</span>
           </div>
-          <div class="listText">
-            <div class="listTextTop">123123213123123123123123</div>
-            <div class="listTextBottom">
-              <span>10月30日 周三</span>
-              <div class="info">
-                <div class="infoLogo">
-                  <img src="/static/images/map.png" alt />
+          <section class="listChildren">
+            <!--  @click="details(item)" -->
+            <div class="listPhoto">
+              <img src="/static/images/index1111.jpg" alt />
+            </div>
+            <div class="listText">
+              <div class="listTextTop">123123213123123123123123</div>
+              <div class="listTextBottom">
+                <span>10月30日 周三</span>
+                <div class="info">
+                  <div class="infoLogo">
+                    <img src="/static/images/map.png" alt />
+                  </div>
+                  <span>北京</span>
                 </div>
-                <span>北京</span>
               </div>
             </div>
-          </div>
-        </section>
-        <section class="operation">
-          <div class="oper">
-            <span class="pay" v-if="borderIndex == 0">去支付</span>
-            <span class="cancel" v-if="borderIndex == 1" @click="refund
-">取消订单</span>
-            <span class="cancel" v-if="borderIndex == 2">申请开票</span>
-          </div>
-        </section>
-      </div>
+          </section>
+          <section class="operation">
+            <div class="oper">
+              <span class="pay" v-if="borderIndex == 0">去支付</span>
+              <span class="cancel" v-if="borderIndex == 0" @click="cancel(item,index)">取消订单</span>
+              <span class="cancel" v-if="borderIndex == 1" @click="refund">退款</span>
+              <span class="cancel" v-if="borderIndex == 2">申请开票</span>
+            </div>
+          </section>
+        </div>
+      </scroll-view>
     </section>
+    <p class="no" v-else>暂无订单信息</p>
   </div>
 </template>
 <script>
@@ -50,48 +53,82 @@ export default {
   data() {
     return {
       stateList: ["待支付", "已支付", "已结束", "全部订单"],
-      borderIndex: 0
+      borderIndex: 0,
+      list: [],
+      lastPage: 1,
+      currentPage: 1
     };
   },
   onLoad(v) {
     //state判断当前是哪一个状态
+    this.borderIndex = 1;
     this.borderIndex = v.state;
-    // this.state(v.state);
+    this.init(this.borderIndex ? Number(this.borderIndex) + 1 : 1);
   },
+  mounted() {},
   methods: {
+    cancel(v, index) {
+      this.axios
+        .post({
+          url: "/api/personal/orderCancel",
+          data: { order_id: v.id }
+        })
+        .then(res => {
+          if (res.data.status == "200") {
+            wx.showToast({
+              title: "取消订单成功",
+              icon: "none",
+              duration: 1000
+            });
+            this.list.splice(index, 1);
+          }
+        });
+    },
     refund() {
-      //取消订单
+      //退款
       wx.navigateTo({ url: `../refund/main` });
+    },
+    lower() {
+      this.currentPage++;
+      if (this.currentPage <= this.lastPage)
+        this.init(Number(this.borderIndex) + 1, this.currentPage);
+      else {
+        wx.showToast({
+          title: "我是有底线的",
+          icon: "none",
+          duration: 1000
+        });
+        return;
+      }
     },
     borderactive(index) {
       this.borderIndex = index;
+      this.list = [];
+      this.currentPage = 1;
+      this.init(index + 1);
+    },
+    init(status = 1, page = 1) {
+      //status：1待支付，2-已支付，3已结束，4全部
+      this.axios
+        .post({
+          url: "/api/personal/orderList",
+          data: { status: status, page: page }
+        })
+        .then(res => {
+          if (res.data.status == "200") {
+            this.lastPage = res.data.data.last_page;
+            console.log(this.lastPage, this.currentPage);
+            this.list = [...this.list, ...res.data.data.data];
+          }
+        });
     }
-    // state(v) {
-    //   switch (v) {
-    //     case "待支付":
-    //       this.borderIndex = 0;
-    //       break;
-    //     case "已支付":
-    //       this.borderIndex = 1;
-    //       break;
-    //     case "已结束":
-    //       this.borderIndex = 2;
-    //       break;
-    //     case "全部订单":
-    //       this.borderIndex = 3;
-    //       break;
-    //     default:
-    //       this.borderIndex = 0;
-    //       break;
-    //   }
-    // }
   }
 };
 </script>
 <style  scoped>
 .myticket {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background: #f4f4f4;
 }
 .border_bottom {
@@ -126,6 +163,9 @@ export default {
   box-sizing: border-box;
   display: flex;
   align-items: center;
+}
+.listText {
+  width: calc(100% - 260rpx);
 }
 .icon {
   width: 30rpx;
@@ -167,5 +207,11 @@ export default {
 .cancel {
   color: #666;
   border: 1px solid #f1f1f1;
+}
+.no {
+  text-align: center;
+  font-size: 30rpx;
+  color: #666;
+  margin-top: 30rpx;
 }
 </style>

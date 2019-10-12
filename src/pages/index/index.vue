@@ -9,12 +9,18 @@
           </div>
           <h3 class="meetingH3">会议信息</h3>
         </div>
-        <div class="informationRight">
+        <!-- <div class="informationRight">
           <span>分享给好友</span>
           <div class="share">
             <img src="/static/images/share.jpg" alt />
           </div>
-        </div>
+        </div>-->
+        <button class="informationRight" open-type="share">
+          <span>分享给好友</span>
+          <div class="share">
+            <img src="/static/images/share.jpg" alt />
+          </div>
+        </button>
       </div>
       <div class="list">
         <scroll-view scroll-y style="height:calc(100vh - 375rpx);" @scrolltolower="lower">
@@ -58,9 +64,20 @@ export default {
     };
   },
   mounted() {
+    wx.showShareMenu({
+      withShareTicket: true
+    });
     this.init();
   },
   methods: {
+    onShareAppMessage(res) {
+      if (res.from == "button") {
+        console.log(res);
+      }
+      return {
+        title: "测试"
+      };
+    },
     lower() {
       //分页
       this.currentPage++;

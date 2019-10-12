@@ -4,7 +4,7 @@
     <section class="form">
       <div class="tel">
         <span class="text">手机号</span>
-        <input type="text" class="inputTel" placeholder="请输入手机号" v-model="phone" />
+        <input type="number" class="inputTel" placeholder="请输入手机号" v-model="phone" />
       </div>
       <div class="code">
         <span class="text">验证码</span>
@@ -15,7 +15,8 @@
       </div>
     </section>
     <div class="bottom">
-      <span class="btnLogin" @click="submit">登录</span>
+      <!-- <span class="btnLogin" @click="submit">登录</span> -->
+      <button open-type="getUserInfo" class="btnLogin" @getuserinfo="bindGetUserInfo">登录</button>
     </div>
   </div>
 </template>
@@ -38,6 +39,31 @@ export default {
     };
   },
   methods: {
+    bindGetUserInfo(e) {
+      if (e.mp.detail.rawData) {
+        this.submit().then(res => {
+          if (res == "200") {
+            wx.setStorageSync("userInfo", JSON.stringify(e.target.userInfo));
+            wx.reLaunch({
+              url: "../my/main"
+            });
+          } else return;
+        });
+        // wx.login({
+        //   success: res => {
+        //     if (res.code) {
+        //       console.log(res, "res");
+        //       this.axios
+        //         .post({
+        //           url: "/api/auth",
+        //           data: { code: res.code }
+        //         })
+        //         .then(re => {});
+        //     }
+        //   }
+        // });
+      }
+    },
     getCode() {
       //倒计时
       if (!this.timer) {
@@ -58,23 +84,30 @@ export default {
       }
     },
     submit() {
-      this.axios
-        .post({
-          url: "/api/login",
-          data: {
-            phone: this.phone,
-            code: this.code
-          }
-        })
-        .then(res => {
-          if (res.data.status == "200") {
-            wx.setStorageSync("token", res.data.data.token);
-            wx.reLaunch({
-              url:
-                "../my/main?userInfo=" + JSON.stringify(res.data.data.userInfo)
-            });
-          }
-        });
+      return new Promise((resolve, reject) => {
+        this.axios
+          .post({
+            url: "/api/login",
+            data: {
+              phone: this.phone,
+              code: this.code
+            }
+          })
+          .then(res => {
+            if (res.data.status == "200") {
+              wx.setStorageSync("token", res.data.data.token);
+              resolve(res.data.status);
+            } else {
+              wx.showToast({
+                title: "验证码错误",
+                icon: "none",
+                duration: 1000
+              });
+              reject("验证码错误");
+              return;
+            }
+          });
+      });
     },
     getCodeSms() {
       //获取验证码

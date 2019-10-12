@@ -1,49 +1,104 @@
 <template>
   <div class="myticket">
     <header class="header">
-      <div class="use" :class="{'border_bottom':addborder}" @click="border('未使用')">未使用（{{use}}）</div>
+      <!-- （{{use}}） -->
+      <div class="use" :class="{'border_bottom':addborder}" @click="border('未使用')">未使用</div>
       <span class="li"></span>
-      <div class="has" :class="{'border_bottom':!addborder}" @click="border('已使用')">已使用（{{has}}）</div>
+      <!-- （{{has}}） -->
+      <div class="has" :class="{'border_bottom':!addborder}" @click="border('已使用')">已使用</div>
     </header>
-    <section class="myticketMain">
-      <section class="listChildren" v-for="(item,index) in 2" :key="index" @click="details(item)">
-        <div class="listPhoto">
-          <img src="/static/images/index1111.jpg" alt />
-        </div>
-        <div class="listText">
-          <div class="listTextTop">123123213123123123123123</div>
-          <div class="listTextBottom">
-            <span>10月30日 周三</span>
-            <div class="info">
-              <div class="infoLogo">
-                <img src="/static/images/map.png" alt />
+    <section class="myticketMain" v-if="myTicketList.length">
+      <scroll-view scroll-y style="height:calc(100vh - 50rpx);" @scrolltolower="lower">
+        <section
+          class="listChildren"
+          v-for="(item,index) in myTicketList"
+          :key="index"
+          @click="details(item)"
+        >
+          <div class="listPhoto">
+            <img :src="item.meeting_cover" alt />
+          </div>
+          <div class="listText">
+            <div class="listTextTop">{{item.meeting_name}}</div>
+            <div class="listTextBottom">
+              <span>{{item.meeting_date}} {{meeting_week}}</span>
+              <div class="info">
+                <div class="infoLogo">
+                  <img src="/static/images/map.png" alt />
+                </div>
+                <span>北京</span>
               </div>
-              <span>北京</span>
             </div>
           </div>
-        </div>
-        <div class="filter" :class="{'useClass':addborder , 'hasClass' : !addborder}"></div>
-      </section>
+          <div class="filter" :class="{'useClass':addborder , 'hasClass' : !addborder}"></div>
+        </section>
+      </scroll-view>
     </section>
+    <p class="no" v-else>暂无数据</p>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      use: 1,
-      has: 2,
-      addborder: true
+      use: 1, //未使用数量
+      has: 2, //已使用数量
+      addborder: true,
+      lastPage: 1,
+      myTicketList: [],
+      currentPage: 1
     };
   },
+  mounted() {
+    this.init();
+  },
   methods: {
-    border(v) {
-      if (v == "未使用") this.addborder = true;
-      else this.addborder = false;
+    // status = 1(未使用) 2(已使用)
+    init(status = 1, page = 1) {
+      this.axios
+        .post({
+          url: "/api/personal/ticketList",
+          data: { status: status, page: page }
+        })
+        .then(res => {
+          if (res.data.status == "200") {
+            this.lastPage = res.data.data.last_page;
+            this.myTicketList = [...this.myTicketList, ...res.data.data.data];
+          }
+        });
     },
-    details() {
+    lower() {
+      this.currentPage++;
+      if (this.currentPage <= this.lastPage)
+        this.init(this.addborder ? 1 : 2, this.currentPage);
+      else {
+        wx.showToast({
+          title: "我是有底线的",
+          icon: "none",
+          duration: 1000
+        });
+        return;
+      }
+    },
+    border(v) {
+      if (v == "未使用") {
+        this.addborder = true;
+        this.myTicketList = [];
+        this.currentPage = 1;
+        this.init();
+      } else {
+        this.addborder = false;
+        this.myTicketList = [];
+        this.currentPage = 1;
+        this.init(2);
+      }
+      this.currentPage = 1;
+    },
+    details(item) {
+      if (this.addborder) {
+        wx.navigateTo({ url: "../myTicketDetails/main?id=" + item.id });
+      }
       //票卷详情
-      wx.navigateTo({ url: "../myTicketDetails/main" });
     }
   }
 };
@@ -104,6 +159,9 @@ export default {
   width: 100%;
   height: 100%;
 }
+.listText {
+  width: calc(100% - 260rpx);
+}
 .listTextTop {
   font-size: 28rpx;
   font-weight: 600;
@@ -152,5 +210,11 @@ export default {
       right 60%,
     rgba(255, 255, 255, 0.8);
   background-size: 20%;
+}
+.no {
+  margin: 40rpx 0;
+  text-align: center;
+  font-size: 30rpx;
+  color: #999999;
 }
 </style>

@@ -95,7 +95,7 @@ export default {
         .then(res => {
           if (res.data.status == "200") {
             wx.navigateTo({
-              url: "../confirm/main?meeting_id=" + this.item.meeting_id //确定订单
+              url: `../confirm/main?meeting_id=${this.item.id}&item=${JSON.stringify(res.data.data)}` //确定订单
             });
           } else {
           }

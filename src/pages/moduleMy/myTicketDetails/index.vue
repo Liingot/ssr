@@ -2,39 +2,98 @@
   <div class="myticketdetails">
     <div class="mainHeader">
       <div class="shopHeader">
-        <div class="headerLogo"></div>
-        <div class="headerText">第三节上海国际互联网家居节&第六届中国第六届</div>
+        <div class="headerLogo">
+          <img :src="data.meeting_cover" alt />
+        </div>
+        <div class="headerText">{{data.meeting_name}}</div>
       </div>
       <p class="time border">
         <span class="timeLogo">
           <img src="/static/images/time.png" alt />
         </span>
-        <span class="timeText">2019.10/20 08:30-2019.10/21 08:30</span>
+        <span class="timeText">{{start_time}}-{{end_time}}</span>
       </p>
       <p class="map border" style="padding-bottom:0;">
         <span class="mapLogo">
           <img src="/static/images/map.png" alt />
         </span>
-        <span class="timeText">北京市海淀区xxxx大厦</span>
+        <span class="timeText">{{data.address}}</span>
       </p>
     </div>
     <section class="code">
       <h3 class="codeH3">入场码</h3>
       <div class="codeIcon">
-        <div class="icon"></div>
+        <div class="icon">
+          <img :src="data.qrcode" alt />
+        </div>
       </div>
       <div class="userInfo">
         <ul class="uls">
-          <li class="userInfoLis right">姓名：张先生</li>
+          <li class="userInfoLis right">姓名：{{data.username}}</li>
           <li class="userInfoLis">座位：空</li>
-          <li class="userInfoLis right">手机号：11111111111</li>
-          <li class="userInfoLis">费用：￥1000</li>
-          <li class="userInfoLis">支付状态：已支付</li>
+          <li class="userInfoLis right">手机号：{{data.phone}}</li>
+          <li class="userInfoLis">费用：￥{{data.amount}}</li>
+          <li class="userInfoLis">
+            支付状态：
+            <span :class="{'red':data.status == 1 }">{{status}}</span>
+          </li>
         </ul>
       </div>
     </section>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      data: {}
+    };
+  },
+  computed: {
+    start_time() {
+      let start_time = String(this.data.start_time).split(":");
+      return `${start_time[0]}:${start_time[1]}`;
+    },
+    end_time() {
+      let end_time = String(this.data.end_time).split(":");
+      return `${end_time[0]}:${end_time[1]}`;
+    },
+    status() {
+      let status = this.data.status;
+      if (status == 1) {
+        return "待支付";
+      } else if (status == 2) {
+        return "支付中";
+      } else if (status == 3) {
+        return "已支付";
+      } else if (status == 4) {
+        return "支付失败";
+      } else if (status == 3) {
+        return "取消订单";
+      } else {
+        return "已支付";
+      }
+    }
+  },
+  onLoad(v) {
+    this.init(v.id);
+  },
+  methods: {
+    init(id) {
+      this.axios
+        .post({
+          url: "/api/personal/ticketDetail",
+          data: { id: id }
+        })
+        .then(res => {
+          if (res.data.status == "200") {
+            this.data = res.data.data;
+          }
+        });
+    }
+  }
+};
+</script>
 <style  scoped>
 .myticketdetails {
   width: 100%;
@@ -76,7 +135,7 @@
   -webkit-box-orient: vertical;
 }
 .border {
-  padding: 30rpx;
+  padding: 30rpx 0;
   box-sizing: border-box;
   border-top: 1px solid #f1f1f1;
   align-items: center;
@@ -158,5 +217,11 @@
 }
 .right {
   margin-right: 2%;
+}
+.red {
+  color: red;
+}
+.green {
+  color: #09bb07;
 }
 </style>

@@ -6,16 +6,17 @@
           <img :src="avatarUrl" alt />
         </div>
         <span class="infotText">
-          <p class="company" @click="login">{{company}}</p>
-          <p class="name">{{userName}}</p>
+          <p class="company" @click="login">{{company ? company : ''}}</p>
+          <p class="name">{{ userName}}</p>
         </span>
       </div>
       <div class="certification" v-if="trck">
-        <div class="infoType" v-if="certification"></div>
-        <span v-else class="goCertifi" @click="enter">去认证</span>
+        <div class="goCertifi" v-if="certification =='1'">审核成功</div>
+        <span v-if="certification =='0'" class="goCertifi" @click="enter">去认证</span>
+        <span v-if="certification =='lodding'" class="goCertifi" @click="enter">审核中</span>
       </div>
     </header>
-    <section class="getTicket">
+    <section class="getTicket" v-if="!role">
       <div class="tickTop">
         <span class="myTick">我的票券</span>
         <div class="fall">
@@ -23,37 +24,41 @@
           <div class="fallIcon"></div>
         </div>
       </div>
-      <div class="tickContent listChildren" @click="details">
+      <div
+        class="tickContent listChildren"
+        @click="details(user.ticket.meeting_id)"
+        v-if="user && user.ticket"
+      >
         <div class="listPhoto">
-          <img src="/static/images/index1111.jpg" alt />
+          <img :src="user.ticket.meeting_cover" alt />
         </div>
         <div class="listText">
-          <div class="listTextTop">123123213123123123123123</div>
+          <div class="listTextTop">{{user.ticket.meeting_name}}</div>
           <div class="listTextBottom">
-            <span>10月30日 周三</span>
+            <span>{{user.ticket.meeting_date}} {{user.ticket.meeting_week}}</span>
             <div class="info">
               <div class="infoLogo">
                 <img src="/static/images/map.png" alt />
               </div>
-              <span>北京</span>
+              <span>{{user.ticket.meeting_address}}</span>
             </div>
           </div>
         </div>
       </div>
+      <p v-else class="no">暂无票卷</p>
     </section>
-    <section class="order">
+    <section class="order" v-if="!role && user">
       <div class="orderContent" @click="paysState(0)">
-        <my-info></my-info>
+        <my-info :num="user.count" v-if="user.count"></my-info>
         <div class="orderIcon"></div>
         <p class="orderText">待支付</p>
       </div>
       <div class="orderContent" @click="paysState(1)">
-        <my-info :num="2"></my-info>
+        <!-- <my-info :num="2"></my-info> -->
         <div class="orderIcon"></div>
         <p class="orderText">已支付</p>
       </div>
       <div class="orderContent" @click="paysState(2)">
-        <my-info :num="3"></my-info>
         <div class="orderIcon"></div>
         <p class="orderText">已结束</p>
       </div>
@@ -62,7 +67,7 @@
         <p class="orderText">全部订单</p>
       </div>
     </section>
-    <section class="other">
+    <section class="other" v-if="!role">
       <ul class="otherUls">
         <li class="otherLis" v-for="(item,index) in otherList" :key="index" @click="build(item)">
           <span class="otherText">{{item}}</span>
@@ -84,53 +89,48 @@ export default {
         "添加到我的小程序",
         "报错反馈"
       ],
-      avatarUrl: "",
-      userName: "xxx", //用户姓名
-      company: "北京细水有限公司", //公司名字
-      avatar: "", //用户头像
-      trck: true, //判断当前用户是否登录
-      certification: false, //判断当前用户是否认证
-      stored: false //待审核状态
+      avatarUrl: "", //用户头像
+      userName: " 登录后体验更多功能", //用户姓名
+      company: "点击登录", //公司名字
+      trck: false, //判断当前用户是否登录
+      certification: "0", //判断当前用户是否认证/待审核 1认证 0未认证 lodding 待审核
+      user: null,
+      role: false //true是管理员
     };
   },
-  onLoad(v) {
-    // console.log(v);
-  },
   components: { myInfo },
-  mounted() {
-    // this.getUserInfo();
-    this.myInfo();
-    // let s = 0; //未登录状态
-    // let b = 0; //未认证状态
-    // if (!s) {
-    //   this.userName = "登录后体验更多功能";
-    //   this.company = "点击登录";
-    //   this.trck = false;
-    //   this.avatar = ""; //默认头像
-    //   return;
-    // }
-    // if (!b) {
+  mounted() {},
+  onShow() {
+    if (wx.getStorageSync("userInfo")) {
+      this.myInfo();
+    }
+    // let userInfo = wx.getStorageSync("userInfo");
+    // if (userInfo) {
+    //   userInfo = JSON.parse(userInfo);
+    //   this.avatarUrl = userInfo.avatarUrl;
+    //   this.userName = userInfo.nickName;
     //   this.company = "暂未认证公司";
-    //   this.avatar = "";
-    //   this.certification = false; //未认证的时候为false
+    //   this.trck = true;
     // }
   },
   methods: {
-    getUserInfo() {
-      wx.getUserInfo({
-        success: function(res) {
-          console.log(res);
-          let userInfo = res.userInfo;
-          this.avatarUrl = userInfo.avatarUrl;
-        }
-      });
-    },
     myInfo() {
       this.axios
         .post({
           url: "/api/personal/index"
         })
-        .then(res => {});
+        .then(res => {
+          if (res.data.status == "200") {
+            this.user = res.data.data;
+            let data = res.data.data;
+            console.log(res.data.data, this.user);
+            this.certification = data.status == 2 ? "lodding" : data.status; //公司审核状态
+            this.company = data.user.company_name; //公司名称
+            this.role = data.user.type ? true : false;
+            // this.avatarUrl = data.user.cover; //头像
+            this.userName = data.user.username; //姓名
+          }
+        });
     },
     build(v) {
       switch (v) {
@@ -159,7 +159,9 @@ export default {
     enter() {
       //公司认证
       wx.navigateTo({
-        url: "../moduleMy/enterprisesEnter/main"
+        url:
+          "../moduleMy/enterprisesEnter/main?certification=" +
+          this.certification
       });
     },
     myTicket() {
@@ -168,9 +170,9 @@ export default {
         url: "../moduleMy/myTicket/main"
       });
     },
-    details() {
+    details(id) {
       //票券详情
-      wx.navigateTo({ url: "../moduleMy/myTicketDetails/main" });
+      wx.navigateTo({ url: "../moduleMy/myTicketDetails/main?id=" + id });
     }
   }
 };
@@ -198,6 +200,13 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.no {
+  /* margin: 30rpx 0 25rpx 0; */
+  text-align: center;
+  line-height: 100rpx;
+  font-size: 30rpx;
+  color: #ccc;
 }
 .headerInfo {
   display: flex;
@@ -272,6 +281,9 @@ export default {
 .listPhoto img {
   width: 100%;
   height: 100%;
+}
+.listText {
+  width: calc(100% - 260rpx);
 }
 .listTextTop {
   font-size: 28rpx;

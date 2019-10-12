@@ -50,18 +50,10 @@
       <div class="personnelList">
         <div class="listTr">
           <span>姓名</span>
-          <span>手机号</span>
+          <span>岗位</span>
         </div>
         <ul class="uls">
-          <li class="lis">
-            <span>张三</span>
-            <span>11111111111</span>
-          </li>
-          <li class="lis">
-            <span>张三</span>
-            <span>11111111111</span>
-          </li>
-          <li class="lis">
+          <li class="lis" v-for="(item,index) in userList" :key="index">
             <span>张三</span>
             <span>11111111111</span>
           </li>
@@ -78,7 +70,7 @@
     <section class="soft">
       <div class="sortNum">
         <span>合计：</span>
-        <span>￥{{soft}}</span>
+        <span>￥{{soft}}元</span>
       </div>
       <span class="confir" @click="pay">订座</span>
     </section>
@@ -89,11 +81,16 @@ export default {
   data() {
     return {
       money: 1000,
-      number: 1
+      number: 1,
+      meeting_id: "", //会议id
+      userList: [],
+      item: null
     };
   },
-  onLoad(v){
-    
+  onLoad(v) {
+    this.meeting_id = v.id;
+    this.item = JSON.parse(v.item);
+    console.log(this.item);
   },
   computed: {
     soft() {
@@ -124,9 +121,9 @@ export default {
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  /* background: #0070cc; */
-  background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
-    no-repeat;
+  background: #0070cc;
+  /* background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
+    no-repeat; */
   background-size: cover;
   padding: 40rpx 20rpx 0 20rpx;
   box-sizing: border-box;

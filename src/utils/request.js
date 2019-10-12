@@ -1,10 +1,11 @@
-import { hex_md5 } from "../utils/md5";
+// import { hex_md5 } from "../utils/md5"; 加密中文不可以
+const md5 = require('../utils/newmd5');
 const host = 'http://zhong.waterai.cn' //测试地址
 const app = 'zhong';
 function request(url, method, data, header = {}) {
     let copy = data ? JSON.parse(JSON.stringify(data)) : {};
-    copy.nonce = String(Math.floor(Math.random() * 3000000) + 2);
-    let newData = { sign: hex_md5(concat_all(sort_all(copy))).toUpperCase() };
+    copy.nonce = String(Math.floor(Math.random() * 3000000) + 100000000);
+    let newData = { sign: md5.hexMD5(concat_all(sort_all(copy))).toUpperCase() };
     newData = { ...newData, ...copy }
     wx.showLoading({
         title: '加载中' // 数据请求前loading
@@ -17,8 +18,8 @@ function request(url, method, data, header = {}) {
             dataType: "json",
             header: {
                 'content-type': 'application/json',  // 默认值
-                // 'token': wx.getStorageSync('token') ? wx.getStorageSync('token') : ''
-                'token': 'NF8xNTcwNzg2Mjk4'
+                'token': wx.getStorageSync('token') ? wx.getStorageSync('token') : ''
+                // 'token': 'NF8xNTcwNzg2Mjk4'
             },
             success: function (res) {
                 wx.hideLoading()
