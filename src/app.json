@@ -29,6 +29,12 @@
         "paysState/main",
         "refund/main"
       ]
+    },
+    {
+      "root":"pages/administrators",
+      "pages":[
+        "inspectTicket/main"
+      ]
     }
   ],
   "window": {

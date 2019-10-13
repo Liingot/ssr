@@ -44,6 +44,16 @@
       </div>
       <span class="reser" @click="reser">订座报名</span>
     </section>
+    <section class="notlogged" v-if="loggetIsHide">
+      <div class="logget">
+        <div class="loggetLogo"></div>
+        <div class="loggetText">
+          <p class="loggetTitle">您还未登录</p>
+          <p class="loggetSubTitle">（请先登录/注册再进行此操作）</p>
+          <span class="goLogin" @click="goLogin">去登录</span>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 <script>
@@ -53,7 +63,8 @@ export default {
   data() {
     return {
       item: null,
-      signinData: {}
+      signinData: {},
+      loggetIsHide: false //未登录弹框
     };
   },
   components: { navigationBar },
@@ -74,6 +85,12 @@ export default {
     this.init(this.item.id);
   },
   methods: {
+    goLogin() {
+      wx.reLaunch({
+        url: "../../login/main"
+      });
+      this.loggetIsHide = false;
+    },
     init(id) {
       this.axios
         .post({
@@ -95,9 +112,12 @@ export default {
         .then(res => {
           if (res.data.status == "200") {
             wx.navigateTo({
-              url: `../confirm/main?meeting_id=${this.item.id}&item=${JSON.stringify(res.data.data)}` //确定订单
+              url: `../confirm/main?meeting_id=${
+                this.item.id
+              }&item=${JSON.stringify(res.data.data)}` //确定订单
             });
-          } else {
+          } else if (res.data.status == "401") {
+            this.loggetIsHide = true;
           }
         });
     }
@@ -105,6 +125,9 @@ export default {
 };
 </script>
 <style scoped>
+.signin {
+  position: relative;
+}
 .signinBanner {
   width: 100%;
   height: 350rpx;
@@ -253,5 +276,70 @@ export default {
   margin-top: 5rpx;
   font-size: 23rpx;
   color: black;
+}
+.notlogged {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 190rpx 80rpx 0 80rpx;
+  box-sizing: border-box;
+}
+.logget {
+  width: 100%;
+  height: 580rpx;
+  background: white;
+  border-radius: 15rpx;
+  position: relative;
+  padding: 0 45rpx;
+  box-sizing: border-box;
+}
+.loggetLogo {
+  width: 306rpx;
+  height: 285rpx;
+  background: red;
+  position: absolute;
+  top: -120rpx;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.loggetLogo > img {
+  width: 100%;
+  height: 100%;
+}
+.loggetText {
+  padding-top: 230rpx;
+  width: 100%;
+  height: 100rpx;
+  text-align: center;
+  box-sizing: border-box;
+}
+.loggetTitle,
+.loggetSubTitle {
+  line-height: 50rpx;
+}
+.loggetTitle {
+  font-size: 30rpx;
+  font-weight: 500;
+}
+.loggetSubTitle {
+  font-size: 27rpx;
+  color: #666666;
+}
+.goLogin {
+  display: block;
+  border-radius: 50rpx;
+  text-align: center;
+  width: 100%;
+  line-height: 90rpx;
+  color: white;
+  font-size: 30rpx;
+  font-weight: 500;
+  margin-top: 70rpx;
+  background: #0070cc;
 }
 </style>

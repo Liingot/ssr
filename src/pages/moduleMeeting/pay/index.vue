@@ -48,6 +48,23 @@
         </li>
       </ul>
     </section>
+    <section class="vesway" v-if="items[1].checked" style="margin-top:20rpx;">
+      <div class="xxHeader">线下转账信息</div>
+      <div class="xxContent">
+        <p class="xxcontentText">
+          <span class="xxleft">户名</span>
+          <span class="xxright">北京中装商学院有限公司</span>
+        </p>
+        <p class="xxcontentText">
+          <span class="xxleft">账户</span>
+          <span class="xxright">xxxxxxxx</span>
+        </p>
+        <p class="xxcontentText">
+          <span class="xxleft">开户行</span>
+          <span class="xxright">招商</span>
+        </p>
+      </div>
+    </section>
     <section class="soft">
       <div class="sortNum">
         <span>合计：</span>
@@ -61,7 +78,6 @@
 export default {
   data() {
     return {
-      wx: true,
       offline: false, //线下支付
       items: [
         {
@@ -99,14 +115,14 @@ export default {
 <style  scoped>
 .confirm {
   width: 100%;
-  height: 100vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  /* background: #0070cc; */
-  background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
-    no-repeat;
+  min-height: 100vh;
+  /* overflow-y: auto; */
+  /* -webkit-overflow-scrolling: touch; */
+  background: #0070cc;
+  /* background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
+    no-repeat; */
   background-size: cover;
-  padding: 40rpx 20rpx 0 20rpx;
+  padding: 40rpx 20rpx 20rpx 20rpx;
   box-sizing: border-box;
   position: relative;
 }
@@ -180,7 +196,7 @@ export default {
   left: 0;
   bottom: 0;
   background: white;
-  z-index: 99;
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -250,9 +266,32 @@ export default {
   padding: 30rpx 20rpx;
   box-sizing: border-box;
 }
-.veswayTitle {
+.veswayTitle,
+.xxHeader {
   font-size: 32rpx;
   font-weight: 600;
+}
+.xxHeader {
+  padding: 30rpx 20rpx;
+  /* line-height: 60rpx; */
+  box-sizing: border-box;
+  border-bottom: 1px solid #f1f1f1;
+}
+.xxContent {
+  padding: 30rpx 20rpx;
+  box-sizing: border-box;
+}
+.xxcontentText {
+  display: flex;
+  line-height: 70rpx;
+}
+.xxleft,
+.xxright {
+  font-size: 26rpx;
+}
+.xxleft {
+  color: #888888;
+  margin-right: 35rpx;
 }
 .icon {
   border-top: 1px solid #f1f1f1;

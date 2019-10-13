@@ -2,20 +2,22 @@
   <div class="confirm">
     <section class="shop">
       <div class="shopHeader">
-        <div class="headerLogo"></div>
-        <div class="headerText">第三节上海国际互联网家居节&第六届中国第六届</div>
+        <div class="headerLogo">
+          <img :src="item.meeting.cover" alt />
+        </div>
+        <div class="headerText">{{item.meeting.title}}</div>
       </div>
       <p class="time border">
         <span class="timeLogo">
           <img src="/static/images/time.png" alt />
         </span>
-        <span class="timeText">2019.10/20 08:30-2019.10/21 08:30</span>
+        <span class="timeText">{{start_time}}-{{end_time}}</span>
       </p>
       <p class="map border">
         <span class="mapLogo">
           <img src="/static/images/map.png" alt />
         </span>
-        <span class="timeText">北京市海淀区xxxx大厦</span>
+        <span class="timeText">{{item.meeting.address}}</span>
       </p>
       <div class="money border">
         <div class="moneyLeft">
@@ -53,9 +55,9 @@
           <span>岗位</span>
         </div>
         <ul class="uls">
-          <li class="lis" v-for="(item,index) in userList" :key="index">
-            <span>张三</span>
-            <span>11111111111</span>
+          <li class="lis" v-for="(item,index) in item.userList" :key="index">
+            <span>{{item.username}}</span>
+            <span>{{item.phone}}</span>
           </li>
         </ul>
       </div>
@@ -84,7 +86,7 @@ export default {
       number: 1,
       meeting_id: "", //会议id
       userList: [],
-      item: null
+      item: {}
     };
   },
   onLoad(v) {
@@ -96,6 +98,16 @@ export default {
     soft() {
       //总和
       return this.number * this.money;
+    },
+    start_time() {
+      //开始时间
+      let start_time = String(this.item.meeting.start_time).split(":");
+      return `${start_time[0]}:${start_time[1]}`;
+    },
+    end_time() {
+      //结束时间
+      let end_time = String(this.item.meeting.end_time).split(":");
+      return `${end_time[0]}:${end_time[1]}`;
     }
   },
   methods: {
@@ -118,9 +130,7 @@ export default {
 <style  scoped>
 .confirm {
   width: 100%;
-  height: 100vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  min-height: 100vh;
   background: #0070cc;
   /* background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
     no-repeat; */

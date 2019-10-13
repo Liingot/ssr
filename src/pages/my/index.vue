@@ -2,7 +2,7 @@
   <div class="my">
     <header class="header">
       <div class="headerInfo">
-        <div class="logo" @click="personal">
+        <div class="logo" @click="enter">
           <img :src="avatarUrl" alt />
         </div>
         <span class="infotText">
@@ -87,7 +87,8 @@ export default {
         "会议展板",
         "我的发票",
         "添加到我的小程序",
-        "报错反馈"
+        "报错反馈",
+        "管理员"
       ],
       avatarUrl: "", //用户头像
       userName: " 登录后体验更多功能", //用户姓名
@@ -133,22 +134,29 @@ export default {
         });
     },
     build(v) {
-      switch (v) {
-        case "我的企业":
-          wx.navigateTo({ url: "../moduleMy/mybrand/main" });
-          break;
-
-        default:
-          break;
-      }
+      if (wx.getStorageSync("userInfo")) {
+        switch (v) {
+          case "我的企业":
+            wx.navigateTo({ url: "../moduleMy/mybrand/main" });
+            break;
+          case "管理员":
+            wx.navigateTo({ url: "../administrators/inspectTicket/main" });
+          default:
+            break;
+        }
+      } else wx.reLaunch({ url: "../login/main" });
     },
     personal() {
       //个人资料
-      wx.navigateTo({ url: "../moduleMy/personalData/main" });
+      if (wx.getStorageSync("userInfo")) {
+        wx.navigateTo({ url: "../moduleMy/personalData/main" });
+      } else wx.reLaunch({ url: "../login/main" });
     },
     paysState(v) {
       //订单状态
-      wx.navigateTo({ url: "../moduleMy/paysState/main?state=" + v });
+      if (wx.getStorageSync("userInfo")) {
+        wx.navigateTo({ url: "../moduleMy/paysState/main?state=" + v });
+      } else wx.reLaunch({ url: "../login/main" });
     },
     login() {
       if (!this.trck)
@@ -158,22 +166,28 @@ export default {
     },
     enter() {
       //公司认证
-      wx.navigateTo({
-        url:
-          "../moduleMy/enterprisesEnter/main?certification=" +
-          this.certification
-      });
+      if (wx.getStorageSync("userInfo")) {
+        wx.navigateTo({
+          url:
+            "../moduleMy/enterprisesEnter/main?certification=" +
+            this.certification
+        });
+      } else wx.reLaunch({ url: "../login/main" });
     },
     myTicket() {
       //我的票券
-      wx.navigateTo({
-        url: "../moduleMy/myTicket/main"
-      });
-    },
-    details(id) {
-      //票券详情
-      wx.navigateTo({ url: "../moduleMy/myTicketDetails/main?id=" + id });
+      if (wx.getStorageSync("userInfo")) {
+        wx.navigateTo({
+          url: "../moduleMy/myTicket/main"
+        });
+      } else wx.reLaunch({ url: "../login/main" });
     }
+  },
+  details(id) {
+    //票券详情
+    if (wx.getStorageSync("userInfo")) {
+      wx.navigateTo({ url: "../moduleMy/myTicketDetails/main?id=" + id });
+    } else wx.reLaunch({ url: "../login/main" });
   }
 };
 </script>
