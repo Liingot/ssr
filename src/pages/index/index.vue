@@ -69,15 +69,14 @@ export default {
     });
     this.init();
   },
+  onShareAppMessage: function(res) {
+    if (res.from == "button") {
+    }
+    // return {
+    //   title: "测试"
+    // };
+  },
   methods: {
-    onShareAppMessage(res) {
-      if (res.from == "button") {
-        console.log(res);
-      }
-      return {
-        title: "测试"
-      };
-    },
     lower() {
       //分页
       this.currentPage++;
@@ -141,6 +140,7 @@ export default {
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  background: transparent;
 }
 .meetingLogo {
   width: 38rpx;
@@ -166,12 +166,14 @@ export default {
   padding: 0 25rpx;
   box-sizing: border-box;
   justify-content: space-between;
+  margin: 0;
 }
 .share {
   width: 26rpx;
   height: 26rpx;
-  background: red;
   margin-left: 15rpx;
+  display: flex;
+  align-self: auto;
 }
 .share img {
   width: 100%;

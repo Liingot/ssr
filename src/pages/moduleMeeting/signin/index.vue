@@ -36,12 +36,18 @@
       </section>
     </div>
     <section class="reservation">
-      <div class="reservationIcon">
+      <button open-type="share" class="reservationIcon">
         <div class="reservationIconLogo">
           <img src="/static/images/zfreservation.png" alt />
         </div>
         <p class="reservationIconText">分享</p>
-      </div>
+      </button>
+      <!-- <div class="reservationIcon">
+        <div class="reservationIconLogo">
+          <img src="/static/images/zfreservation.png" alt />
+        </div>
+        <p class="reservationIconText">分享</p>
+      </div>-->
       <span class="reser" @click="reser">订座报名</span>
     </section>
     <section class="notlogged" v-if="loggetIsHide">
@@ -66,6 +72,11 @@ export default {
       signinData: {},
       loggetIsHide: false //未登录弹框
     };
+  },
+  onShareAppMessage: function(res) {
+    if (res.from == "button") {
+      console.log(res, "res");
+    }
   },
   components: { navigationBar },
   computed: {
@@ -263,6 +274,14 @@ export default {
   line-height: 75rpx;
   background: #0070cc;
 }
+.reservationIcon {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+.reservationIcon::after {
+  border: none;
+}
 .reservationIconLogo {
   width: 33rpx;
   height: 33rpx;
@@ -273,7 +292,7 @@ export default {
   height: 100%;
 }
 .reservationIconText {
-  margin-top: 5rpx;
+  margin-top: 15rpx;
   font-size: 23rpx;
   color: black;
 }

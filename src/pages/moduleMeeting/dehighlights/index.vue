@@ -6,8 +6,9 @@
         <div class="likeTemplate">
           <span class="text">{{item.title}}</span>
           <div class="linkNum">
-            <div class="linkLogo">
-              <img src="/static/images/give.png" alt />
+            <div class="linkLogo" @click="give(item)">
+              <img src="/static/images/give.png" alt v-if="!item.trck" />
+              <img src="/static/images/give-active.png" v-else alt />
             </div>
             <span class="linkN">{{item.like}}</span>
           </div>
@@ -28,6 +29,11 @@ export default {
     this.init(v.id);
   },
   methods: {
+    give(item) {
+      item.trck = !item.trck;
+      if (item.trck) item.like++;
+      else item.like--;
+    },
     init(id) {
       this.axios
         .post({
@@ -36,6 +42,9 @@ export default {
         })
         .then(res => {
           if (res.data.status == "200") {
+            res.data.data.forEach(item => {
+              this.$set(item, "trck", false);
+            });
             this.dehighList = res.data.data;
           }
         });
@@ -87,7 +96,7 @@ export default {
 .linkLogo {
   width: 32rpx;
   height: 32rpx;
-  margin-right: 5rpx;
+  margin-right: 15rpx;
 }
 .linkLogo img {
   width: 100%;
@@ -96,5 +105,8 @@ export default {
 .linkN {
   color: #999;
   font-size: 28rpx;
+}
+.red {
+  color: #e60000;
 }
 </style>

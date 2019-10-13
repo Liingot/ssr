@@ -98,7 +98,7 @@ export default {
     this.certification = v.certification;
   },
   mounted() {
-    // this.init();
+    this.init();
   },
   components: { vague },
   methods: {

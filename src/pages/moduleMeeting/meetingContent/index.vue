@@ -23,7 +23,12 @@
           </div>
         </li>
       </ul>
-      <div class="share">分享给好友</div>
+      <button class="share" open-type="share">
+        <span>分享给好友</span>
+        <div class="shareinfo">
+          <img src="/static/images/mettingShare.png" alt />
+        </div>
+      </button>
     </section>
   </div>
 </template>
@@ -59,6 +64,11 @@ export default {
     };
   },
   components: { navigationBar },
+  onShareAppMessage: function(res) {
+    if (res.from == "button") {
+      console.log(res, "res");
+    }
+  },
   onLoad(v) {
     this.item = JSON.parse(v.item);
   },
@@ -191,19 +201,21 @@ export default {
   border-radius: 50rpx;
   background: #014f8f;
   line-height: 85rpx;
-  text-align: center;
   color: white;
-  font-size: 25rpx;
-  position: relative;
+  font-size: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.share::before {
-  content: "";
+.shareinfo {
   width: 30rpx;
   height: 30rpx;
-  background: red;
-  position: absolute;
-  top: 50%;
-  right: 35%;
-  transform: translateY(-50%);
+  display: flex;
+  align-self: auto;
+  margin-left: 15rpx;
+}
+.shareinfo > img {
+  width: 100%;
+  height: 100%;
 }
 </style>
