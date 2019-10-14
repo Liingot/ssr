@@ -11,9 +11,14 @@
         </span>
       </div>
       <div class="certification" v-if="trck">
-        <div class="goCertifi" v-if="certification =='1'">审核成功</div>
-        <span v-if="certification =='0'" class="goCertifi" @click="enter">去认证</span>
-        <span v-if="certification =='lodding'" class="goCertifi" @click="enter">审核中</span>
+        <!--  v-if="trck" -->
+        <div class="certificationIcon" v-if="certification =='3'">
+          <img src="/static/images/certification1.png" alt />
+        </div>
+        <span v-if="certification =='1'" class="goCertifi" @click="enter">去认证</span>
+        <span class="certificationIcon" v-if="certification =='lodding'" @click="enter">
+          <img src="/static/images/certification2.png" alt />
+        </span>
       </div>
     </header>
     <section class="getTicket" v-if="!role">
@@ -21,7 +26,9 @@
         <span class="myTick">我的票券</span>
         <div class="fall">
           <span class="fallText" @click="myTicket">全部票券</span>
-          <div class="fallIcon"></div>
+          <div class="fallIcon">
+            <img src="/static/images/my-icon-right.png" alt />
+          </div>
         </div>
       </div>
       <div
@@ -50,20 +57,28 @@
     <section class="order" v-if="!role && user">
       <div class="orderContent" @click="paysState(0)">
         <my-info :num="user.count" v-if="user.count"></my-info>
-        <div class="orderIcon"></div>
+        <div class="orderIcon">
+          <img src="/static/images/paystatus0.png" alt />
+        </div>
         <p class="orderText">待支付</p>
       </div>
       <div class="orderContent" @click="paysState(1)">
         <!-- <my-info :num="2"></my-info> -->
-        <div class="orderIcon"></div>
+        <div class="orderIcon">
+          <img src="/static/images/paystatus1.png" alt />
+        </div>
         <p class="orderText">已支付</p>
       </div>
       <div class="orderContent" @click="paysState(2)">
-        <div class="orderIcon"></div>
+        <div class="orderIcon">
+          <img src="/static/images/paystatus2.png" alt />
+        </div>
         <p class="orderText">已结束</p>
       </div>
       <div class="orderContent" style="border:none;" @click="paysState(3)">
-        <div class="orderIcon"></div>
+        <div class="orderIcon">
+          <img src="/static/images/paystatus3.png" alt />
+        </div>
         <p class="orderText">全部订单</p>
       </div>
     </section>
@@ -71,7 +86,9 @@
       <ul class="otherUls">
         <li class="otherLis" v-for="(item,index) in otherList" :key="index" @click="build(item)">
           <span class="otherText">{{item}}</span>
-          <div class="fallIcon"></div>
+          <div class="fallIcon">
+            <img src="/static/images/my-icon-right.png" alt />
+          </div>
         </li>
       </ul>
     </section>
@@ -94,7 +111,7 @@ export default {
       userName: " 登录后体验更多功能", //用户姓名
       company: "点击登录", //公司名字
       trck: false, //判断当前用户是否登录
-      certification: "0", //判断当前用户是否认证/待审核 1认证 0未认证 lodding 待审核
+      certification: "1", //判断当前用户是否认证/待审核 1认证 0未认证 lodding 待审核
       user: null,
       role: false //true是管理员
     };
@@ -124,7 +141,7 @@ export default {
           if (res.data.status == "200") {
             this.user = res.data.data;
             let data = res.data.data;
-            console.log(res.data.data, this.user);
+            this.trck = true;
             this.certification = data.status == 2 ? "lodding" : data.status; //公司审核状态
             this.company = data.user.company_name; //公司名称
             this.role = data.user.type ? true : false;
@@ -159,7 +176,7 @@ export default {
       } else wx.reLaunch({ url: "../login/main" });
     },
     login() {
-      if (!this.trck)
+      if (!wx.getStorageSync("userInfo"))
         wx.navigateTo({
           url: "../login/main"
         });
@@ -195,17 +212,7 @@ export default {
 .my {
   width: 100%;
   min-height: 100vh;
-  /* background: url(
-      https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,
-      type_ZmFuZ3poZW5naGVpdGk,
-      shadow_10,
-      text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,
-      size_16,
-      color_FFFFFF,
-      t_70
-    )
-    no-repeat; */
-  background: #0070cc;
+background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70) no-repeat;
   background-size: cover;
   padding: 50rpx 20rpx 20rpx 20rpx;
   box-sizing: border-box;
@@ -336,7 +343,8 @@ export default {
   width: 15rpx;
   height: 25rpx;
   margin-left: 15rpx;
-  background: #999999;
+  display: flex;
+  align-self: auto;
 }
 .fallIcon img {
   width: 100%;
@@ -362,7 +370,10 @@ export default {
   width: 50rpx;
   height: 50rpx;
   margin: 0 auto;
-  background: rebeccapurple;
+}
+.orderIcon > img {
+  width: 100%;
+  height: 100%;
 }
 .orderText {
   font-size: 28rpx;
@@ -398,5 +409,13 @@ export default {
   background: white;
   color: #0070cc;
   line-height: 35rpx;
+}
+.certificationIcon {
+  width: 108rpx;
+  height: 43rpx;
+}
+.certificationIcon > img {
+  width: 100%;
+  height: 100%;
 }
 </style>

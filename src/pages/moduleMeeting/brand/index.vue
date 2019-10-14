@@ -1,16 +1,11 @@
 <template>
   <div class="brand">
-    <ul class="branduls">
-      <!-- v-if="list.length" -->
-      <!-- <li class="brandlis" v-for="(item,index) in list" :key="index">
+    <ul class="branduls" v-if="list.length">
+      <li class="brandlis" v-for="(item,index) in list" :key="index">
         <img :src="item" alt />
-      </li>-->
-      <li class="brandlis"></li>
-      <li class="brandlis"></li>
-      <li class="brandlis"></li>
-      <li class="brandlis"></li>
+      </li>
     </ul>
-    <!-- <p class="no" v-else>暂无数据</p> -->
+    <p class="no" v-else>暂无数据</p>
   </div>
 </template>
 <script>

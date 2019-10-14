@@ -30,9 +30,27 @@ export default {
   },
   methods: {
     give(item) {
+      let url;
       item.trck = !item.trck;
-      if (item.trck) item.like++;
-      else item.like--;
+      if (item.trck) {
+        item.like++;
+        url = "/api/meeting/like";
+      } else {
+        item.like--;
+        url = "/api/meeting/cancelLike";
+      }
+      this.like(item.id, url);
+    },
+    like(id, url) {
+      this.axios
+        .post({
+          url: url,
+          data: { video_id: id }
+        })
+        .then(res => {
+          if (res.data.status == "200") {
+          }
+        });
     },
     init(id) {
       this.axios

@@ -20,11 +20,12 @@
 export default {
   methods: {
     scanCode() {
-      wx.scanCode({
-        success: res => {
-          console.log(res);
-        }
-      });
+      // wx.scanCode({
+      //   success: res => {
+      //     console.log(res);
+      //   }
+      // });
+      wx.navigateTo({ url: "../ticketDetail/main" });
     }
   }
 };

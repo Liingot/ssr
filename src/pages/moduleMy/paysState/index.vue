@@ -28,7 +28,7 @@
                   <div class="infoLogo">
                     <img src="/static/images/map.png" alt />
                   </div>
-                  <span>北京</span>
+                  <span>{{item.meeting_address}}</span>
                 </div>
               </div>
             </div>
@@ -37,7 +37,7 @@
             <div class="oper">
               <span class="pay" v-if="item.status == '1'">去支付</span>
               <span class="cancel" v-if="item.status == '1'" @click="cancel(item,index)">取消订单</span>
-              <span class="cancel" v-if="item.status == '2'" @click="refund">退款</span>
+              <!-- <span class="cancel" v-if="item.status == '2'" @click="refund">退款</span> -->
               <span class="cancel" v-if="item.status == '3'">申请开票</span>
             </div>
           </section>

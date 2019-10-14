@@ -168,6 +168,9 @@ export default {
   justify-content: space-between;
   margin: 0;
 }
+.informationRight::after {
+  border: none;
+}
 .share {
   width: 26rpx;
   height: 26rpx;

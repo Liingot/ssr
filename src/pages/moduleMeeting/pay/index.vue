@@ -18,14 +18,14 @@
         <span class="timeText">北京市海淀区xxxx大厦</span>
       </p>
     </section>
-    <section class="success">
+    <section class="success" v-for="(item,index) in data.order_ids" :key="index">
       <div class="successTop">
         <div class="successLogo">
           <img src="/static/images/wx.png" alt />
         </div>
         <div class="text">订座成功！</div>
       </div>
-      <p class="successText">订单号：xxxxx，请及时付款，避免座位释放。</p>
+      <p class="successText">订单号：{{item.order_sn}}，请及时付款，避免座位释放。</p>
     </section>
     <section class="vesway">
       <ul class="veswayUls">
@@ -103,7 +103,6 @@ export default {
   onLoad(v) {
     this.data = JSON.parse(v.data);
     this.meeting_id = v.meeting_id;
-    console.log(this.data);
   },
   methods: {
     pay() {
@@ -123,12 +122,41 @@ export default {
           })
           .then(res => {
             if (res.data.status == "200") {
+              let data = res.data.data;
+              wx.requestPayment({
+                timeStamp: String(data.timeStamp),
+                nonceStr: String(data.nonceStr),
+                package: String(data.package),
+                paySign: String(data.paySign),
+                signType: "MD5",
+                success(res) {
+                  wx.navigateTo({
+                    url: "../../moduleMy/paysState/main?state=" + 1 //已支付
+                  });
+                },
+                fail(res) {
+                  wx.navigateTo({
+                    url: "../../moduleMy/paysState/main?state=" + 0 //待支付
+                  });
+                }
+              });
             }
           });
       } else {
         //线下支付
+        this.axios
+          .post({
+            url: "/api/order/offLine",
+            data: { unique_sn: this.data.unique_sn }
+          })
+          .then(res => {
+            if (res.data.status == "200") {
+              wx.navigateTo({
+                url: "../../moduleMy/paysState/main?state=" + 0
+              }); //待支付
+            }
+          });
       }
-      // wx.navigateTo({ url: "../../moduleMy/paysState/main?state=" + 1 });
     },
     radioChange(e) {
       this.items.find(res => {

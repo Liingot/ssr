@@ -31,9 +31,10 @@
       ]
     },
     {
-      "root":"pages/administrators",
-      "pages":[
-        "inspectTicket/main"
+      "root": "pages/administrators",
+      "pages": [
+        "inspectTicket/main",
+        "ticketDetail/main"
       ]
     }
   ],

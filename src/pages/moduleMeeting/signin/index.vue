@@ -48,11 +48,13 @@
         </div>
         <p class="reservationIconText">分享</p>
       </div>-->
-      <span class="reser" @click="reser">订座报名</span>
+      <span class="reser" :class="{'endTrck':endTrck}" @click="reser">订座报名</span>
     </section>
     <section class="notlogged" v-if="loggetIsHide">
       <div class="logget">
-        <div class="loggetLogo"></div>
+        <div class="loggetLogo">
+          <img src="/static/images/noLogin.png" alt />
+        </div>
         <div class="loggetText">
           <p class="loggetTitle">您还未登录</p>
           <p class="loggetSubTitle">（请先登录/注册再进行此操作）</p>
@@ -89,11 +91,17 @@ export default {
       //结束时间
       let end_time = String(this.signinData.end_time).split(":");
       return `${end_time[0]}:${end_time[1]}`;
+    },
+    endTrck() {
+      //活动是否截止
+      let end_time = new Date(this.end_time).valueOf();
+      let date = new Date().valueOf();
+      if (end_time < date) return true;
+      else return false;
     }
   },
   onLoad(v) {
     this.item = JSON.parse(v.item);
-    console.log(this.item);
     this.init(this.item.id);
   },
   methods: {
@@ -116,22 +124,30 @@ export default {
         });
     },
     reser() {
-      this.axios
-        .post({
-          url: "/api/order/index",
-          data: { meeting_id: this.item.id }
-        })
-        .then(res => {
-          if (res.data.status == "200") {
-            wx.navigateTo({
-              url: `../confirm/main?meeting_id=${
-                this.item.id
-              }&item=${JSON.stringify(res.data.data)}` //确定订单
-            });
-          } else if (res.data.status == "401") {
-            this.loggetIsHide = true;
-          }
+      if (!this.endTrck) {
+        this.axios
+          .post({
+            url: "/api/order/index",
+            data: { meeting_id: this.item.id }
+          })
+          .then(res => {
+            if (res.data.status == "200") {
+              wx.navigateTo({
+                url: `../confirm/main?meeting_id=${
+                  this.item.id
+                }&item=${JSON.stringify(res.data.data)}` //确定订单
+              });
+            } else if (res.data.status == "401") {
+              this.loggetIsHide = true;
+            }
+          });
+      } else {
+        wx.showToast({
+          title: "报名已截止",
+          icon: "none",
+          duration: 1000
         });
+      }
     }
   }
 };
@@ -320,8 +336,7 @@ export default {
 }
 .loggetLogo {
   width: 306rpx;
-  height: 285rpx;
-  background: red;
+  height: 290rpx;
   position: absolute;
   top: -120rpx;
   left: 50%;
@@ -361,5 +376,8 @@ export default {
   font-weight: 500;
   margin-top: 70rpx;
   background: #0070cc;
+}
+.endTrck {
+  background: #ccc !important;
 }
 </style>
