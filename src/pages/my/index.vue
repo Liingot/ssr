@@ -181,13 +181,13 @@ export default {
           url: "../moduleMy/myTicket/main"
         });
       } else wx.reLaunch({ url: "../login/main" });
+    },
+    details(id) {
+      //票券详情
+      if (wx.getStorageSync("userInfo")) {
+        wx.navigateTo({ url: "../moduleMy/myTicketDetails/main?id=" + id });
+      } else wx.reLaunch({ url: "../login/main" });
     }
-  },
-  details(id) {
-    //票券详情
-    if (wx.getStorageSync("userInfo")) {
-      wx.navigateTo({ url: "../moduleMy/myTicketDetails/main?id=" + id });
-    } else wx.reLaunch({ url: "../login/main" });
   }
 };
 </script>

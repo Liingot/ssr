@@ -10,12 +10,25 @@
           <div class="sm">
             <img src="/static/images/inspectSm.png" alt />
           </div>
-          <span>扫码验票</span>
+          <span @click="scanCode">扫码验票</span>
         </div>
       </div>
     </div>
   </div>
 </template>
+<script>
+export default {
+  methods: {
+    scanCode() {
+      wx.scanCode({
+        success: res => {
+          console.log(res);
+        }
+      });
+    }
+  }
+};
+</script> 
 <style  scoped>
 .inspect {
   width: 100%;

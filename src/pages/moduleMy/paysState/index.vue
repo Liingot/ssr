@@ -35,10 +35,10 @@
           </section>
           <section class="operation">
             <div class="oper">
-              <span class="pay" v-if="borderIndex == 0">去支付</span>
-              <span class="cancel" v-if="borderIndex == 0" @click="cancel(item,index)">取消订单</span>
-              <span class="cancel" v-if="borderIndex == 1" @click="refund">退款</span>
-              <span class="cancel" v-if="borderIndex == 2">申请开票</span>
+              <span class="pay" v-if="item.status == '1'">去支付</span>
+              <span class="cancel" v-if="item.status == '1'" @click="cancel(item,index)">取消订单</span>
+              <span class="cancel" v-if="item.status == '2'" @click="refund">退款</span>
+              <span class="cancel" v-if="item.status == '3'">申请开票</span>
             </div>
           </section>
         </div>

@@ -26,7 +26,7 @@
           </span>
           <span class="timeText">票价</span>
         </div>
-        <span class="moneyRight">￥{{money}}/一张</span>
+        <span class="moneyRight">￥{{item.meeting.amount}}/张</span>
       </div>
       <div class="number border">
         <div class="moneyLeft">
@@ -36,8 +36,8 @@
           <span class="timeText">数量</span>
         </div>
         <div class="numberEdit">
-          <span class="off" @click="off">-</span>
-          <span class="num">{{number}}</span>
+          <span class="off" @click="off" v-if="number != 0">-</span>
+          <span class="num" v-if="number != 0">{{number}}</span>
           <span class="add" @click="add">+</span>
         </div>
       </div>
@@ -54,12 +54,20 @@
           <span>姓名</span>
           <span>岗位</span>
         </div>
-        <ul class="uls">
-          <li class="lis" v-for="(item,index) in item.userList" :key="index">
-            <span>{{item.username}}</span>
-            <span>{{item.phone}}</span>
+        <ul class="uls" v-if="userList.length">
+          <li class="lis" v-for="(it,index) in userList" :key="index" @click="userIndex(index)">
+            <picker
+              @change="bindPickerChange"
+              range-key="username"
+              :range="item.userList"
+              class="picker"
+            >
+              <span class="list" style="width:100%;">{{it.username}}</span>
+            </picker>
+            <span class="list">{{it.position}}</span>
           </li>
         </ul>
+        <p class="no" v-else>暂无人员</p>
       </div>
     </section>
     <section class="instructions">
@@ -83,21 +91,21 @@ export default {
   data() {
     return {
       money: 1000,
-      number: 1,
+      number: 0, //票数
       meeting_id: "", //会议id
       userList: [],
+      userListIndex: 0,
       item: {}
     };
   },
   onLoad(v) {
-    this.meeting_id = v.id;
+    this.meeting_id = v.meeting_id;
     this.item = JSON.parse(v.item);
-    console.log(this.item);
   },
   computed: {
     soft() {
       //总和
-      return this.number * this.money;
+      return this.number * Number(this.item.meeting.amount);
     },
     start_time() {
       //开始时间
@@ -111,18 +119,64 @@ export default {
     }
   },
   methods: {
+    userIndex(index) {
+      this.userListIndex = index;
+    },
+    bindPickerChange(e) {
+      let index = Number(e.mp.detail.value);
+      let { username, id, position, phone } = this.item.userList[index];
+      this.$set(this.userList[this.userListIndex], "username", username);
+      this.$set(this.userList[this.userListIndex], "id", id);
+      this.$set(this.userList[this.userListIndex], "position", position);
+      this.$set(this.userList[this.userListIndex], "phone", phone);
+    },
     off() {
-      if (this.number <= 1) return (this.number = 1);
+      if (this.number <= 0) return (this.number = 0);
       else this.number--;
+      this.userList.pop();
     },
     add() {
       this.number++;
+      this.userList.push({ username: "点击选择人员", position: "", id: "" });
     },
     pay() {
-      wx.setStorage({ key: "soft", data: this.soft });
-      wx.navigateTo({
-        url: "../pay/main" //支付订单
-      });
+      if (this.userList.length) {
+        wx.setStorage({ key: "soft", data: this.soft });
+        let userList = [];
+        this.userList.forEach(item => {
+          userList.push({ id: item.id, phone: item.phone });
+        });
+        let query = {
+          meeting_id: this.meeting_id, //会议id
+          total_amount: this.soft, //总金额
+          user_ids: JSON.stringify(userList) //购买人员
+        };
+        this.axios
+          .post({
+            url: "/api/order/confirm",
+            data: query
+          })
+          .then(res => {
+            if (res.data.status == "200") {
+              wx.navigateTo({
+                url:
+                  "../pay/main?soft=" +
+                  this.soft +
+                  "&data=" +
+                  JSON.stringify(res.data.data) +
+                  "&meeting_id=" +
+                  this.meeting_id //支付订单
+              });
+            }
+          });
+      } else {
+        wx.showToast({
+          title: "请选择人员",
+          icon: "none",
+          duration: 1000
+        });
+        return;
+      }
     }
   }
 };
@@ -191,6 +245,13 @@ export default {
 .timeText {
   font-size: 30rpx;
   color: #666;
+}
+.no {
+  font-size: 27rpx;
+  color: #666;
+  line-height: 70rpx;
+  text-align: center;
+  background: white;
 }
 .mapLogo {
   display: block;
@@ -290,16 +351,20 @@ export default {
   position: relative;
   text-align: center;
   border-top: 1px solid #f1f1f1;
+  height: 60rpx;
 }
 .lis:first-child {
   border: none;
 }
-.lis > span {
+.list {
   display: block;
   width: 50%;
   line-height: 60rpx;
   font-size: 27rpx;
   color: #666666;
+}
+.picker {
+  width: 50%;
 }
 .instructions {
   padding: 25rpx;

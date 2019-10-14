@@ -10,7 +10,7 @@
         <span class="text">验证码</span>
         <div class="codeEdit">
           <input type="text" placeholder="请输入验证码" v-model="code" />
-          <span class="getCode" @click="getCode">{{codeText == '获取验证码'? '获取验证码' : codeText + 'S'}}</span>
+          <span class="getCode" @click="getCode">{{codeText == '获取验证码'? '获取验证码' :againCode }}</span>
         </div>
       </div>
     </section>
@@ -21,14 +21,7 @@
   </div>
 </template>
 <script>
-import {
-  hex_md5,
-  b64_md5,
-  str_md5,
-  hex_hmac_md5,
-  b64_hmac_md5,
-  str_hmac_md5
-} from "../../utils/md5";
+import { validatePhone } from "../../utils/validate";
 export default {
   data() {
     return {
@@ -37,6 +30,11 @@ export default {
       codeText: "获取验证码",
       timer: null
     };
+  },
+  computed: {
+    againCode() {
+      return `获取码${this.codeText}S`;
+    }
   },
   methods: {
     bindGetUserInfo(e) {
@@ -49,19 +47,22 @@ export default {
             });
           } else return;
         });
-        // wx.login({
-        //   success: res => {
-        //     if (res.code) {
-        //       console.log(res, "res");
-        //       this.axios
-        //         .post({
-        //           url: "/api/auth",
-        //           data: { code: res.code }
-        //         })
-        //         .then(re => {});
-        //     }
-        //   }
-        // });
+        wx.login({
+          success: res => {
+            if (res.code) {
+              this.axios
+                .post({
+                  url: "/api/auth",
+                  data: { code: res.code }
+                })
+                .then(re => {
+                  if (re.data.status == "200") {
+                    wx.setStorageSync("openid", re.data.data.openid);
+                  }
+                });
+            }
+          }
+        });
       }
     },
     getCode() {
@@ -111,22 +112,31 @@ export default {
     },
     getCodeSms() {
       //获取验证码
-      this.axios
-        .post({
-          url: "/api/sms",
-          data: {
-            phone: this.phone
-          }
-        })
-        .then(res => {
-          if ((res.data.status = "200")) {
-            wx.showToast({
-              title: "发送成功",
-              icon: "none",
-              duration: 2000
-            });
-          }
+      if (validatePhone(this.phone)) {
+        this.axios
+          .post({
+            url: "/api/sms",
+            data: {
+              phone: this.phone
+            }
+          })
+          .then(res => {
+            if ((res.data.status = "200")) {
+              wx.showToast({
+                title: "发送成功",
+                icon: "none",
+                duration: 2000
+              });
+            }
+          });
+      } else {
+        wx.showToast({
+          title: "手机号格式不正确",
+          icon: "none",
+          duration: 1000
         });
+        return;
+      }
     }
   }
 };

@@ -93,6 +93,7 @@ export default {
   },
   onLoad(v) {
     this.item = JSON.parse(v.item);
+    console.log(this.item);
     this.init(this.item.id);
   },
   methods: {

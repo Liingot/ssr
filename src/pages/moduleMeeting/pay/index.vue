@@ -90,7 +90,9 @@ export default {
           img: "/static/images/xx.png",
           checked: false
         }
-      ]
+      ],
+      meeting_id: 0, //会议id
+      data: null
     };
   },
   computed: {
@@ -98,10 +100,35 @@ export default {
       return wx.getStorageSync("soft");
     }
   },
+  onLoad(v) {
+    this.data = JSON.parse(v.data);
+    this.meeting_id = v.meeting_id;
+    console.log(this.data);
+  },
   methods: {
     pay() {
-      wx.navigateTo({ url: "../../moduleMy/paysState/main?state=" + 1 });
       //立即支付
+      if (!this.items[1].checked) {
+        //微信支付
+        let query = {
+          order_ids: JSON.stringify(this.data.order_ids), //订单号群
+          meeting_id: this.meeting_id, //会议id
+          total_amount: String(wx.getStorageSync("soft")), //总价
+          unique_sn: this.data.unique_sn //订单唯一标识
+        };
+        this.axios
+          .post({
+            url: "/api/payment",
+            data: query
+          })
+          .then(res => {
+            if (res.data.status == "200") {
+            }
+          });
+      } else {
+        //线下支付
+      }
+      // wx.navigateTo({ url: "../../moduleMy/paysState/main?state=" + 1 });
     },
     radioChange(e) {
       this.items.find(res => {
