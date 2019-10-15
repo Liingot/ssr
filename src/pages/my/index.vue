@@ -11,7 +11,6 @@
         </span>
       </div>
       <div class="certification" v-if="trck">
-        <!--  v-if="trck" -->
         <div class="certificationIcon" v-if="certification =='3'">
           <img src="/static/images/certification1.png" alt />
         </div>
@@ -56,14 +55,14 @@
     </section>
     <section class="order" v-if="!role && user">
       <div class="orderContent" @click="paysState(0)">
-        <my-info :num="user.count" v-if="user.count"></my-info>
+        <my-info :num="user.count_unpay" v-if="user.count_unpay"></my-info>
         <div class="orderIcon">
           <img src="/static/images/paystatus0.png" alt />
         </div>
         <p class="orderText">待支付</p>
       </div>
       <div class="orderContent" @click="paysState(1)">
-        <!-- <my-info :num="2"></my-info> -->
+        <my-info :num="user.count_success" v-if="user.count_success"></my-info>
         <div class="orderIcon">
           <img src="/static/images/paystatus1.png" alt />
         </div>
@@ -92,6 +91,12 @@
         </li>
       </ul>
     </section>
+       <div class="detail" v-if="role" @click="scanCode">
+          <div class="sm">
+            <img src="/static/images/inspectSm.png" alt />
+          </div>
+          <span @click="scanCode">扫码验票</span>
+        </div>
   </div>
 </template>
 <script>
@@ -122,14 +127,14 @@ export default {
     if (wx.getStorageSync("userInfo")) {
       this.myInfo();
     }
-    // let userInfo = wx.getStorageSync("userInfo");
-    // if (userInfo) {
-    //   userInfo = JSON.parse(userInfo);
-    //   this.avatarUrl = userInfo.avatarUrl;
-    //   this.userName = userInfo.nickName;
-    //   this.company = "暂未认证公司";
-    //   this.trck = true;
-    // }
+    let userInfo = wx.getStorageSync("userInfo");
+    if (userInfo) {
+      userInfo = JSON.parse(userInfo);
+      this.avatarUrl = userInfo.avatarUrl;  //头像
+      this.userName = userInfo.nickName; //昵称
+      this.company = "暂未认证公司";
+      this.trck = true;
+    }
   },
   methods: {
     myInfo() {
@@ -143,10 +148,11 @@ export default {
             let data = res.data.data;
             this.trck = true;
             this.certification = data.status == 2 ? "lodding" : data.status; //公司审核状态
-            this.company = data.user.company_name; //公司名称
-            this.role = data.user.type ? true : false;
+            console.log(this.certification,'company_name');
+            this.company = data.user.company_name ? data.user.company_name : '暂未认证公司'; //公司名称
+            this.role = data.user.type ?  true:false ;  //是否为管理员
             // this.avatarUrl = data.user.cover; //头像
-            this.userName = data.user.username; //姓名
+            // this.userName = data.user.username; //姓名
           }
         });
     },
@@ -187,7 +193,7 @@ export default {
         wx.navigateTo({
           url:
             "../moduleMy/enterprisesEnter/main?certification=" +
-            this.certification
+            this.certification + "&avatarUrl=" + this.avatarUrl + '&userName=' + this.userName
         });
       } else wx.reLaunch({ url: "../login/main" });
     },
@@ -204,6 +210,11 @@ export default {
       if (wx.getStorageSync("userInfo")) {
         wx.navigateTo({ url: "../moduleMy/myTicketDetails/main?id=" + id });
       } else wx.reLaunch({ url: "../login/main" });
+    },
+    scanCode(){
+      wx.navigateTo({
+        url:"../administrators/inspectTicket/main"
+      })
     }
   }
 };
@@ -411,10 +422,36 @@ background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=
   line-height: 35rpx;
 }
 .certificationIcon {
+  display: block;
   width: 108rpx;
   height: 43rpx;
 }
 .certificationIcon > img {
+  width: 100%;
+  height: 100%;
+}
+.detail {
+  border-radius: 50rpx;
+  text-align: center;
+  width: 100%;
+  line-height: 90rpx;
+  color: white;
+  font-size: 35rpx;
+  font-weight: 500;
+  background: #0070cc;
+  margin-top: 300rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sm {
+  display: flex;
+  align-self: auto;
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 30rpx;
+}
+.sm > img {
   width: 100%;
   height: 100%;
 }

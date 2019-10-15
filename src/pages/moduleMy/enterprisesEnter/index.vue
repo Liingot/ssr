@@ -14,7 +14,9 @@
             class="subText"
             v-if="certification == '1' || certification =='lodding'"
           >{{companyName}}</span>
-          <span class="info" v-if="certification == '0'" @click="infoHide"></span>
+          <!-- <span class="info" v-if="certification == '0'" @click="infoHide">
+            <img src="/static/images/noenterprisesEnter.png" alt />
+          </span> -->
           <!-- <input
             type="text"
             style="text-align:right;"
@@ -87,7 +89,7 @@ export default {
       year: "1990-09-10",
       vagusIsHide: false, //模糊搜索显示隐藏
       companyList: [],
-      certification: "0", //判断认证状态
+      certification: "", //判断认证状态
       companyIshide: false,
       if_pop: true,
       phonetxt: "",
@@ -96,6 +98,9 @@ export default {
   },
   onLoad(v) {
     this.certification = v.certification;
+    console.log(v, this.certification);
+    this.avatar = v.avatarUrl;
+    this.name = v.userName;
   },
   mounted() {
     this.init();
@@ -106,6 +111,7 @@ export default {
       this.vagusIsHide = false;
     },
     submit() {
+       wx.setStorageSync("userInfo", JSON.stringify({nickName:this.name,avatarUrl:this.avatar}));
       let query = {
         company_id: this.company_id, //公司id
         username: this.name, //姓名
@@ -143,17 +149,21 @@ export default {
             let data = res.data.data;
             this.gender = data.gender == 1 ? "男" : "女";
             this.year = data.birth;
-            this.avatar = data.cover;
+            // this.avatar = data.cover;
             this.province = data.province;
             this.phonetxt = data.phone;
             this.tel = String(data.phone).replace(
               /(\d{3})\d{4}(\d{4})/,
               "$1****$2"
             );
-            this.companyName = data.company_name;
+            if (data.companyName) {
+              this.companyName = data.company_name;
+              this.certification = 1;
+            } else {
+              this.certification = 0;
+            }
             this.position = data.position;
-            this.name = data.username;
-            if (data.company_name) this.certification = 1;
+            // this.name = data.username;
           }
         });
     },
@@ -172,9 +182,8 @@ export default {
   position: relative;
 }
 .info {
-  width: 38rpx;
-  height: 38rpx;
-  background: red;
+  width: 134rpx;
+  height: 54rpx;
 }
 .info > img {
   width: 100%;

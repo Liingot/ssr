@@ -26,7 +26,7 @@
                 <div class="infoLogo">
                   <img src="/static/images/map.png" alt />
                 </div>
-                <span>北京</span>
+                <span>{{item.meeting_address}}</span>
               </div>
             </div>
           </div>

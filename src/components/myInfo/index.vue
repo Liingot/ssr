@@ -16,10 +16,11 @@ export default {
 </script>
 <style  scoped>
 .infoNumber {
-  width: 30rpx;
-  height: 30rpx;
+  width: 35rpx;
+  height: 35rpx;
   border-radius: 50%;
-  font-size: 25rpx;
+  font-size: 20rpx;
+  line-height: 35rpx;
   color: white;
   background: #0070cc;
   position: absolute;

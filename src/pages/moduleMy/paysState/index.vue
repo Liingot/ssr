@@ -12,18 +12,20 @@
       <scroll-view scroll-y style="height:calc(100vh - 30rpx);" @scrolltolower="lower">
         <div class="content" v-for="(item,index) in list" :key="index">
           <div class="contentHeader">
-            <div class="icon"></div>
-            <span class="contentheaderText">订单号：88888888</span>
+            <div class="icon">
+              <img src="/static/images/paysStateCode.png" alt />
+            </div>
+            <span class="contentheaderText">订单号：{{item.order_sn}}</span>
           </div>
           <section class="listChildren">
             <!--  @click="details(item)" -->
             <div class="listPhoto">
-              <img src="/static/images/index1111.jpg" alt />
+              <img :src="item.meeting_cover" alt />
             </div>
             <div class="listText">
-              <div class="listTextTop">123123213123123123123123</div>
+              <div class="listTextTop">{{item.meeting_name}}</div>
               <div class="listTextBottom">
-                <span>10月30日 周三</span>
+                <span>{{item.meeting_date}} {{item.meeting_week}}</span>
                 <div class="info">
                   <div class="infoLogo">
                     <img src="/static/images/map.png" alt />
@@ -35,7 +37,7 @@
           </section>
           <section class="operation">
             <div class="oper">
-              <span class="pay" v-if="item.status == '1'">去支付</span>
+              <span class="pay" v-if="item.status == '1'" @click="goPay(item)">去支付</span>
               <span class="cancel" v-if="item.status == '1'" @click="cancel(item,index)">取消订单</span>
               <!-- <span class="cancel" v-if="item.status == '2'" @click="refund">退款</span> -->
               <span class="cancel" v-if="item.status == '3'">申请开票</span>
@@ -88,6 +90,25 @@ export default {
       //退款
       wx.navigateTo({ url: `../refund/main` });
     },
+    goPay(v) {
+      let query = {
+        meeting: {
+          title: v.meeting_name, //标题
+          start_time: v.meeting_start_time, //开始时间
+          end_time: v.meeting_end_time, //结束时间
+          meeting_id: v.meeting_id, //会议Id
+          address: v.meeting_detail_address //地点
+        },
+        unique_sn: v.unique_sn, //订单唯一标识
+        order_ids: [{ order_sn: v.order_sn, id: v.id, unique_sn: v.unique_sn }] //订单号群
+      };
+      wx.setStorageSync("soft", v.amount); //总价
+      wx.navigateTo({
+        url: `../../moduleMeeting/pay/main?data=${JSON.stringify(
+          query
+        )}&meeting_id=${v.meeting_id}`
+      });
+    },
     lower() {
       this.currentPage++;
       if (this.currentPage <= this.lastPage)
@@ -118,6 +139,9 @@ export default {
           if (res.data.status == "200") {
             this.lastPage = res.data.data.last_page;
             console.log(this.lastPage, this.currentPage);
+            res.data.data.data.forEach(item => {
+              this.$set(item, "order_ids", item.id);
+            });
             this.list = [...this.list, ...res.data.data.data];
           }
         });
@@ -168,9 +192,8 @@ export default {
   width: calc(100% - 260rpx);
 }
 .icon {
-  width: 30rpx;
+  width: 24rpx;
   height: 30rpx;
-  background: red;
   margin-right: 15rpx;
 }
 .icon img {

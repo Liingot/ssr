@@ -1,5 +1,6 @@
 <template>
   <div class="myticketdetails">
+    <h3 class="h3">订单信息</h3>
     <div class="mainHeader">
       <div class="shopHeader">
         <div class="headerLogo">
@@ -61,7 +62,8 @@ export default {
     }
   },
   onLoad(v) {
-    // this.init(v.id);
+    this.item = JSON.parse(v.data);
+    this.init(this.item.order_id, this.meeting_id, this.user_id);
   },
   methods: {
     init(order_id, meeting_id, user_id) {
@@ -257,5 +259,12 @@ export default {
 .pay {
   background: #0070cc;
   color: white;
+}
+.h3 {
+  font-size: 30rpx;
+  font-weight: 600;
+  padding-left: 20rpx;
+  box-sizing: border-box;
+  margin-bottom: 20rpx;
 }
 </style>

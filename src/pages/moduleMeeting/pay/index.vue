@@ -3,30 +3,41 @@
     <section class="shop">
       <div class="shopHeader">
         <div class="headerLogo"></div>
-        <div class="headerText">第三节上海国际互联网家居节&第六届中国第六届</div>
+        <div class="headerText">{{data.meeting.title}}</div>
       </div>
       <p class="time border">
         <span class="timeLogo">
           <img src="/static/images/time.png" alt />
         </span>
-        <span class="timeText">2019.10/20 08:30-2019.10/21 08:30</span>
+        <span class="timeText">{{start_time}}-{{end_time}}</span>
       </p>
       <p class="map border">
         <span class="mapLogo">
           <img src="/static/images/map.png" alt />
         </span>
-        <span class="timeText">北京市海淀区xxxx大厦</span>
+        <span class="timeText">{{data.meeting.address}}</span>
       </p>
     </section>
-    <section class="success" v-for="(item,index) in data.order_ids" :key="index">
+    <div>
+      <section class="success" v-for="(item,index) in data.order_ids" :key="index">
+        <div class="successTop">
+          <div class="successLogo">
+            <img src="/static/images/wx.png" alt />
+          </div>
+          <div class="text">订座成功！</div>
+        </div>
+        <p class="successText">订单号：{{item.order_sn}}，请及时付款，避免座位释放。</p>
+      </section>
+    </div>
+    <!-- <section class="success" v-else> v-if="Array.isArray(data.order_ids)"
       <div class="successTop">
         <div class="successLogo">
           <img src="/static/images/wx.png" alt />
         </div>
         <div class="text">订座成功！</div>
       </div>
-      <p class="successText">订单号：{{item.order_sn}}，请及时付款，避免座位释放。</p>
-    </section>
+      <p class="successText">订单号：{{data.order_sn}}，请及时付款，避免座位释放。</p>
+    </section>-->
     <section class="vesway">
       <ul class="veswayUls">
         <li class="veswayTitle">选择支付方式</li>
@@ -98,11 +109,22 @@ export default {
   computed: {
     soft() {
       return wx.getStorageSync("soft");
+    },
+    start_time() {
+      //开始时间
+      let start_time = String(this.data.meeting.start_time).split(":");
+      return `${start_time[0]}:${start_time[1]}`;
+    },
+    end_time() {
+      //结束时间
+      let end_time = String(this.data.meeting.end_time).split(":");
+      return `${end_time[0]}:${end_time[1]}`;
     }
   },
   onLoad(v) {
     this.data = JSON.parse(v.data);
     this.meeting_id = v.meeting_id;
+    console.log(this.data, "data");
   },
   methods: {
     pay() {
