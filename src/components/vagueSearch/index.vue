@@ -1,6 +1,12 @@
 <template>
   <div class="vague">
-    <input type="text" class="input" v-model="obj.name" @input="change(obj.name)" />
+    <input
+      type="text"
+      class="input"
+      v-model="obj.name"
+      placeholder="请输入公司关键字进行搜索"
+      @input="change(obj.name)"
+    />
     <ul class="uls" v-if="vagusIsHide">
       <li
         class="lis"
@@ -33,7 +39,7 @@ export default {
       this.vagusIsHide = false;
     },
     change(name) {
-      if (name.length) {
+      if (name != "") {
         this.company(name);
         this.vagusIsHide = true;
       } else this.vagusIsHide = false;

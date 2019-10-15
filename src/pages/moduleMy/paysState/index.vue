@@ -225,7 +225,7 @@ export default {
 .pay {
   color: white;
   background: #0070cc;
-  /* margin-left: 10rpx; */
+  margin-right: 15rpx;
 }
 .cancel {
   color: #666;

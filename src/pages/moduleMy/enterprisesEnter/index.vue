@@ -9,39 +9,46 @@
       </li>
       <li class="mainLis">
         <span class="text">公司</span>
-        <div class="company">
-          <span
-            class="subText"
-            v-if="certification == '1' || certification =='lodding'"
-          >{{companyName}}</span>
-          <!-- <span class="info" v-if="certification == '0'" @click="infoHide">
-            <img src="/static/images/noenterprisesEnter.png" alt />
-          </span> -->
-          <!-- <input
-            type="text"
-            style="text-align:right;"
-            class="subText"
-            placeholder="请输入公司名称"
-            v-model="companyName"
-            v-if="certification != 0"
-            @input="change(companyName)"
-          />-->
+        <div class="company" v-if="certificationIsHide">
+          <span class="subText">{{companyName}}</span>
         </div>
+        <span class="info" @click="infoHide" v-else>
+          <img src="/static/images/noenterprisesEnter.png" alt />
+        </span>
       </li>
       <li class="mainLis">
         <span class="text">姓名</span>
-        <!-- <span class="subText" contenteditable="true">张先生</span> -->
-        <input type="text" style="text-align:right;" class="subText" v-model="name" />
+        <span class="subText" v-if="nameIshide">{{name}}</span>
+        <input
+          type="text"
+          style="text-align:right;"
+          class="subText"
+          placeholder="请输入姓名"
+          v-model="name"
+          v-else
+        />
       </li>
       <li class="mainLis">
         <span class="text">职位</span>
         <!-- <span class="subText" contenteditable="true">xxx</span> -->
-        <input type="text" style="text-align:right;" class="subText" v-model="position" />
+        <input
+          type="text"
+          style="text-align:right;"
+          placeholder="请输入职位"
+          class="subText"
+          v-model="position"
+        />
       </li>
       <li class="mainLis">
         <span class="text">省份</span>
         <!-- <span class="subText" contenteditable="true">北京</span> -->
-        <input type="text" style="text-align:right;" class="subText" v-model="province" />
+        <input
+          type="text"
+          style="text-align:right;"
+          placeholder="请输入省份"
+          class="subText"
+          v-model="province"
+        />
       </li>
       <li class="mainLis">
         <span class="text">手机号</span>
@@ -54,12 +61,24 @@
       <li class="mainLis">
         <span class="text">性别</span>
         <!-- <span class="subText" contenteditable="true"></span>  -->
-        <input type="text" style="text-align:right;" class="subText" v-model="gender" />
+        <input
+          type="text"
+          style="text-align:right;"
+          placeholder="请输入性别"
+          class="subText"
+          v-model="gender"
+        />
       </li>
       <li class="mainLis">
         <span class="text">出生年月</span>
         <!-- <span class="subText" contenteditable="true">1990-09-10</span> -->
-        <input type="text" style="text-align:right;" class="subText" v-model="year" />
+        <input
+          type="text"
+          style="text-align:right;"
+          placeholder="请输入出生年月"
+          class="subText"
+          v-model="year"
+        />
       </li>
     </ul>
     <footer class="footer">
@@ -89,18 +108,24 @@ export default {
       year: "1990-09-10",
       vagusIsHide: false, //模糊搜索显示隐藏
       companyList: [],
-      certification: "", //判断认证状态
       companyIshide: false,
       if_pop: true,
       phonetxt: "",
-      company_id: 0 //公司id
+      company_id: 0, //公司id
+      certificationIsHide: false, //判断认证状态 注：这里为什么直接在v-if中拿1 2 3来判断当前状态因为mpvue在v-if||v-show不支持复杂运算 || && 都算
+      nameIshide: false
     };
   },
   onLoad(v) {
-    this.certification = v.certification;
-    console.log(v, this.certification);
+    this.certification = Number(v.certification);
+    if (v.certification == 2 || v.certification == 3) {
+      this.nameIshide = true;
+      this.certificationIsHide = true;
+    } else {
+      this.nameIshide = false;
+      this.certificationIsHide = false;
+    }
     this.avatar = v.avatarUrl;
-    this.name = v.userName;
   },
   mounted() {
     this.init();
@@ -111,7 +136,10 @@ export default {
       this.vagusIsHide = false;
     },
     submit() {
-       wx.setStorageSync("userInfo", JSON.stringify({nickName:this.name,avatarUrl:this.avatar}));
+      wx.setStorageSync(
+        "userInfo",
+        JSON.stringify({ nickName: this.name, avatarUrl: this.avatar })
+      );
       let query = {
         company_id: this.company_id, //公司id
         username: this.name, //姓名
@@ -137,7 +165,6 @@ export default {
     },
     infoHide() {
       this.vagusIsHide = true;
-      // this.certification = "3";
     },
     init() {
       this.axios
@@ -156,14 +183,14 @@ export default {
               /(\d{3})\d{4}(\d{4})/,
               "$1****$2"
             );
-            if (data.companyName) {
+            if (data.companyName != "") {
               this.companyName = data.company_name;
-              this.certification = 1;
+              this.certification = 3;
             } else {
-              this.certification = 0;
+              this.certification = 1;
             }
             this.position = data.position;
-            // this.name = data.username;
+            this.name = data.username;
           }
         });
     },
@@ -172,7 +199,7 @@ export default {
       this.vagusIsHide = false;
       this.companyName = item.name;
       this.company_id = item.id;
-      this.certification = "lodding";
+      this.certificationIsHide = true;
     }
   }
 };

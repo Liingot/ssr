@@ -11,11 +11,11 @@
         </span>
       </div>
       <div class="certification" v-if="trck">
-        <div class="certificationIcon" v-if="certification =='3'">
+        <div class="certificationIcon" v-if="certification ==3">
           <img src="/static/images/certification1.png" alt />
         </div>
-        <span v-if="certification =='1'" class="goCertifi" @click="enter">去认证</span>
-        <span class="certificationIcon" v-if="certification =='lodding'" @click="enter">
+        <span v-if="certification ==1" class="goCertifi" @click="enter">去认证</span>
+        <span class="certificationIcon" v-if="certification ==2" >
           <img src="/static/images/certification2.png" alt />
         </span>
       </div>
@@ -116,7 +116,7 @@ export default {
       userName: " 登录后体验更多功能", //用户姓名
       company: "点击登录", //公司名字
       trck: false, //判断当前用户是否登录
-      certification: "1", //判断当前用户是否认证/待审核 1认证 0未认证 lodding 待审核
+      certification: 1, //判断当前用户是否认证/待审核 1未绑定企业,2待审核，3审核成功
       user: null,
       role: false //true是管理员
     };
@@ -131,9 +131,9 @@ export default {
     if (userInfo) {
       userInfo = JSON.parse(userInfo);
       this.avatarUrl = userInfo.avatarUrl;  //头像
-      this.userName = userInfo.nickName; //昵称
-      this.company = "暂未认证公司";
-      this.trck = true;
+      // this.userName = userInfo.nickName; //昵称
+      // this.company = "暂未认证公司";
+      // this.trck = true;
     }
   },
   methods: {
@@ -147,12 +147,16 @@ export default {
             this.user = res.data.data;
             let data = res.data.data;
             this.trck = true;
-            this.certification = data.status == 2 ? "lodding" : data.status; //公司审核状态
-            console.log(this.certification,'company_name');
-            this.company = data.user.company_name ? data.user.company_name : '暂未认证公司'; //公司名称
+            this.certification = data.status  //公司审核状态
+            if(data.status == 2){
+              this.company = "企业认证审核中";
+            }else if(data.status == 1){
+              this.company = "暂无认证公司";
+            }else{
+              this.company = data.user.company_name ;//公司名称
+            }
             this.role = data.user.type ?  true:false ;  //是否为管理员
-            // this.avatarUrl = data.user.cover; //头像
-            // this.userName = data.user.username; //姓名
+            this.userName = data.user.username; //姓名
           }
         });
     },
