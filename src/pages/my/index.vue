@@ -33,7 +33,7 @@
       <div
         class="tickContent listChildren"
         @click="details(user.ticket.meeting_id)"
-        v-if="user && user.ticket"
+        v-if="user.ticket"
       >
         <div class="listPhoto">
           <img :src="user.ticket.meeting_cover" alt />
@@ -117,7 +117,7 @@ export default {
       company: "点击登录", //公司名字
       trck: false, //判断当前用户是否登录
       certification: 1, //判断当前用户是否认证/待审核 1未绑定企业,2待审核，3审核成功
-      user: null,
+      user: {ticket:null},
       role: false //true是管理员
     };
   },

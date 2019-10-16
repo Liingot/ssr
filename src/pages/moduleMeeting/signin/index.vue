@@ -139,6 +139,12 @@ export default {
               });
             } else if (res.data.status == "401") {
               this.loggetIsHide = true;
+            } else if (res.data.message == "用户信息认证未通过") {
+              wx.showToast({
+                title: "用户信息认证未通过",
+                icon: "none",
+                duration: 1000
+              });
             }
           });
       } else {
