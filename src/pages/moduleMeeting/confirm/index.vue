@@ -36,9 +36,13 @@
           <span class="timeText">数量</span>
         </div>
         <div class="numberEdit">
-          <span class="off" @click="off" v-if="number != 0">-</span>
+          <span class="off" @click="off" v-if="number != 0">
+            <img src="/static/images/off.png" alt />
+          </span>
           <span class="num" v-if="number != 0">{{number}}</span>
-          <span class="add" @click="add">+</span>
+          <span class="add off" @click="add">
+            <img src="/static/images/add.png" alt />
+          </span>
         </div>
       </div>
     </section>
@@ -152,29 +156,40 @@ export default {
       this.userList.pop();
     },
     add() {
-      if (this.userList.length) {
-        if (
-          this.userList[this.userList.length - 1].username != "点击选择人员"
-        ) {
-          this.number++;
-          this.userList.push({
-            username: "点击选择人员",
-            position: "",
-            id: ""
-          });
-        } else return;
-      } else {
-        this.number++;
-        this.userList.push({
-          username: "点击选择人员",
-          position: "",
-          id: ""
-        });
-      }
+      // if (this.userList.length) {
+      //   if (
+      //     this.userList[this.userList.length - 1].username != "点击选择人员"
+      //   ) {
+      //     this.number++;
+      //     this.userList.push({
+      //       username: "点击选择人员",
+      //       position: "",
+      //       id: ""
+      //     });
+      //   } else return;
+      // } else {
+      //   this.number++;
+      //   this.userList.push({
+      //     username: "点击选择人员",
+      //     position: "",
+      //     id: ""
+      //   });
+      // }
+      this.number++;
+      this.userList.push({
+        username: "选择人员",
+        position: "",
+        id: ""
+      });
     },
     pay() {
+      let length = this.userList.length;
+      for (let i = length - 1; i >= 0; i--) {
+        if (this.userList[i].username == "选择人员") this.userList.splice(i, 1);
+      }
+      this.number = this.userList.length;
       let doc = this.userList.every(v => {
-        return v.username != "点击选择人员";
+        return v.username != "选择人员";
       });
       if (this.userList.length && doc) {
         wx.setStorage({ key: "soft", data: this.soft });
@@ -220,14 +235,15 @@ export default {
 <style  scoped>
 .confirm {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   background: #0070cc;
-  background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
-    no-repeat;
+  /* background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
+    no-repeat; */
   background-size: cover;
   padding: 40rpx 20rpx 120rpx 20rpx;
   box-sizing: border-box;
   position: relative;
+  overflow: auto;
 }
 .shop {
   width: 100%;
@@ -330,26 +346,30 @@ export default {
 .off,
 .add {
   display: block;
-  width: 40rpx;
-  height: 40rpx;
+  width: 44rpx;
+  height: 45rpx;
   border-radius: 50%;
-  text-align: center;
+  /* text-align: center;
   line-height: 40rpx;
-  font-size: 30rpx;
+  font-size: 30rpx; */
+}
+.off img {
+  width: 100%;
+  height: 100%;
 }
 .num {
   font-size: 30rpx;
   font-weight: 500;
   margin: 0 15rpx;
 }
-.off {
+/* .off {
   border: 1px solid #0070cc;
   color: #0070cc;
-}
-.add {
+} */
+/* .add {
   background: #0070cc;
   color: white;
-}
+} */
 .personnelHeader {
   display: flex;
   align-items: center;

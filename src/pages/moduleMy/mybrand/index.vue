@@ -1,11 +1,14 @@
 <template>
   <div class="brand">
-    <h3 class="brandh3">企业获奖信息</h3>
-    <ul class="branduls">
-      <li class="brandlis" v-for="(item,index) in company" :key="index">
-        <img :src="item" alt />
-      </li>
-    </ul>
+    <div v-if="company.length">
+      <h3 class="brandh3">企业获奖信息</h3>
+      <ul class="branduls">
+        <li class="brandlis" v-for="(item,index) in company" :key="index">
+          <img :src="item" alt />
+        </li>
+      </ul>
+    </div>
+    <p class="no" v-else>暂无企业获奖信息</p>
   </div>
 </template>
 <script>
@@ -13,7 +16,7 @@ import "../../../../static/wxss/brand.wxss";
 export default {
   data() {
     return {
-      list: []
+      company: []
     };
   },
   mounted() {
@@ -45,5 +48,11 @@ export default {
   font-size: 30rpx;
   color: #666;
   margin-bottom: 20rpx;
+}
+.no {
+  font-size: 30rpx;
+  color: #666;
+  margin-top: 30rpx;
+  text-align: center;
 }
 </style>

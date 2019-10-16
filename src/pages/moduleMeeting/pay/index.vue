@@ -185,7 +185,7 @@ export default {
 <style  scoped>
 .confirm {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   /* overflow-y: auto; */
   /* -webkit-overflow-scrolling: touch; */
   background: #0070cc;
@@ -195,6 +195,7 @@ export default {
   padding: 40rpx 20rpx 120rpx 20rpx;
   box-sizing: border-box;
   position: relative;
+  overflow: auto;
 }
 .shop {
   width: 100%;

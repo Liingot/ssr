@@ -4,7 +4,13 @@
     <section class="form">
       <div class="tel">
         <span class="text">手机号</span>
-        <input type="number" class="inputTel" placeholder="请输入手机号" v-model="phone" />
+        <input
+          type="number"
+          class="inputTel"
+          placeholder="请输入手机号"
+          @input="checkNo(phone)"
+          v-model="phone"
+        />
       </div>
       <div class="code">
         <span class="text">验证码</span>
@@ -37,8 +43,42 @@ export default {
     }
   },
   methods: {
+    checkNo(e) {
+      let reg = /^\S+$/;
+      console.log(e);
+      if (e) {
+        if (new RegExp(reg).test(e) == false) {
+          this.phone = this.phone.trim();
+        }
+      }
+    },
+    detail() {},
     bindGetUserInfo(e) {
       if (e.mp.detail.rawData) {
+        if (this.phone == "") {
+          wx.showToast({
+            title: "请输入手机号",
+            icon: "none",
+            duration: 1000
+          });
+          return;
+        }
+        if (!validatePhone(this.phone)) {
+          wx.showToast({
+            title: "请输入正确的手机号",
+            icon: "none",
+            duration: 1000
+          });
+          return;
+        }
+        if (this.code == "") {
+          wx.showToast({
+            title: "请输入验证码",
+            icon: "none",
+            duration: 1000
+          });
+          return;
+        }
         this.submit().then(res => {
           if (res == "200") {
             wx.setStorageSync("userInfo", JSON.stringify(e.target.userInfo));
@@ -67,6 +107,22 @@ export default {
     },
     getCode() {
       //倒计时
+      if (this.phone == "") {
+        wx.showToast({
+          title: "请输入手机号",
+          icon: "none",
+          duration: 1000
+        });
+        return;
+      }
+      if (!validatePhone(this.phone)) {
+        wx.showToast({
+          title: "请输入正确的手机号",
+          icon: "none",
+          duration: 1000
+        });
+        return;
+      }
       if (!this.timer) {
         this.codeText = 60;
         this.getCodeSms();
@@ -112,7 +168,7 @@ export default {
     },
     getCodeSms() {
       //获取验证码
-      if (validatePhone(this.phone)) {
+      if (validatePhone(this.phone) && this.phone != "") {
         this.axios
           .post({
             url: "/api/sms",

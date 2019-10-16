@@ -34,7 +34,7 @@
         </section>
       </scroll-view>
     </section>
-    <p class="no" v-else>暂无数据</p>
+    <p class="no" v-else>暂无可用票券</p>
   </div>
 </template>
 <script>

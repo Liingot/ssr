@@ -23,8 +23,8 @@
     <section class="getTicket" v-if="!role">
       <div class="tickTop">
         <span class="myTick">我的票券</span>
-        <div class="fall">
-          <span class="fallText" @click="myTicket">全部票券</span>
+        <div class="fall"  @click="myTicket">
+          <span class="fallText">全部票券</span>
           <div class="fallIcon">
             <img src="/static/images/my-icon-right.png" alt />
           </div>
@@ -51,7 +51,7 @@
           </div>
         </div>
       </div>
-      <p v-else class="no">暂无可用票卷</p>
+      <p v-else class="no">暂无可用票券</p>
     </section>
     <section class="order" v-if="!role && user">
       <div class="orderContent" @click="paysState(0)">
@@ -226,11 +226,12 @@ export default {
 <style  scoped>
 .my {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
 background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70) no-repeat;
   background-size: cover;
   padding: 50rpx 20rpx 20rpx 20rpx;
   box-sizing: border-box;
+  overflow: auto;
 }
 .header {
   display: flex;
