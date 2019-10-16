@@ -1,80 +1,73 @@
 <template>
   <div class="pay confirm">
-    <section class="shop">
-      <div class="shopHeader">
-        <div class="headerLogo"></div>
-        <div class="headerText">{{data.meeting.title}}</div>
-      </div>
-      <p class="time border">
-        <span class="timeLogo">
-          <img src="/static/images/time.png" alt />
-        </span>
-        <span class="timeText">{{start_time}}-{{end_time}}</span>
-      </p>
-      <p class="map border">
-        <span class="mapLogo">
-          <img src="/static/images/map.png" alt />
-        </span>
-        <span class="timeText">{{data.meeting.address}}</span>
-      </p>
-    </section>
-    <div>
-      <section class="success" v-for="(item,index) in data.order_ids" :key="index">
-        <div class="successTop">
-          <div class="successLogo">
-            <img src="/static/images/wx.png" alt />
-          </div>
-          <div class="text">订座成功！</div>
+    <section>
+      <section class="shop">
+        <div class="shopHeader">
+          <div class="headerLogo"></div>
+          <div class="headerText">{{data.meeting.title}}</div>
         </div>
-        <p class="successText">订单号：{{item.order_sn}}，请及时付款，避免座位释放。</p>
+        <p class="time border">
+          <span class="timeLogo">
+            <img src="/static/images/time.png" alt />
+          </span>
+          <span class="timeText">{{start_time}}-{{end_time}}</span>
+        </p>
+        <p class="map border">
+          <span class="mapLogo">
+            <img src="/static/images/map.png" alt />
+          </span>
+          <span class="timeText">{{data.meeting.address}}</span>
+        </p>
       </section>
-    </div>
-    <!-- <section class="success" v-else> v-if="Array.isArray(data.order_ids)"
-      <div class="successTop">
-        <div class="successLogo">
-          <img src="/static/images/wx.png" alt />
-        </div>
-        <div class="text">订座成功！</div>
-      </div>
-      <p class="successText">订单号：{{data.order_sn}}，请及时付款，避免座位释放。</p>
-    </section>-->
-    <section class="vesway">
-      <ul class="veswayUls">
-        <li class="veswayTitle">选择支付方式</li>
-        <li
-          class="veswayIcon"
-          v-for="(item,index) in items"
-          :key="index"
-          :class="{'icon':index == 0}"
-        >
-          <div class="vaswayLogo">
-            <div class="payLogo">
-              <img :src="item.img" alt />
+      <div>
+        <section class="success" v-for="(item,index) in data.order_ids" :key="index">
+          <div class="successTop">
+            <div class="successLogo">
+              <img src="/static/images/wx.png" alt />
             </div>
-            <span class="vaswayText">{{item.title}}</span>
+            <div class="text">订座成功！</div>
           </div>
-          <radio-group @change="radioChange(item)">
-            <radio :checked="item.checked"></radio>
-          </radio-group>
-        </li>
-      </ul>
-    </section>
-    <section class="vesway" v-if="items[1].checked" style="margin-top:20rpx;">
-      <div class="xxHeader">线下转账信息</div>
-      <div class="xxContent">
-        <p class="xxcontentText">
-          <span class="xxleft">户名</span>
-          <span class="xxright">北京中装商学院有限公司</span>
-        </p>
-        <p class="xxcontentText">
-          <span class="xxleft">账户</span>
-          <span class="xxright">xxxxxxxx</span>
-        </p>
-        <p class="xxcontentText">
-          <span class="xxleft">开户行</span>
-          <span class="xxright">招商</span>
-        </p>
+          <p class="successText">订单号：{{item.order_sn}}，请及时付款，避免座位释放。</p>
+        </section>
       </div>
+      <section class="vesway">
+        <ul class="veswayUls">
+          <li class="veswayTitle">选择支付方式</li>
+          <li
+            class="veswayIcon"
+            v-for="(item,index) in items"
+            :key="index"
+            :class="{'icon':index == 0}"
+          >
+            <div class="vaswayLogo">
+              <div class="payLogo">
+                <img :src="item.img" alt />
+              </div>
+              <span class="vaswayText">{{item.title}}</span>
+            </div>
+            <radio-group @change="radioChange(item)">
+              <radio :checked="item.checked"></radio>
+            </radio-group>
+          </li>
+        </ul>
+      </section>
+      <section class="vesway" v-if="items[1].checked" style="margin-top:20rpx;">
+        <div class="xxHeader">线下转账信息</div>
+        <div class="xxContent">
+          <p class="xxcontentText">
+            <span class="xxleft">户名</span>
+            <span class="xxright">北京中装商学院有限公司</span>
+          </p>
+          <p class="xxcontentText">
+            <span class="xxleft">账户</span>
+            <span class="xxright">xxxxxxxx</span>
+          </p>
+          <p class="xxcontentText">
+            <span class="xxleft">开户行</span>
+            <span class="xxright">招商</span>
+          </p>
+        </div>
+      </section>
     </section>
     <section class="soft">
       <div class="sortNum">
@@ -113,12 +106,12 @@ export default {
     start_time() {
       //开始时间
       let start_time = String(this.data.meeting.start_time).split(":");
-      return `${start_time[0]}:${start_time[1]}`;
+      return `${start_time[0].replace(/-/g, "/")}:${start_time[1]}`;
     },
     end_time() {
       //结束时间
       let end_time = String(this.data.meeting.end_time).split(":");
-      return `${end_time[0]}:${end_time[1]}`;
+      return `${end_time[0].replace(/-/g, "/")}:${end_time[1]}`;
     }
   },
   onLoad(v) {
@@ -196,10 +189,10 @@ export default {
   /* overflow-y: auto; */
   /* -webkit-overflow-scrolling: touch; */
   background: #0070cc;
-  /* background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
-    no-repeat; */
+  background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
+    no-repeat;
   background-size: cover;
-  padding: 40rpx 20rpx 20rpx 20rpx;
+  padding: 40rpx 20rpx 120rpx 20rpx;
   box-sizing: border-box;
   position: relative;
 }

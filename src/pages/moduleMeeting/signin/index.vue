@@ -85,12 +85,12 @@ export default {
     start_time() {
       //开始时间
       let start_time = String(this.signinData.start_time).split(":");
-      return `${start_time[0]}:${start_time[1]}`;
+      return `${start_time[0].replace(/-/g, "/")}:${start_time[1]}`;
     },
     end_time() {
       //结束时间
       let end_time = String(this.signinData.end_time).split(":");
-      return `${end_time[0]}:${end_time[1]}`;
+      return `${end_time[0].replace(/-/g, "/")}:${end_time[1]}`;
     },
     endTrck() {
       //活动是否截止
@@ -142,6 +142,12 @@ export default {
             } else if (res.data.message == "用户信息认证未通过") {
               wx.showToast({
                 title: "用户信息认证未通过",
+                icon: "none",
+                duration: 1000
+              });
+            } else if (res.data.message == "未绑定公司信息") {
+              wx.showToast({
+                title: "未绑定公司信息",
                 icon: "none",
                 duration: 1000
               });

@@ -52,11 +52,11 @@ export default {
   computed: {
     start_time() {
       let start_time = String(this.data.start_time).split(":");
-      return `${start_time[0]}:${start_time[1]}`;
+      return `${start_time[0].replace(/-/g, "/")}:${start_time[1]}`;
     },
     end_time() {
       let end_time = String(this.data.end_time).split(":");
-      return `${end_time[0]}:${end_time[1]}`;
+      return `${end_time[0].replace(/-/g, "/")}:${end_time[1]}`;
     },
     status() {
       let status = this.data.status;

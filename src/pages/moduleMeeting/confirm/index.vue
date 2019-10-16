@@ -102,6 +102,10 @@ export default {
     this.meeting_id = v.meeting_id;
     this.item = JSON.parse(v.item);
   },
+  onShow() {
+    this.userList = [];
+    this.number = 0;
+  },
   computed: {
     soft() {
       //总和
@@ -110,12 +114,12 @@ export default {
     start_time() {
       //开始时间
       let start_time = String(this.item.meeting.start_time).split(":");
-      return `${start_time[0]}:${start_time[1]}`;
+      return `${start_time[0].replace(/-/g, "/")}:${start_time[1]}`;
     },
     end_time() {
       //结束时间
       let end_time = String(this.item.meeting.end_time).split(":");
-      return `${end_time[0]}:${end_time[1]}`;
+      return `${end_time[0].replace(/-/g, "/")}:${end_time[1]}`;
     }
   },
   methods: {
@@ -125,10 +129,22 @@ export default {
     bindPickerChange(e) {
       let index = Number(e.mp.detail.value);
       let { username, id, position, phone } = this.item.userList[index];
-      this.$set(this.userList[this.userListIndex], "username", username);
-      this.$set(this.userList[this.userListIndex], "id", id);
-      this.$set(this.userList[this.userListIndex], "position", position);
-      this.$set(this.userList[this.userListIndex], "phone", phone);
+      let repeat = this.userList.some(v => {
+        return v.username == username;
+      });
+      if (repeat) {
+        wx.showToast({
+          title: "参会人员不能重复",
+          icon: "none",
+          duration: 1000
+        });
+        return;
+      } else {
+        this.$set(this.userList[this.userListIndex], "username", username);
+        this.$set(this.userList[this.userListIndex], "id", id);
+        this.$set(this.userList[this.userListIndex], "position", position);
+        this.$set(this.userList[this.userListIndex], "phone", phone);
+      }
     },
     off() {
       if (this.number <= 0) return (this.number = 0);
@@ -136,11 +152,31 @@ export default {
       this.userList.pop();
     },
     add() {
-      this.number++;
-      this.userList.push({ username: "点击选择人员", position: "", id: "" });
+      if (this.userList.length) {
+        if (
+          this.userList[this.userList.length - 1].username != "点击选择人员"
+        ) {
+          this.number++;
+          this.userList.push({
+            username: "点击选择人员",
+            position: "",
+            id: ""
+          });
+        } else return;
+      } else {
+        this.number++;
+        this.userList.push({
+          username: "点击选择人员",
+          position: "",
+          id: ""
+        });
+      }
     },
     pay() {
-      if (this.userList.length) {
+      let doc = this.userList.every(v => {
+        return v.username != "点击选择人员";
+      });
+      if (this.userList.length && doc) {
         wx.setStorage({ key: "soft", data: this.soft });
         let userList = [];
         this.userList.forEach(item => {
@@ -186,10 +222,10 @@ export default {
   width: 100%;
   min-height: 100vh;
   background: #0070cc;
-  /* background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
-    no-repeat; */
+  background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
+    no-repeat;
   background-size: cover;
-  padding: 40rpx 20rpx 0 20rpx;
+  padding: 40rpx 20rpx 120rpx 20rpx;
   box-sizing: border-box;
   position: relative;
 }

@@ -63,11 +63,14 @@ export default {
   },
   onLoad(v) {
     //state判断当前是哪一个状态
-    this.borderIndex = 1;
     this.borderIndex = v.state;
-    this.init(this.borderIndex ? Number(this.borderIndex) + 1 : 1);
+  
   },
-  mounted() {},
+  onShow() {
+    this.currentPage = 1;
+    this.list = [];
+      this.init(this.borderIndex ? Number(this.borderIndex) + 1 : 1);
+  },
   methods: {
     cancel(v, index) {
       this.axios

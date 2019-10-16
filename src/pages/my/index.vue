@@ -51,7 +51,7 @@
           </div>
         </div>
       </div>
-      <p v-else class="no">暂无票卷</p>
+      <p v-else class="no">暂无可用票卷</p>
     </section>
     <section class="order" v-if="!role && user">
       <div class="orderContent" @click="paysState(0)">

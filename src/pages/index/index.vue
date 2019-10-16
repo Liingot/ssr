@@ -67,14 +67,14 @@ export default {
     wx.showShareMenu({
       withShareTicket: true
     });
+  },
+  onShow() {
+    this.meetingList = [];
     this.init();
   },
   onShareAppMessage: function(res) {
     if (res.from == "button") {
     }
-    // return {
-    //   title: "测试"
-    // };
   },
   methods: {
     lower() {
@@ -103,8 +103,6 @@ export default {
               ...this.meetingList
             ];
             this.bannerList = res.data.data.bannerList; //轮播图
-
-            console.log(this.meetingList);
             this.lastPage = res.data.data.last_page; //分页的最后一页
           }
         });

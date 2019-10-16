@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     againCode() {
-      return `获取码${this.codeText}S`;
+      return `${this.codeText}S`;
     }
   },
   methods: {

@@ -59,11 +59,13 @@ export default {
           data: { meeting_id: id }
         })
         .then(res => {
+          console.log(res, "res");
           if (res.data.status == "200") {
-            res.data.data.forEach(item => {
+            res.data.data.video.forEach(item => {
               this.$set(item, "trck", false);
             });
-            this.dehighList = res.data.data;
+            this.dehighList = res.data.data.video;
+            console.log(this.dehighList);
           }
         });
     }
