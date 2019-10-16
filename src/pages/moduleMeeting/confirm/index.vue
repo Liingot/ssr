@@ -237,8 +237,8 @@ export default {
   width: 100%;
   height: 100vh;
   background: #0070cc;
-  /* background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
-    no-repeat; */
+  background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
+    no-repeat;
   background-size: cover;
   padding: 40rpx 20rpx 120rpx 20rpx;
   box-sizing: border-box;
