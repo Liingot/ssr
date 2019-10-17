@@ -37,7 +37,7 @@
             placeholder="请输入职位"
             class="subText"
             v-model="position"
-          /> -->
+          />-->
           <span class="subText">{{position}}</span>
         </picker>
       </li>
@@ -50,8 +50,8 @@
             placeholder="请输入省份"
             class="subText"
             v-model="province"
-          /> -->
-           <span class="subText">{{province}}</span>
+          />-->
+          <span class="subText">{{province}}</span>
         </picker>
       </li>
       <li class="mainLis">
@@ -71,7 +71,7 @@
             placeholder="请输入性别"
             class="subText"
             v-model="gender"
-          /> -->
+          />-->
           <span class="subText">{{gender}}</span>
         </picker>
       </li>
@@ -84,9 +84,8 @@
             placeholder="请输入出生年月"
             class="subText"
             v-model="year"
-          /> -->
+          />-->
           <span class="subText">{{year}}</span>
-
         </picker>
       </li>
     </ul>
@@ -104,6 +103,7 @@
 <script>
 import "../../../../static/wxss/enter.wxss";
 import vague from "../../../components/vagueSearch";
+import { toast } from "../../../utils/validate";
 export default {
   data() {
     return {
@@ -157,35 +157,28 @@ export default {
     yearChange(e) {
       this.year = e.target.value;
     },
-    toast(v) {
-      wx.showToast({
-        title: v,
-        icon: "none",
-        duration: 1000
-      });
-    },
     retu() {
       this.vagusIsHide = false;
     },
     submit() {
       if (this.companyName == "") {
-        this.toast("公司名称没有填写");
+        toast("公司名称没有填写");
         return;
       }
       if (this.name == "") {
-        this.toast("姓名没有填写");
+        toast("姓名没有填写");
         return;
       }
       if (this.position == "") {
-        this.toast("职位没有填写");
+        toast("职位没有填写");
         return;
       }
       if (this.province == "") {
-        this.toast("省份没有填写");
+        toast("省份没有填写");
         return;
       }
       if (this.gender == "") {
-        this.toast("性别没有填写");
+        toast("性别没有填写");
         return;
       }
       wx.setStorageSync(
@@ -206,12 +199,10 @@ export default {
         })
         .then(res => {
           if (res.data.status == "200") {
-            wx.showToast({
-              title: "更新成功",
-              icon: "none",
-              duration: 1000
-            });
+            toast("更新成功");
             wx.reLaunch({ url: "../../my/main" });
+          } else if (res.data.status == "400") {
+            toast(res.data.message);
           }
         });
     },

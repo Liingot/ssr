@@ -1,6 +1,6 @@
 <template>
   <div>
-    <index-banner :bannerList="bannerList"  v-if="bannerList.length"></index-banner>
+    <index-banner :bannerList="bannerList" v-if="bannerList.length"></index-banner>
     <section class="main">
       <div class="information">
         <div class="informationLeft">
@@ -28,7 +28,7 @@
               <img :src="url + item.cover" alt />
             </div>
             <div class="listText">
-              <div class="listTextTop">{{item.title}}</div>
+              <div class="listTextTop" style="padding-bottom:0;">{{item.title}}</div>
               <div class="listTextBottom">
                 <span>{{item.date}} {{item.week}}</span>
                 <div class="info">
@@ -47,6 +47,7 @@
 </template>
 <script>
 import indexBanner from "../../components/banner"; //banner
+import { toast } from "../../utils/validate";
 export default {
   components: { indexBanner },
   data() {
@@ -60,14 +61,12 @@ export default {
   },
   mounted() {
     this.url = this.domains;
+    this.init();
     wx.showShareMenu({
       withShareTicket: true
     });
   },
-  onShow() {
-    this.meetingList = [];
-    this.init();
-  },
+  onShow() {},
   onShareAppMessage: function(res) {
     if (res.from == "button") {
     }
@@ -78,11 +77,7 @@ export default {
       this.currentPage++;
       if (this.currentPage < this.lastPage) this.init(this.currentPage);
       else {
-        wx.showToast({
-          title: "我是有底线的",
-          icon: "none",
-          duration: 1000
-        });
+        toast("我是有底线的");
         return;
       }
     },
@@ -197,10 +192,10 @@ export default {
   width: calc(100% - 260rpx);
 }
 .listTextTop {
-  height: 83rpx;
+  /* height: calc(100% - 49rpx); */
   font-size: 28rpx;
   font-weight: 600;
-  padding-bottom: 45rpx;
+  /* padding-bottom: 45rpx; */
   box-sizing: border-box;
   display: -webkit-box;
   -webkit-box-orient: vertical;

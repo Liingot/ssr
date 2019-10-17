@@ -15,3 +15,11 @@ export function time(time) {
   let _time = String(time).split(":");
   return `${_time[0].replace(/-/g, "/")}:${_time[1]}`;
 }
+
+export function toast(title) {
+  wx.showToast({
+    title: title,
+    icon: "none",
+    duration: 1000
+  });
+}

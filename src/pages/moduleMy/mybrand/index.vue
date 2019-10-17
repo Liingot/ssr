@@ -17,12 +17,12 @@ export default {
   data() {
     return {
       company: [],
-      url:''
+      url: ""
     };
   },
   mounted() {
-this.url = this.domains;
-   this.init();
+    this.url = this.domains;
+    this.init();
   },
   methods: {
     init() {

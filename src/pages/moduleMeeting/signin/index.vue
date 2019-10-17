@@ -48,7 +48,7 @@
   </div>
 </template>
 <script>
-import { time } from "../../../utils/validate";
+import { time, toast } from "../../../utils/validate";
 import goLogin from "../../../components/goLogin";
 export default {
   data() {
@@ -119,26 +119,12 @@ export default {
               });
             } else if (res.data.status == "401") {
               this.loggetIsHide = true;
-            } else if (res.data.message == "用户信息认证未通过") {
-              wx.showToast({
-                title: "用户信息认证未通过",
-                icon: "none",
-                duration: 1000
-              });
-            } else if (res.data.message == "未绑定公司信息") {
-              wx.showToast({
-                title: "未绑定公司信息",
-                icon: "none",
-                duration: 1000
-              });
+            } else if (res.data.status == "400") {
+              toast(res.data.message);
             }
           });
       } else {
-        wx.showToast({
-          title: "报名已截止",
-          icon: "none",
-          duration: 1000
-        });
+        toast("报名已截止");
       }
     }
   }
@@ -147,6 +133,8 @@ export default {
 <style scoped>
 .signin {
   position: relative;
+  padding-bottom: 100rpx;
+  box-sizing: border-box;
 }
 .signinBanner {
   width: 100%;
@@ -167,6 +155,11 @@ export default {
 .h3 {
   font-size: 38rpx;
   font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 .number {
   padding-left: 10rpx;

@@ -268,6 +268,8 @@ export default {
   height: 100%;
 }
 .headerText {
+  width: calc(100% - 256rpx);
+  height: 83rpx;
   font-size: 30rpx;
   font-weight: 600;
   overflow: hidden;

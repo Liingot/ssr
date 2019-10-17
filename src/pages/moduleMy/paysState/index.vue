@@ -23,7 +23,7 @@
               <img :src="url + item.meeting_cover" alt />
             </div>
             <div class="listText">
-              <div class="listTextTop">{{item.meeting_name}}</div>
+              <div class="listTextTop" style="padding-bottom:0;">{{item.meeting_name}}</div>
               <div class="listTextBottom">
                 <span>{{item.meeting_date}} {{item.meeting_week}}</span>
                 <div class="info">
@@ -37,10 +37,10 @@
           </section>
           <section class="operation">
             <div class="oper">
-              <span class="pay" v-if="item.status == '1'" @click="goPay(item)">去支付</span>
-              <span class="cancel" v-if="item.status == '1'" @click="cancel(item,index)">取消订单</span>
-              <!-- <span class="cancel" v-if="item.status == '2'" @click="refund">退款</span> -->
-              <!-- <span class="cancel" v-if="item.status == '3'">申请开票</span> -->
+              <span class="pay" v-if="item.order_status == '1'" @click="goPay(item)">去支付</span>
+              <span class="cancel" v-if="item.order_status == '1'" @click="cancel(item,index)">取消订单</span>
+              <!-- <span class="cancel" v-if="item.order_status == '2'" @click="refund">退款</span> -->
+              <!-- <span class="cancel" v-if="item.order_status == '3'">申请开票</span> -->
             </div>
           </section>
         </div>
@@ -65,10 +65,8 @@ export default {
   onLoad(v) {
     //state判断当前是哪一个状态
     this.borderIndex = v.state;
-    this.url = this.domains;
-  },
-  onShow() {
     this.currentPage = 1;
+    this.url = this.domains;
     this.list = [];
     this.init(this.borderIndex ? Number(this.borderIndex) + 1 : 1);
   },
@@ -101,7 +99,8 @@ export default {
           start_time: v.meeting_start_time, //开始时间
           end_time: v.meeting_end_time, //结束时间
           meeting_id: v.meeting_id, //会议Id
-          address: v.meeting_detail_address //地点
+          address: v.meeting_detail_address, //地点
+          cover: v.meeting_cover
         },
         unique_sn: v.unique_sn, //订单唯一标识
         order_ids: [{ order_sn: v.order_sn, id: v.id, unique_sn: v.unique_sn }] //订单号群
@@ -110,7 +109,7 @@ export default {
       wx.navigateTo({
         url: `../../moduleMeeting/pay/main?data=${JSON.stringify(
           query
-        )}&meeting_id=${v.meeting_id}`
+        )}&meeting_id=${v.meeting_id}&soft=${v.amount}`
       });
     },
     lower() {
@@ -155,8 +154,10 @@ export default {
 </script>
 <style  scoped>
 .myticket {
+  position: relative;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: auto;
   background: #f4f4f4;
 }
 .border_bottom {
@@ -241,10 +242,8 @@ export default {
   color: #666;
   margin-top: 30rpx;
 }
-.listTextTop {
-  height: 83rpx;
-}
-.listTextBottom  {
+
+.listTextBottom {
   margin-top: 29rpx;
 }
 </style>

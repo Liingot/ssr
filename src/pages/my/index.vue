@@ -39,7 +39,7 @@
           <img :src="url + user.ticket.meeting_cover" alt />
         </div>
         <div class="listText">
-          <div class="listTextTop">{{user.ticket.meeting_name}}</div>
+          <div class="listTextTop" style="padding-bottom:0;">{{user.ticket.meeting_name}}</div>
           <div class="listTextBottom">
             <span>{{user.ticket.meeting_date}} {{user.ticket.meeting_week}}</span>
             <div class="info">
@@ -109,13 +109,12 @@ export default {
         "会议展板",
         "我的发票",
         "添加到我的小程序",
-        "报错反馈",
-        "管理员"
+        "报错反馈"
       ],
       avatarUrl: "", //用户头像
       userName: " 登录后体验更多功能", //用户姓名
       company: "点击登录", //公司名字
-      trck: false, //判断当前用户是否登录
+      trck: false, //判断是否显示当前用户的认证状态
       certification: 1, //判断当前用户是否认证/待审核 1未绑定企业,2待审核，3审核成功
       user: {ticket:null},
       role: false, //true是管理员
@@ -127,11 +126,9 @@ export default {
     this.url = this.domains;
   },
   onShow() {
-    if (wx.getStorageSync("userInfo")) {
-      this.myInfo();
-    }
-    let userInfo = wx.getStorageSync("userInfo");
+     let userInfo = wx.getStorageSync("userInfo");
     if (userInfo) {
+         this.myInfo();
       userInfo = JSON.parse(userInfo);
       this.avatarUrl = userInfo.avatarUrl;  //头像
       // this.userName = userInfo.nickName; //昵称
@@ -160,6 +157,11 @@ export default {
             }
             this.role = data.user.type ?  true:false ;  //是否为管理员
             this.userName = data.user.username; //姓名
+          }else if(res.data.status == '401'){
+              wx.clearStorageSync();
+              this.userName = '登录后体验更多功能';
+              this.company = '点击登录';
+              this.trck = false;
           }
         });
     },
@@ -326,7 +328,6 @@ background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=
   width: calc(100% - 260rpx);
 }
 .listTextTop {
-  height: 83rpx;
   font-size: 28rpx;
   font-weight: 600;
   padding-bottom: 45rpx;

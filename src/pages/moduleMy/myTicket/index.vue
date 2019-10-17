@@ -19,7 +19,7 @@
             <img :src="url + item.meeting_cover" alt />
           </div>
           <div class="listText">
-            <div class="listTextTop">{{item.meeting_name}}</div>
+            <div class="listTextTop" >{{item.meeting_name}}</div>
             <div class="listTextBottom">
               <span>{{item.meeting_date}} {{meeting_week}}</span>
               <div class="info">

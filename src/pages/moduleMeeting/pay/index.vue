@@ -3,7 +3,7 @@
     <section>
       <section class="shop">
         <div class="shopHeader">
-          <div class="headerLogo">
+          <div class="headerLogo" v-if="data.meeting.cover">
             <img :src="url + data.meeting.cover" alt />
           </div>
           <div class="headerText">{{data.meeting.title}}</div>
@@ -87,7 +87,7 @@
   </div>
 </template>
 <script>
-import { time } from "../../../utils/validate";
+import { time , toast } from "../../../utils/validate";
 export default {
   data() {
     return {
@@ -135,7 +135,7 @@ export default {
         let query = {
           order_ids: JSON.stringify(this.data.order_ids), //订单号群
           meeting_id: this.meeting_id, //会议id
-          total_amount: String(wx.getStorageSync("soft")), //总价
+          total_amount: this.soft, //总价
           unique_sn: this.data.unique_sn //订单唯一标识
         };
         this.axios
@@ -163,6 +163,8 @@ export default {
                   });
                 }
               });
+            }else if(res.data.status == '400'){
+              toast(res.data.message);
             }
           });
       } else {
@@ -177,6 +179,8 @@ export default {
               wx.navigateTo({
                 url: "../../moduleMy/paysState/main?state=" + 0
               }); //待支付
+            }else if(res.data.status == '400'){
+              toast(res.data.message);
             }
           });
       }

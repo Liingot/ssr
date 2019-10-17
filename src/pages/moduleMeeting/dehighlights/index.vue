@@ -16,7 +16,7 @@
       </section>
     </div>
     <p class="no" v-else>暂无数据</p>
-    <go-login v-if="loggetIsHide" reLaunchUrl='../../login/main'></go-login>
+    <go-login v-if="loggetIsHide" reLaunchUrl="../../login/main"></go-login>
   </div>
 </template>
 <script>
@@ -41,7 +41,7 @@ export default {
     give(item) {
       let url = "/api/meeting/like";
       this.like(item.id, url).then(res => {
-        if (res.data.code == 200) {
+        if (res.data.status == 200) {
           item.trck = !item.trck;
           if (item.trck) {
             item.like++;
@@ -50,8 +50,8 @@ export default {
             item.like--;
             url = "/api/meeting/cancelLike";
           }
-        } else if(res.data.code == 401){
-           this.loggetIsHide = true;
+        } else if (res.data.status == 401) {
+          this.loggetIsHide = true;
         }
       });
     },
@@ -63,8 +63,6 @@ export default {
             data: { video_id: id }
           })
           .then(res => {
-            // if (res.data.status == "200") {
-            // }
             resolve(res);
           });
       });
@@ -76,13 +74,11 @@ export default {
           data: { meeting_id: id }
         })
         .then(res => {
-          console.log(res, "res");
           if (res.data.status == "200") {
             res.data.data.video.forEach(item => {
               this.$set(item, "trck", false);
             });
             this.dehighList = res.data.data.video;
-            console.log(this.dehighList);
           }
         });
     }

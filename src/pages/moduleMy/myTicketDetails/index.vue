@@ -25,8 +25,8 @@
     <section class="code">
       <h3 class="codeH3">入场码</h3>
       <div class="codeIcon">
-        <div class="icon">
-          <img :src="url + data.qrcode" alt />
+        <div class="icon" v-if="data.qrcode">
+          <img :src="url + '/'+ data.qrcode" alt />
         </div>
       </div>
       <div class="userInfo">
