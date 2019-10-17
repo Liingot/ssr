@@ -7,7 +7,7 @@
         </div>
         <div
           class="headerText"
-        >{{data.meeting_name}}111111111111111111111111111111111111111111111111111111111111111111112222222111111</div>
+        >{{data.meeting_name}}</div>
       </div>
       <p class="time border">
         <span class="timeLogo">

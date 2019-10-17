@@ -375,7 +375,7 @@ background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=
   display: flex;
   background: white;
   border-radius: 15rpx;
-  padding: 30rpx 0;
+  padding: 30rpx 20rpx;
   box-sizing: border-box;
   margin-bottom: 20rpx;
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <index-banner :bannerList="bannerList" @bannerLook="bannerLook" v-if="bannerList.length"></index-banner>
+    <index-banner :bannerList="bannerList"  v-if="bannerList.length"></index-banner>
     <section class="main">
       <div class="information">
         <div class="informationLeft">
@@ -102,9 +102,6 @@ export default {
             this.lastPage = res.data.data.last_page; //分页的最后一页
           }
         });
-    },
-    bannerLook(v) {
-      //点击banner的回调
     },
     details(v) {
       wx.navigateTo({

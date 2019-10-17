@@ -16,7 +16,7 @@
           @click="details(item)"
         >
           <div class="listPhoto">
-            <img :src="item.meeting_cover" alt />
+            <img :src="url + item.meeting_cover" alt />
           </div>
           <div class="listText">
             <div class="listTextTop">{{item.meeting_name}}</div>
@@ -34,7 +34,7 @@
         </section>
       </scroll-view>
     </section>
-    <p class="no" v-else>暂无可用票券</p>
+    <p class="no" v-else>{{addborder ? '暂无可用票券' :"暂无已使用票券"}}</p>
   </div>
 </template>
 <script>
@@ -46,10 +46,12 @@ export default {
       addborder: true,
       lastPage: 1,
       myTicketList: [],
-      currentPage: 1
+      currentPage: 1,
+      url: ""
     };
   },
   mounted() {
+    this.url = this.duration;
     this.init();
   },
   methods: {

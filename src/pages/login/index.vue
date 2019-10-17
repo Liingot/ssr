@@ -15,7 +15,7 @@
       <div class="code">
         <span class="text">验证码</span>
         <div class="codeEdit">
-          <input type="text" placeholder="请输入验证码" v-model="code" />
+          <input type="number" placeholder="请输入验证码" v-model="code" />
           <span class="getCode" @click="getCode">{{codeText == '获取验证码'? '获取验证码' :againCode }}</span>
         </div>
       </div>

@@ -31,25 +31,27 @@
       <li class="mainLis">
         <span class="text">职位</span>
         <picker mode="selector" :range="positionList" @change="positionChange">
-          <input
+          <!-- <input
             type="text"
             style="text-align:right;"
             placeholder="请输入职位"
             class="subText"
             v-model="position"
-          />
+          /> -->
+          <span class="subText">{{position}}</span>
         </picker>
       </li>
       <li class="mainLis">
         <span class="text">省份</span>
         <picker mode="region" @change="provinceChange">
-          <input
+          <!-- <input
             type="text"
             style="text-align:right;"
             placeholder="请输入省份"
             class="subText"
             v-model="province"
-          />
+          /> -->
+           <span class="subText">{{province}}</span>
         </picker>
       </li>
       <li class="mainLis">
@@ -63,25 +65,28 @@
       <li class="mainLis">
         <span class="text">性别</span>
         <picker mode="selector" :range="genderList" @change="genderChange">
-          <input
+          <!-- <input
             type="text"
             style="text-align:right;"
             placeholder="请输入性别"
             class="subText"
             v-model="gender"
-          />
+          /> -->
+          <span class="subText">{{gender}}</span>
         </picker>
       </li>
       <li class="mainLis">
         <span class="text">出生年月</span>
         <picker mode="date" start="1800-01-01" end="2019-10-17" @change="yearChange">
-          <input
+          <!-- <input
             type="text"
             style="text-align:right;"
             placeholder="请输入出生年月"
             class="subText"
             v-model="year"
-          />
+          /> -->
+          <span class="subText">{{year}}</span>
+
         </picker>
       </li>
     </ul>

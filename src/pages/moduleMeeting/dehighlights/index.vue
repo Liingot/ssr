@@ -16,43 +16,58 @@
       </section>
     </div>
     <p class="no" v-else>暂无数据</p>
+    <go-login v-if="loggetIsHide" reLaunchUrl='../../login/main'></go-login>
   </div>
 </template>
 <script>
+import goLogin from "../../../components/goLogin";
 export default {
   data() {
     return {
       dehighList: [],
-      url:"",
+      url: "",
+      loggetIsHide: false
     };
   },
+  components: { goLogin },
   onLoad(v) {
     this.url = this.domains;
     this.init(v.id);
   },
+  onShow() {
+    this.loggetIsHide = false;
+  },
   methods: {
     give(item) {
-      let url;
-      item.trck = !item.trck;
-      if (item.trck) {
-        item.like++;
-        url = "/api/meeting/like";
-      } else {
-        item.like--;
-        url = "/api/meeting/cancelLike";
-      }
-      this.like(item.id, url);
+      let url = "/api/meeting/like";
+      this.like(item.id, url).then(res => {
+        if (res.data.code == 200) {
+          item.trck = !item.trck;
+          if (item.trck) {
+            item.like++;
+            url = "/api/meeting/like";
+          } else {
+            item.like--;
+            url = "/api/meeting/cancelLike";
+          }
+        } else if(res.data.code == 401){
+           this.loggetIsHide = true;
+        }
+      });
     },
     like(id, url) {
-      this.axios
-        .post({
-          url: url,
-          data: { video_id: id }
-        })
-        .then(res => {
-          if (res.data.status == "200") {
-          }
-        });
+      return new Promise((resolve, reject) => {
+        this.axios
+          .post({
+            url: url,
+            data: { video_id: id }
+          })
+          .then(res => {
+            // if (res.data.status == "200") {
+            // }
+            resolve(res);
+          });
+      });
     },
     init(id) {
       this.axios
@@ -82,10 +97,12 @@ export default {
   margin-top: 30rpx;
 }
 .dehighlights {
-  min-height: 100vh;
+  height: 100vh;
   background: #f4f4f4;
   padding: 20rpx;
   box-sizing: border-box;
+  overflow: auto;
+  position: relative;
 }
 .video {
   width: 100%;

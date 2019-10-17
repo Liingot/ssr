@@ -40,7 +40,7 @@
               <span class="pay" v-if="item.status == '1'" @click="goPay(item)">去支付</span>
               <span class="cancel" v-if="item.status == '1'" @click="cancel(item,index)">取消订单</span>
               <!-- <span class="cancel" v-if="item.status == '2'" @click="refund">退款</span> -->
-              <span class="cancel" v-if="item.status == '3'">申请开票</span>
+              <!-- <span class="cancel" v-if="item.status == '3'">申请开票</span> -->
             </div>
           </section>
         </div>

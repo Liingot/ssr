@@ -8,8 +8,8 @@
       indicator-dots="true"
       skip-hidden-item-layout="true"
     >
-      <swiper-item v-for="(item,index) in bannerList" :key="index" @click="look(item)">
-        <div class="banner">
+      <swiper-item v-for="(item,index) in bannerList" :key="index" >
+        <div class="banner" @click="look(item)">
           <img :src="url + item.cover" alt />
         </div>
       </swiper-item>
@@ -41,7 +41,10 @@ export default {
       console.log(v);
     },
     look(v) {
-      this.$emit("bannerLook", v);
+      console.log(v);
+      wx.navigateTo({
+        url:"../../pages/moduleMeeting/signin/main?id=" + v.id
+      })
     }
   }
 };

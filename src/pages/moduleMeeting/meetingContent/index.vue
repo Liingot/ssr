@@ -88,8 +88,8 @@ export default {
         case "报名参会":
           wx.navigateTo({
             url:
-              "../../moduleMeeting/signin/main?item=" +
-              JSON.stringify(this.item)
+              "../../moduleMeeting/signin/main?id=" +
+             this.item.id
           });
           break;
         case "会议集锦":

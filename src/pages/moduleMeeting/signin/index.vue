@@ -42,46 +42,32 @@
         </div>
         <p class="reservationIconText">分享</p>
       </button>
-      <!-- <div class="reservationIcon">
-        <div class="reservationIconLogo">
-          <img src="/static/images/zfreservation.png" alt />
-        </div>
-        <p class="reservationIconText">分享</p>
-      </div>-->
       <span class="reser" :class="{'endTrck':endTrck}" @click="reser">订座报名</span>
     </section>
-    <section class="notlogged" v-if="loggetIsHide">
-      <div class="logget">
-        <div class="loggetLogo">
-          <img src="/static/images/noLogin.png" alt />
-        </div>
-        <div class="loggetText">
-          <p class="loggetTitle">您还未登录</p>
-          <p class="loggetSubTitle">（请先登录/注册再进行此操作）</p>
-          <span class="goLogin" @click="goLogin">去登录</span>
-        </div>
-      </div>
-    </section>
+    <go-login v-if="loggetIsHide" reLaunchUrl="../../login/main"></go-login>
   </div>
 </template>
 <script>
-import navigationBar from "../../../components/navigationBar";
 import { time } from "../../../utils/validate";
+import goLogin from "../../../components/goLogin";
 export default {
   data() {
     return {
       item: null,
       signinData: {},
       loggetIsHide: false, //未登录弹框
-      url: ""
+      url: "",
+      meeting_id: 0
     };
   },
   onShareAppMessage: function(res) {
     if (res.from == "button") {
-      console.log(res, "res");
     }
   },
-  components: { navigationBar },
+  onShow() {
+    this.loggetIsHide = false;
+  },
+  components: { goLogin },
   computed: {
     start_time() {
       //开始时间
@@ -101,16 +87,10 @@ export default {
   },
   onLoad(v) {
     this.url = this.domains;
-    this.item = JSON.parse(v.item);
-    this.init(this.item.id);
+    this.meeting_id = v.id;
+    this.init(v.id);
   },
   methods: {
-    goLogin() {
-      wx.reLaunch({
-        url: "../../login/main"
-      });
-      this.loggetIsHide = false;
-    },
     init(id) {
       this.axios
         .post({
@@ -128,13 +108,13 @@ export default {
         this.axios
           .post({
             url: "/api/order/index",
-            data: { meeting_id: this.item.id }
+            data: { meeting_id: this.meeting_id }
           })
           .then(res => {
             if (res.data.status == "200") {
               wx.navigateTo({
                 url: `../confirm/main?meeting_id=${
-                  this.item.id
+                  this.meeting_id
                 }&item=${JSON.stringify(res.data.data)}` //确定订单
               });
             } else if (res.data.status == "401") {
@@ -324,70 +304,6 @@ export default {
   margin-top: 15rpx;
   font-size: 23rpx;
   color: black;
-}
-.notlogged {
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  z-index: 99;
-  background: rgba(0, 0, 0, 0.5);
-  position: absolute;
-  left: 0;
-  top: 0;
-  padding: 190rpx 80rpx 0 80rpx;
-  box-sizing: border-box;
-}
-.logget {
-  width: 100%;
-  height: 580rpx;
-  background: white;
-  border-radius: 15rpx;
-  position: relative;
-  padding: 0 45rpx;
-  box-sizing: border-box;
-}
-.loggetLogo {
-  width: 306rpx;
-  height: 290rpx;
-  position: absolute;
-  top: -120rpx;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.loggetLogo > img {
-  width: 100%;
-  height: 100%;
-}
-.loggetText {
-  padding-top: 230rpx;
-  width: 100%;
-  height: 100rpx;
-  text-align: center;
-  box-sizing: border-box;
-}
-.loggetTitle,
-.loggetSubTitle {
-  line-height: 50rpx;
-}
-.loggetTitle {
-  font-size: 30rpx;
-  font-weight: 500;
-}
-.loggetSubTitle {
-  font-size: 27rpx;
-  color: #666666;
-}
-.goLogin {
-  display: block;
-  border-radius: 50rpx;
-  text-align: center;
-  width: 100%;
-  line-height: 90rpx;
-  color: white;
-  font-size: 30rpx;
-  font-weight: 500;
-  margin-top: 70rpx;
-  background: #0070cc;
 }
 .endTrck {
   background: #ccc !important;
