@@ -2,7 +2,7 @@
   <div class="brand">
     <ul class="branduls" v-if="list.length">
       <li class="brandlis" v-for="(item,index) in list" :key="index">
-        <img :src="item" alt />
+        <img :src="url + item" alt />
       </li>
     </ul>
     <p class="no" v-else>暂无数据</p>
@@ -13,10 +13,12 @@ import "../../../../static/wxss/brand.wxss";
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      url:""
     };
   },
   onLoad(v) {
+    this.url = this.domains;
     this.init(v.id);
   },
   methods: {

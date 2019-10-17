@@ -1,12 +1,12 @@
 <template>
   <div class="signin">
     <div class="signinBanner">
-      <img :src="signinData.cover" alt />
+      <img :src="url + signinData.cover" alt />
     </div>
     <div class="sinfninmain">
       <section class="basic">
         <h3 class="h3">{{signinData.title}}</h3>
-        <p class="number">
+        <p class="number" v-if="signinData.number">
           <span>报名 {{signinData.apply_number}}</span>
           <span>剩余 {{signinData.number - signinData.apply_number}}</span>
         </p>
@@ -15,7 +15,7 @@
           <span class="timeLogo">
             <img src="/static/images/time.png" alt />
           </span>
-          <span class="Text">{{start_time}}-{{end_time}}</span>
+          <span class="Text">{{ start_time }}-{{end_time}}</span>
         </p>
         <p class="map">
           <span class="mapLogo">
@@ -66,13 +66,14 @@
 </template>
 <script>
 import navigationBar from "../../../components/navigationBar";
-
+import { time } from "../../../utils/validate";
 export default {
   data() {
     return {
       item: null,
       signinData: {},
-      loggetIsHide: false //未登录弹框
+      loggetIsHide: false, //未登录弹框
+      url: ""
     };
   },
   onShareAppMessage: function(res) {
@@ -84,13 +85,11 @@ export default {
   computed: {
     start_time() {
       //开始时间
-      let start_time = String(this.signinData.start_time).split(":");
-      return `${start_time[0].replace(/-/g, "/")}:${start_time[1]}`;
+      return time(this.signinData.start_time);
     },
     end_time() {
       //结束时间
-      let end_time = String(this.signinData.end_time).split(":");
-      return `${end_time[0].replace(/-/g, "/")}:${end_time[1]}`;
+      return time(this.signinData.end_time);
     },
     endTrck() {
       //活动是否截止
@@ -101,6 +100,7 @@ export default {
     }
   },
   onLoad(v) {
+    this.url = this.domains;
     this.item = JSON.parse(v.item);
     this.init(this.item.id);
   },

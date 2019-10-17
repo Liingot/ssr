@@ -4,7 +4,7 @@
     <div class="mainHeader">
       <div class="shopHeader">
         <div class="headerLogo">
-          <img :src="data.meeting_cover" alt />
+          <img :src=" url + data.meeting_cover" alt />
         </div>
         <div class="headerText">{{data.meeting_name}}</div>
       </div>
@@ -40,7 +40,8 @@ export default {
   data() {
     return {
       data: {},
-      item: null
+      item: null,
+      url:""
     };
   },
   computed: {
@@ -63,6 +64,7 @@ export default {
   },
   onLoad(v) {
     this.item = JSON.parse(v.data);
+    this.url = this.domains;
     this.init(this.item.order_id, this.meeting_id, this.user_id);
   },
   methods: {

@@ -6,11 +6,11 @@
         <div class="inco">
           <img src="/static/images/inspectBanner.png" alt />
         </div>
-        <div class="detail">
+        <div class="detail" @click="scanCode">
           <div class="sm">
             <img src="/static/images/inspectSm.png" alt />
           </div>
-          <span @click="scanCode">扫码验票</span>
+          <span>扫码验票</span>
         </div>
       </div>
     </div>
@@ -48,6 +48,7 @@ export default {
   background: #0374d1;
   padding: 60rpx 30rpx;
   box-sizing: border-box;
+  overflow: auto;
 }
 .title {
   text-align: center;

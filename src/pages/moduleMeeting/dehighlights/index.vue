@@ -2,7 +2,7 @@
   <div class="dehighlights">
     <div v-if="dehighList.length">
       <section class="radioTemplate" v-for="(item,index) in dehighList" :key="index">
-        <video :src="item.video_url" class="video"></video>
+        <video :src="url + item.video_url" class="video"></video>
         <div class="likeTemplate">
           <span class="text">{{item.title}}</span>
           <div class="linkNum">
@@ -22,10 +22,12 @@
 export default {
   data() {
     return {
-      dehighList: []
+      dehighList: [],
+      url:"",
     };
   },
   onLoad(v) {
+    this.url = this.domains;
     this.init(v.id);
   },
   methods: {

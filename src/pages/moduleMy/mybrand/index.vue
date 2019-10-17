@@ -4,7 +4,7 @@
       <h3 class="brandh3">企业获奖信息</h3>
       <ul class="branduls">
         <li class="brandlis" v-for="(item,index) in company" :key="index">
-          <img :src="item" alt />
+          <img :src="url + item" alt />
         </li>
       </ul>
     </div>
@@ -16,11 +16,13 @@ import "../../../../static/wxss/brand.wxss";
 export default {
   data() {
     return {
-      company: []
+      company: [],
+      url:''
     };
   },
   mounted() {
-    this.init();
+this.url = this.domains;
+   this.init();
   },
   methods: {
     init() {

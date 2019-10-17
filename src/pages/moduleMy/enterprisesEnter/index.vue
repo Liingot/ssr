@@ -30,25 +30,27 @@
       </li>
       <li class="mainLis">
         <span class="text">职位</span>
-        <!-- <span class="subText" contenteditable="true">xxx</span> -->
-        <input
-          type="text"
-          style="text-align:right;"
-          placeholder="请输入职位"
-          class="subText"
-          v-model="position"
-        />
+        <picker mode="selector" :range="positionList" @change="positionChange">
+          <input
+            type="text"
+            style="text-align:right;"
+            placeholder="请输入职位"
+            class="subText"
+            v-model="position"
+          />
+        </picker>
       </li>
       <li class="mainLis">
         <span class="text">省份</span>
-        <!-- <span class="subText" contenteditable="true">北京</span> -->
-        <input
-          type="text"
-          style="text-align:right;"
-          placeholder="请输入省份"
-          class="subText"
-          v-model="province"
-        />
+        <picker mode="region" @change="provinceChange">
+          <input
+            type="text"
+            style="text-align:right;"
+            placeholder="请输入省份"
+            class="subText"
+            v-model="province"
+          />
+        </picker>
       </li>
       <li class="mainLis">
         <span class="text">手机号</span>
@@ -60,25 +62,27 @@
       </li>
       <li class="mainLis">
         <span class="text">性别</span>
-        <!-- <span class="subText" contenteditable="true"></span>  -->
-        <input
-          type="text"
-          style="text-align:right;"
-          placeholder="请输入性别"
-          class="subText"
-          v-model="gender"
-        />
+        <picker mode="selector" :range="genderList" @change="genderChange">
+          <input
+            type="text"
+            style="text-align:right;"
+            placeholder="请输入性别"
+            class="subText"
+            v-model="gender"
+          />
+        </picker>
       </li>
       <li class="mainLis">
         <span class="text">出生年月</span>
-        <!-- <span class="subText" contenteditable="true">1990-09-10</span> -->
-        <input
-          type="text"
-          style="text-align:right;"
-          placeholder="请输入出生年月"
-          class="subText"
-          v-model="year"
-        />
+        <picker mode="date" start="1800-01-01" end="2019-10-17" @change="yearChange">
+          <input
+            type="text"
+            style="text-align:right;"
+            placeholder="请输入出生年月"
+            class="subText"
+            v-model="year"
+          />
+        </picker>
       </li>
     </ul>
     <footer class="footer">
@@ -102,9 +106,11 @@ export default {
       name: "张先生",
       companyName: "", //公司名称
       position: "xxx", //职位
+      positionList: ["总经理", "部门经理"],
       province: "北京", //省份
       tel: "152****1111", //手机号
       gender: "男",
+      genderList: ["男", "女"],
       year: "1990-09-10",
       vagusIsHide: false, //模糊搜索显示隐藏
       companyList: [],
@@ -132,10 +138,51 @@ export default {
   },
   components: { vague },
   methods: {
+    positionChange(e) {
+      this.position = this.positionList[e.target.value];
+    },
+    genderChange(e) {
+      this.gender = this.genderList[e.target.value];
+    },
+    provinceChange(e) {
+      let value = e.target.value;
+      if (value[0] == value[1]) this.province = value[1] + value[2];
+      else this.province = value[0] + value[1] + value[2];
+    },
+    yearChange(e) {
+      this.year = e.target.value;
+    },
+    toast(v) {
+      wx.showToast({
+        title: v,
+        icon: "none",
+        duration: 1000
+      });
+    },
     retu() {
       this.vagusIsHide = false;
     },
     submit() {
+      if (this.companyName == "") {
+        this.toast("公司名称没有填写");
+        return;
+      }
+      if (this.name == "") {
+        this.toast("姓名没有填写");
+        return;
+      }
+      if (this.position == "") {
+        this.toast("职位没有填写");
+        return;
+      }
+      if (this.province == "") {
+        this.toast("省份没有填写");
+        return;
+      }
+      if (this.gender == "") {
+        this.toast("性别没有填写");
+        return;
+      }
       wx.setStorageSync(
         "userInfo",
         JSON.stringify({ nickName: this.name, avatarUrl: this.avatar })

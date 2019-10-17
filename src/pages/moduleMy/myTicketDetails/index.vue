@@ -3,9 +3,11 @@
     <div class="mainHeader">
       <div class="shopHeader">
         <div class="headerLogo">
-          <img :src="data.meeting_cover" alt />
+          <img :src="url + data.meeting_cover" alt />
         </div>
-        <div class="headerText">{{data.meeting_name}}</div>
+        <div
+          class="headerText"
+        >{{data.meeting_name}}111111111111111111111111111111111111111111111111111111111111111111112222222111111</div>
       </div>
       <p class="time border">
         <span class="timeLogo">
@@ -24,7 +26,7 @@
       <h3 class="codeH3">入场码</h3>
       <div class="codeIcon">
         <div class="icon">
-          <img :src="data.qrcode" alt />
+          <img :src="url + data.qrcode" alt />
         </div>
       </div>
       <div class="userInfo">
@@ -43,20 +45,20 @@
   </div>
 </template>
 <script>
+import { time } from "../../../utils/validate";
 export default {
   data() {
     return {
-      data: {}
+      data: {},
+      url: ""
     };
   },
   computed: {
     start_time() {
-      let start_time = String(this.data.start_time).split(":");
-      return `${start_time[0].replace(/-/g, "/")}:${start_time[1]}`;
+      return time(this.data.start_time);
     },
     end_time() {
-      let end_time = String(this.data.end_time).split(":");
-      return `${end_time[0].replace(/-/g, "/")}:${end_time[1]}`;
+      return time(this.data.end_time);
     },
     status() {
       let status = this.data.status;
@@ -76,6 +78,7 @@ export default {
     }
   },
   onLoad(v) {
+    this.url = this.domains;
     this.init(v.id);
   },
   methods: {
@@ -126,13 +129,16 @@ export default {
   height: 100%;
 }
 .headerText {
+  width: calc(100% - 256rpx);
+  height: 83rpx;
   font-size: 30rpx;
   font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: normal;
 }
 .border {
   padding: 30rpx 0;

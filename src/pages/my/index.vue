@@ -32,11 +32,11 @@
       </div>
       <div
         class="tickContent listChildren"
-        @click="details(user.ticket.meeting_id)"
+        @click="details(user.ticket.ticket_id)"
         v-if="user.ticket"
       >
         <div class="listPhoto">
-          <img :src="user.ticket.meeting_cover" alt />
+          <img :src="url + user.ticket.meeting_cover" alt />
         </div>
         <div class="listText">
           <div class="listTextTop">{{user.ticket.meeting_name}}</div>
@@ -118,11 +118,14 @@ export default {
       trck: false, //判断当前用户是否登录
       certification: 1, //判断当前用户是否认证/待审核 1未绑定企业,2待审核，3审核成功
       user: {ticket:null},
-      role: false //true是管理员
+      role: false, //true是管理员
+      url:""
     };
   },
   components: { myInfo },
-  mounted() {},
+  mounted() {
+    this.url = this.domains;
+  },
   onShow() {
     if (wx.getStorageSync("userInfo")) {
       this.myInfo();
@@ -323,6 +326,7 @@ background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=
   width: calc(100% - 260rpx);
 }
 .listTextTop {
+  height: 83rpx;
   font-size: 28rpx;
   font-weight: 600;
   padding-bottom: 45rpx;
@@ -334,6 +338,7 @@ background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=
   word-break: break-all;
 }
 .listTextBottom {
+  margin-top: 29rpx;
   font-size: 20rpx;
   display: flex;
   justify-content: space-between;

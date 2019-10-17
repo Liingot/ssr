@@ -20,7 +20,7 @@
           <section class="listChildren">
             <!--  @click="details(item)" -->
             <div class="listPhoto">
-              <img :src="item.meeting_cover" alt />
+              <img :src="url + item.meeting_cover" alt />
             </div>
             <div class="listText">
               <div class="listTextTop">{{item.meeting_name}}</div>
@@ -58,18 +58,19 @@ export default {
       borderIndex: 0,
       list: [],
       lastPage: 1,
-      currentPage: 1
+      currentPage: 1,
+      url: ""
     };
   },
   onLoad(v) {
     //state判断当前是哪一个状态
     this.borderIndex = v.state;
-  
+    this.url = this.domains;
   },
   onShow() {
     this.currentPage = 1;
     this.list = [];
-      this.init(this.borderIndex ? Number(this.borderIndex) + 1 : 1);
+    this.init(this.borderIndex ? Number(this.borderIndex) + 1 : 1);
   },
   methods: {
     cancel(v, index) {
@@ -239,5 +240,11 @@ export default {
   font-size: 30rpx;
   color: #666;
   margin-top: 30rpx;
+}
+.listTextTop {
+  height: 83rpx;
+}
+.listTextBottom  {
+  margin-top: 29rpx;
 }
 </style>

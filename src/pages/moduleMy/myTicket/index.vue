@@ -163,6 +163,7 @@ export default {
   width: calc(100% - 260rpx);
 }
 .listTextTop {
+  height: 83rpx;
   font-size: 28rpx;
   font-weight: 600;
   padding-bottom: 45rpx;
@@ -174,6 +175,7 @@ export default {
   word-break: break-all;
 }
 .listTextBottom {
+  margin-top: 29rpx;
   font-size: 20rpx;
   display: flex;
   justify-content: space-between;

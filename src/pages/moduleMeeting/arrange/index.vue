@@ -5,10 +5,12 @@
 export default {
   data() {
     return {
-      guide: []
+      guide: [],
+      url:"",
     };
   },
   onLoad(v) {
+    this.url = this.domains;
     this.init(v.id);
   },
   methods: {

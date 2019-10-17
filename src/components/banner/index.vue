@@ -10,7 +10,7 @@
     >
       <swiper-item v-for="(item,index) in bannerList" :key="index" @click="look(item)">
         <div class="banner">
-          <img :src="item.cover" alt />
+          <img :src="url + item.cover" alt />
         </div>
       </swiper-item>
     </swiper>
@@ -28,8 +28,13 @@ export default {
   },
   data() {
     return {
-      currentTab: 0 //当前所在滑块的index
+      currentTab: 0, //当前所在滑块的index
+      url: ""
     };
+  },
+  mounted() {
+    this.url = this.domains;
+    console.log(this.bannerList);
   },
   methods: {
     switchItem(v) {

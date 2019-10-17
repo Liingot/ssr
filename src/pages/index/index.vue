@@ -1,6 +1,6 @@
 <template>
   <div>
-    <index-banner :bannerList="bannerList" @bannerLook="bannerLook"></index-banner>
+    <index-banner :bannerList="bannerList" @bannerLook="bannerLook" v-if="bannerList.length"></index-banner>
     <section class="main">
       <div class="information">
         <div class="informationLeft">
@@ -9,12 +9,6 @@
           </div>
           <h3 class="meetingH3">会议信息</h3>
         </div>
-        <!-- <div class="informationRight">
-          <span>分享给好友</span>
-          <div class="share">
-            <img src="/static/images/share.jpg" alt />
-          </div>
-        </div>-->
         <button class="informationRight" open-type="share">
           <span>分享给好友</span>
           <div class="share">
@@ -31,7 +25,7 @@
             @click="details(item)"
           >
             <div class="listPhoto">
-              <img :src="item.cover" alt />
+              <img :src="url + item.cover" alt />
             </div>
             <div class="listText">
               <div class="listTextTop">{{item.title}}</div>
@@ -60,10 +54,12 @@ export default {
       bannerList: [],
       meetingList: [],
       currentPage: 1,
-      lastPage: 1 //总的分页数
+      lastPage: 1, //总的分页数
+      url: ""
     };
   },
   mounted() {
+    this.url = this.domains;
     wx.showShareMenu({
       withShareTicket: true
     });
@@ -102,7 +98,7 @@ export default {
               ...res.data.data.meetingList.data,
               ...this.meetingList
             ];
-            this.bannerList = res.data.data.bannerList; //轮播图
+            this.bannerList = res.data.data.banner; //轮播图
             this.lastPage = res.data.data.last_page; //分页的最后一页
           }
         });
@@ -204,6 +200,7 @@ export default {
   width: calc(100% - 260rpx);
 }
 .listTextTop {
+  height: 83rpx;
   font-size: 28rpx;
   font-weight: 600;
   padding-bottom: 45rpx;
@@ -212,9 +209,9 @@ export default {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  word-break: break-all;
 }
 .listTextBottom {
+  margin-top: 29rpx;
   font-size: 20rpx;
   display: flex;
   justify-content: space-between;

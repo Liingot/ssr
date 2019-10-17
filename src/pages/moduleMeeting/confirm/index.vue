@@ -3,7 +3,7 @@
     <section class="shop">
       <div class="shopHeader">
         <div class="headerLogo">
-          <img :src="item.meeting.cover" alt />
+          <img :src="url + item.meeting.cover" alt />
         </div>
         <div class="headerText">{{item.meeting.title}}</div>
       </div>
@@ -91,6 +91,7 @@
   </div>
 </template>
 <script>
+import {time} from "../../../utils/validate";
 export default {
   data() {
     return {
@@ -99,10 +100,12 @@ export default {
       meeting_id: "", //会议id
       userList: [],
       userListIndex: 0,
-      item: {}
+      item: {},
+      url:""
     };
   },
   onLoad(v) {
+    this.url = this.domains;
     this.meeting_id = v.meeting_id;
     this.item = JSON.parse(v.item);
   },
@@ -117,13 +120,11 @@ export default {
     },
     start_time() {
       //开始时间
-      let start_time = String(this.item.meeting.start_time).split(":");
-      return `${start_time[0].replace(/-/g, "/")}:${start_time[1]}`;
+      return time(this.item.meeting.start_time);
     },
     end_time() {
       //结束时间
-      let end_time = String(this.item.meeting.end_time).split(":");
-      return `${end_time[0].replace(/-/g, "/")}:${end_time[1]}`;
+       return time(this.item.meeting.end_time);
     }
   },
   methods: {
@@ -192,7 +193,6 @@ export default {
         return v.username != "选择人员";
       });
       if (this.userList.length && doc) {
-        wx.setStorage({ key: "soft", data: this.soft });
         let userList = [];
         this.userList.forEach(item => {
           userList.push({ id: item.id, phone: item.phone });

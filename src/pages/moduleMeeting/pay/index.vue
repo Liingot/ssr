@@ -3,7 +3,9 @@
     <section>
       <section class="shop">
         <div class="shopHeader">
-          <div class="headerLogo"></div>
+          <div class="headerLogo">
+            <img :src="url + data.meeting.cover" alt />
+          </div>
           <div class="headerText">{{data.meeting.title}}</div>
         </div>
         <p class="time border">
@@ -20,14 +22,20 @@
         </p>
       </section>
       <div>
-        <section class="success" v-for="(item,index) in data.order_ids" :key="index">
-          <div class="successTop">
-            <div class="successLogo">
-              <img src="/static/images/wx.png" alt />
+        <section class="success">
+          <div class="orderTop">
+            <div class="successTop">
+              <div class="successLogo">
+                <img src="/static/images/wx.png" alt />
+              </div>
+              <div class="text">订座成功！</div>
             </div>
-            <div class="text">订座成功！</div>
+            <p class="successText">请及时付款，避免座位释放。</p>
           </div>
-          <p class="successText">订单号：{{item.order_sn}}，请及时付款，避免座位释放。</p>
+          <div class="order_sn">
+            <p v-for="(item,index) in data.order_ids" :key="index">订单号：{{item.order_sn}}</p>
+          </div>
+          <!--  -->
         </section>
       </div>
       <section class="vesway">
@@ -79,6 +87,7 @@
   </div>
 </template>
 <script>
+import { time } from "../../../utils/validate";
 export default {
   data() {
     return {
@@ -96,28 +105,27 @@ export default {
         }
       ],
       meeting_id: 0, //会议id
-      data: null
+      data: null,
+      soft: 0, //总价
+      url: ""
     };
   },
   computed: {
-    soft() {
-      return wx.getStorageSync("soft");
-    },
     start_time() {
       //开始时间
-      let start_time = String(this.data.meeting.start_time).split(":");
-      return `${start_time[0].replace(/-/g, "/")}:${start_time[1]}`;
+      return time(this.data.meeting.start_time);
     },
     end_time() {
       //结束时间
-      let end_time = String(this.data.meeting.end_time).split(":");
-      return `${end_time[0].replace(/-/g, "/")}:${end_time[1]}`;
+      return time(this.data.meeting.end_time);
     }
   },
   onLoad(v) {
     this.data = JSON.parse(v.data);
     this.meeting_id = v.meeting_id;
-    console.log(this.data, "data");
+    this.soft = v.soft;
+    this.url = this.domains;
+    console.log(this.data, "data", v);
   },
   methods: {
     pay() {
@@ -189,8 +197,16 @@ export default {
   /* overflow-y: auto; */
   /* -webkit-overflow-scrolling: touch; */
   background: #0070cc;
-  background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70)
-    no-repeat;
+  /* background: url(
+      https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,
+      type_ZmFuZ3poZW5naGVpdGk,
+      shadow_10,
+      text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,
+      size_16,
+      color_FFFFFF,
+      t_70
+    )
+    no-repeat; */
   background-size: cover;
   padding: 40rpx 20rpx 120rpx 20rpx;
   box-sizing: border-box;
@@ -220,6 +236,8 @@ export default {
   height: 100%;
 }
 .headerText {
+  width: calc(100% - 256rpx);
+  height: 83rpx;
   font-size: 30rpx;
   font-weight: 600;
   overflow: hidden;
@@ -227,6 +245,8 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  word-wrap: break-word;
+    word-break: normal;
 }
 .border {
   padding: 30rpx;
@@ -325,6 +345,8 @@ export default {
   margin-top: 20rpx;
   font-size: 27rpx;
   color: #666666;
+  padding-left: 44rpx;
+  box-sizing: border-box;
 }
 .vesway {
   background: white;
@@ -384,5 +406,18 @@ export default {
 .vaswayText {
   font-size: 30rpx;
   font-weight: 500;
+}
+.orderTop {
+  padding-bottom: 30rpx;
+  box-sizing: border-box;
+  border-bottom: 1px solid #0070cc;
+}
+.order_sn {
+  padding-top: 30rpx;
+  padding-left: 44rpx;
+  box-sizing: border-box;
+  font-size: 25rpx;
+  color: #666666;
+  line-height: 70rpx;
 }
 </style>
