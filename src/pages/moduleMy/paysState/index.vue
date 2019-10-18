@@ -37,7 +37,7 @@
           </section>
           <section class="operation">
             <div class="oper">
-              <span class="pay" v-if="item.order_status == '1'" @click="goPay(item)">去支付</span>
+              <span class="pay" v-if="item.gopayIsHide" @click="goPay(item)">去支付</span>
               <span class="cancel" v-if="item.order_status == '1'" @click="cancel(item,index)">取消订单</span>
               <!-- <span class="cancel" v-if="item.order_status == '2'" @click="refund">退款</span> -->
               <!-- <span class="cancel" v-if="item.order_status == '3'">申请开票</span> -->
@@ -100,12 +100,19 @@ export default {
           end_time: v.meeting_end_time, //结束时间
           meeting_id: v.meeting_id, //会议Id
           address: v.meeting_detail_address, //地点
-          cover: v.meeting_cover
+          cover: v.meeting_cover,
+          is_open_wechat: v.is_open_wechat
         },
         unique_sn: v.unique_sn, //订单唯一标识
-        order_ids: [{ order_sn: v.order_sn, id: v.id, unique_sn: v.unique_sn }] //订单号群
+        order_ids: [
+          {
+            order_sn: v.order_sn,
+            id: v.id,
+            unique_sn: v.unique_sn,
+            username: v.username
+          }
+        ] //订单号群
       };
-      wx.setStorageSync("soft", v.amount); //总价
       wx.navigateTo({
         url: `../../moduleMeeting/pay/main?data=${JSON.stringify(
           query
@@ -143,7 +150,10 @@ export default {
             this.lastPage = res.data.data.last_page;
             console.log(this.lastPage, this.currentPage);
             res.data.data.data.forEach(item => {
-              this.$set(item, "order_ids", item.id);
+              // this.$set(item, "order_ids", item.id);
+              if (item.order_status == '1' && item.is_open_wechat)
+                this.$set(item, "gopayIsHide", true);
+              else this.$set(item, "gopayIsHide", false);
             });
             this.list = [...this.list, ...res.data.data.data];
           }

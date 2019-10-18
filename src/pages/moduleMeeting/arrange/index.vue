@@ -1,12 +1,14 @@
 <template>
-  <div class="brand">议程安排</div>
+  <div class="brand">
+    <img :src="url + plan" alt />
+  </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      guide: [],
-      url:"",
+      plan: "",
+      url: ""
     };
   },
   onLoad(v) {
@@ -22,8 +24,7 @@ export default {
         })
         .then(res => {
           if (res.data.status == "200") {
-            this.guide = res.data.data;
-            console.log(this.guide);
+            this.plan = res.data.data.plan_url;
           }
         });
     }

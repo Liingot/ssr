@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import { validatePhone } from "../../utils/validate";
+import { validatePhone, toast } from "../../utils/validate";
 export default {
   data() {
     return {
@@ -56,27 +56,15 @@ export default {
     bindGetUserInfo(e) {
       if (e.mp.detail.rawData) {
         if (this.phone == "") {
-          wx.showToast({
-            title: "请输入手机号",
-            icon: "none",
-            duration: 1000
-          });
+          toast("请输入手机号");
           return;
         }
         if (!validatePhone(this.phone)) {
-          wx.showToast({
-            title: "请输入正确的手机号",
-            icon: "none",
-            duration: 1000
-          });
+          toast("请输入正确的手机号");
           return;
         }
         if (this.code == "") {
-          wx.showToast({
-            title: "请输入验证码",
-            icon: "none",
-            duration: 1000
-          });
+          toast("请输入验证码");
           return;
         }
         this.submit().then(res => {
@@ -108,19 +96,11 @@ export default {
     getCode() {
       //倒计时
       if (this.phone == "") {
-        wx.showToast({
-          title: "请输入手机号",
-          icon: "none",
-          duration: 1000
-        });
+        toast("请输入手机号");
         return;
       }
       if (!validatePhone(this.phone)) {
-        wx.showToast({
-          title: "请输入正确的手机号",
-          icon: "none",
-          duration: 1000
-        });
+        toast("请输入正确的手机号");
         return;
       }
       if (!this.timer) {
@@ -155,11 +135,7 @@ export default {
               wx.setStorageSync("token", res.data.data.token);
               resolve(res.data.status);
             } else {
-              wx.showToast({
-                title: "验证码错误",
-                icon: "none",
-                duration: 1000
-              });
+              toast("验证码错误");
               reject("验证码错误");
               return;
             }
@@ -186,11 +162,7 @@ export default {
             }
           });
       } else {
-        wx.showToast({
-          title: "手机号格式不正确",
-          icon: "none",
-          duration: 1000
-        });
+        toast("请输入正确的手机号");
         return;
       }
     }

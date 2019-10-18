@@ -1,12 +1,14 @@
 <template>
-  <div class="brand">会议指南</div>
+  <div class="brand">
+    <img :src="url + guide" alt />
+  </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      guide: [],
-      url:'',
+      guide: "",
+      url: ""
     };
   },
   onLoad(v) {
@@ -22,8 +24,7 @@ export default {
         })
         .then(res => {
           if (res.data.status == "200") {
-            this.guide = res.data.data;
-            console.log(this.guide);
+            this.guide = res.data.data.guide_url;
           }
         });
     }

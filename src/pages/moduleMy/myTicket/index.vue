@@ -8,7 +8,7 @@
       <div class="has" :class="{'border_bottom':!addborder}" @click="border('已使用')">已使用</div>
     </header>
     <section class="myticketMain" v-if="myTicketList.length">
-      <scroll-view scroll-y style="height:calc(100vh - 50rpx);" @scrolltolower="lower">
+      <scroll-view scroll-y style="height:calc(100vh - 60rpx);" @scrolltolower="lower">
         <section
           class="listChildren"
           v-for="(item,index) in myTicketList"
@@ -19,7 +19,7 @@
             <img :src="url + item.meeting_cover" alt />
           </div>
           <div class="listText">
-            <div class="listTextTop" >{{item.meeting_name}}</div>
+            <div class="listTextTop">{{item.meeting_name}}</div>
             <div class="listTextBottom">
               <span>{{item.meeting_date}} {{meeting_week}}</span>
               <div class="info">
@@ -51,7 +51,7 @@ export default {
     };
   },
   mounted() {
-    this.url = this.duration;
+    this.url = this.domains;
     this.init();
   },
   methods: {
@@ -70,6 +70,7 @@ export default {
         });
     },
     lower() {
+      console.log(this.lastPage, "xxx");
       this.currentPage++;
       if (this.currentPage <= this.lastPage)
         this.init(this.addborder ? 0 : 1, this.currentPage);
@@ -205,14 +206,12 @@ export default {
 }
 .useClass {
   background: url(https://img-blog.csdnimg.cn/20191010150537433.png) no-repeat
-      right 60%,
-    rgba(255, 255, 255, 0.5);
+    95% rgba(255, 255, 255, 0.5);
   background-size: 20%;
 }
 .hasClass {
   background: url(https://img-blog.csdnimg.cn/20191010150450817.png) no-repeat
-      right 60%,
-    rgba(255, 255, 255, 0.8);
+    95% rgba(255, 255, 255, 0.8);
   background-size: 20%;
 }
 .no {

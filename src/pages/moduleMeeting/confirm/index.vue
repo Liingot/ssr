@@ -77,8 +77,7 @@
     <section class="instructions">
       <p class="inst">说明</p>
       <span class="instText">
-        <p>座位预定有效期至会议开始前3天，请及时支付。</p>
-        <p>若未支付，座位将被释放</p>
+        <p>请及时付款，避免座位释放。</p>
       </span>
     </section>
     <section class="soft">
@@ -157,27 +156,8 @@ export default {
       this.userList.pop();
     },
     add() {
-      // if (this.userList.length) {
-      //   if (
-      //     this.userList[this.userList.length - 1].username != "点击选择人员"
-      //   ) {
-      //     this.number++;
-      //     this.userList.push({
-      //       username: "点击选择人员",
-      //       position: "",
-      //       id: ""
-      //     });
-      //   } else return;
-      // } else {
-      //   this.number++;
-      //   this.userList.push({
-      //     username: "点击选择人员",
-      //     position: "",
-      //     id: ""
-      //   });
-      // }
-      this.number++;
-      this.userList.push({
+      this.number ++ ;
+          this.userList.push({
         username: "选择人员",
         position: "",
         id: ""
@@ -195,7 +175,7 @@ export default {
       if (this.userList.length && doc) {
         let userList = [];
         this.userList.forEach(item => {
-          userList.push({ id: item.id, phone: item.phone });
+          userList.push({ id: item.id, phone: item.phone ,username:item.username });
         });
         let query = {
           meeting_id: this.meeting_id, //会议id
@@ -216,7 +196,7 @@ export default {
                   "&data=" +
                   JSON.stringify(res.data.data) +
                   "&meeting_id=" +
-                  this.meeting_id //支付订单
+                  this.meeting_id //会议Id
               });
             }
           });

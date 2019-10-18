@@ -33,33 +33,52 @@
             <p class="successText">请及时付款，避免座位释放。</p>
           </div>
           <div class="order_sn">
-            <p v-for="(item,index) in data.order_ids" :key="index">订单号：{{item.order_sn}}</p>
+            <!-- <p
+              v-for="(item,index) in data.order_ids"
+              :key="index"
+            >订单号：{{item.order_sn}} 姓名：{{item.order_sn}} </p>
+            </div>-->
+            <div class="order_sn_title">
+              <span>订单号</span>
+              <span>姓名</span>
+            </div>
+            <ul class="order_sn_ul">
+              <li class="order_sn_lis" v-for="(item,index) in data.order_ids" :key="index">
+                <span class="text">{{item.order_sn}}</span>
+                <span class="text">{{item.username}}</span>
+              </li>
+            </ul>
           </div>
-          <!--  -->
         </section>
       </div>
       <section class="vesway">
         <ul class="veswayUls">
           <li class="veswayTitle">选择支付方式</li>
-          <li
-            class="veswayIcon"
-            v-for="(item,index) in items"
-            :key="index"
-            :class="{'icon':index == 0}"
-          >
+          <li class="veswayIcon icon" v-if="is_open_wechat">
             <div class="vaswayLogo">
               <div class="payLogo">
-                <img :src="item.img" alt />
+                <img src="/static/images/wx.png" alt />
               </div>
-              <span class="vaswayText">{{item.title}}</span>
+              <span class="vaswayText">微信支付</span>
             </div>
-            <radio-group @change="radioChange(item)">
-              <radio :checked="item.checked"></radio>
+            <radio-group @change="radioChange('wx')">
+              <radio :checked="wechat"></radio>
+            </radio-group>
+          </li>
+          <li class="veswayIcon">
+            <div class="vaswayLogo">
+              <div class="payLogo">
+                <img src="/static/images/xx.png" alt />
+              </div>
+              <span class="vaswayText">线下支付</span>
+            </div>
+            <radio-group @change="radioChange('xx')">
+              <radio :checked="offline"></radio>
             </radio-group>
           </li>
         </ul>
       </section>
-      <section class="vesway" v-if="items[1].checked" style="margin-top:20rpx;">
+      <section class="vesway" v-if="offline" style="margin-top:20rpx;">
         <div class="xxHeader">线下转账信息</div>
         <div class="xxContent">
           <p class="xxcontentText">
@@ -87,27 +106,17 @@
   </div>
 </template>
 <script>
-import { time , toast } from "../../../utils/validate";
+import { time, toast } from "../../../utils/validate";
 export default {
   data() {
     return {
       offline: false, //线下支付
-      items: [
-        {
-          title: "微信支付",
-          checked: true,
-          img: "/static/images/wx.png"
-        },
-        {
-          title: "线下支付",
-          img: "/static/images/xx.png",
-          checked: false
-        }
-      ],
+      wechat: true, //微信支付
       meeting_id: 0, //会议id
       data: null,
       soft: 0, //总价
-      url: ""
+      url: "",
+      is_open_wechat: 1 //是否启用微信缴费0否，1启用
     };
   },
   computed: {
@@ -125,12 +134,22 @@ export default {
     this.meeting_id = v.meeting_id;
     this.soft = v.soft;
     this.url = this.domains;
-    console.log(this.data, "data", v);
+    // console.log(this.data, "data", v);
+    let is_open_wechat = this.data.meeting.is_open_wechat; //是否启用微信缴费0否，1启用
+    if (is_open_wechat) {
+      this.is_open_wechat = true;
+      this.offline = false;
+      this.wechat = true;
+    } else {
+      this.offline = true;
+      this.wechat = false;
+      this.is_open_wechat = false;
+    }
   },
   methods: {
     pay() {
       //立即支付
-      if (!this.items[1].checked) {
+      if (this.wechat) {
         //微信支付
         let query = {
           order_ids: JSON.stringify(this.data.order_ids), //订单号群
@@ -163,7 +182,7 @@ export default {
                   });
                 }
               });
-            }else if(res.data.status == '400'){
+            } else if (res.data.status == "400") {
               toast(res.data.message);
             }
           });
@@ -179,17 +198,20 @@ export default {
               wx.navigateTo({
                 url: "../../moduleMy/paysState/main?state=" + 0
               }); //待支付
-            }else if(res.data.status == '400'){
+            } else if (res.data.status == "400") {
               toast(res.data.message);
             }
           });
       }
     },
     radioChange(e) {
-      this.items.find(res => {
-        if (res.title == e.title) res.checked = true;
-        else res.checked = false;
-      });
+      if (e == "wx") {
+        this.wechat = true;
+        this.offline = false;
+      } else {
+        this.wechat = false;
+        this.offline = true;
+      }
     }
   }
 };
@@ -201,8 +223,8 @@ export default {
   /* overflow-y: auto; */
   /* -webkit-overflow-scrolling: touch; */
   background: #0070cc;
-background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70
-) no-repeat;
+  /* background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTc3MzIxOA==,size_16,color_FFFFFF,t_70
+) no-repeat; */
   background-size: cover;
   padding: 40rpx 20rpx 120rpx 20rpx;
   box-sizing: border-box;
@@ -242,7 +264,7 @@ background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   word-wrap: break-word;
-    word-break: normal;
+  word-break: normal;
 }
 .border {
   padding: 30rpx;
@@ -389,6 +411,7 @@ background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=
 .vaswayLogo {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .payLogo {
   width: 39rpx;
@@ -415,5 +438,27 @@ background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=
   font-size: 25rpx;
   color: #666666;
   line-height: 70rpx;
+}
+.order_sn_title {
+  display: flex;
+}
+.order_sn_title > span {
+  display: block;
+  width: 50%;
+  font-size: 30rpx;
+  font-weight: 550;
+  line-height: 60rpx;
+  text-align: center;
+}
+.order_sn_lis {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  line-height: 70rpx;
+  font-size: 27rpx;
+  color: #666666;
+}
+.order_sn_lis > span {
+  width: 50%;
 }
 </style>

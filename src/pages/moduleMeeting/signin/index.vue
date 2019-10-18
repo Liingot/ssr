@@ -6,7 +6,7 @@
     <div class="sinfninmain">
       <section class="basic">
         <h3 class="h3">{{signinData.title}}</h3>
-        <p class="number" v-if="signinData.number">
+        <p class="number" v-if="signinData.is_show_number">
           <span>报名 {{signinData.apply_number}}</span>
           <span>剩余 {{signinData.number - signinData.apply_number}}</span>
         </p>
@@ -100,6 +100,7 @@ export default {
         .then(res => {
           if (res.data.status == "200") {
             this.signinData = res.data.data;
+            
           }
         });
     },
