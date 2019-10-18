@@ -51,7 +51,7 @@
 }
 .subText {
   font-size: 30rpx;
-  font-weight: 500;
+
   color: #555555;
 }
 .el-down {

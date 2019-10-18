@@ -66,7 +66,6 @@ export default {
       withShareTicket: true
     });
   },
-  onShow() {},
   onShareAppMessage: function(res) {
     if (res.from == "button") {
     }
@@ -75,7 +74,7 @@ export default {
     lower() {
       //分页
       this.currentPage++;
-      if (this.currentPage < this.lastPage) this.init(this.currentPage);
+      if (this.currentPage <= this.lastPage) this.init(this.currentPage);
       else {
         toast("我是有底线的");
         return;

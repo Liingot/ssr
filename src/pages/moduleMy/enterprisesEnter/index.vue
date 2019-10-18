@@ -23,6 +23,7 @@
           type="text"
           style="text-align:right;"
           class="subText"
+          placeholder-style="color:#555;"
           placeholder="请输入姓名"
           v-model="name"
           v-else
@@ -30,7 +31,7 @@
       </li>
       <li class="mainLis">
         <span class="text">职位</span>
-        <picker mode="selector" :range="positionList" @change="positionChange">
+        <picker mode="selector" class="position" :range="positionList" @change="positionChange">
           <!-- <input
             type="text"
             style="text-align:right;"
@@ -110,7 +111,7 @@ export default {
       avatar: "", //头像
       name: "张先生",
       companyName: "", //公司名称
-      position: "xxx", //职位
+      position: "", //职位
       positionList: ["总经理", "部门经理"],
       province: "北京", //省份
       tel: "152****1111", //手机号
@@ -169,11 +170,11 @@ export default {
         toast("姓名没有填写");
         return;
       }
-      if (this.position == "") {
+      if (this.position == "" || this.position == "请选择职位") {
         toast("职位没有填写");
         return;
       }
-      if (this.province == "") {
+      if (this.province == "" || this.province == "请选择省份") {
         toast("省份没有填写");
         return;
       }
@@ -220,7 +221,7 @@ export default {
             this.gender = data.gender == 1 ? "男" : "女";
             this.year = data.birth;
             // this.avatar = data.cover;
-            this.province = data.province;
+            this.province = data.province ? data.province : "请选择省份";
             this.phonetxt = data.phone;
             this.tel = String(data.phone).replace(
               /(\d{3})\d{4}(\d{4})/,
@@ -232,7 +233,7 @@ export default {
             } else {
               this.certification = 1;
             }
-            this.position = data.position;
+            this.position = data.position ? data.position : "请选择职位";
             this.name = data.username;
           }
         });
@@ -259,4 +260,12 @@ export default {
   width: 100%;
   height: 100%;
 }
+.subText{
+  font-weight: 500;
+}
+/* .position > span{
+  font-size: 30rpx;
+  color: #555555;
+  font-weight: 500;
+} */
 </style>
