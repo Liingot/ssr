@@ -10,7 +10,7 @@
           <span>报名 {{signinData.apply_number}}</span>
           <span>剩余 {{signinData.number - signinData.apply_number}}</span>
         </p>
-        <p class="money">￥{{signinData.amount}}</p>
+        <p class="money" :class="{'moneyTop' : !signinData.is_show_number}">￥{{signinData.amount}}</p>
         <p class="time">
           <span class="timeLogo">
             <img src="/static/images/time.png" alt />
@@ -301,5 +301,8 @@ export default {
 }
 .endTrck {
   background: #ccc !important;
+}
+.moneyTop{
+  margin-top: 50rpx;
 }
 </style>

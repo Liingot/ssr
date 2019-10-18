@@ -17,7 +17,6 @@
         </button>
       </div>
       <div class="list">
-        <scroll-view scroll-y style="height:calc(100vh - 375rpx);" @scrolltolower="lower">
           <section
             class="listChildren"
             v-for="(item,index) in meetingList"
@@ -40,7 +39,6 @@
               </div>
             </div>
           </section>
-        </scroll-view>
       </div>
     </section>
   </div>
@@ -69,6 +67,9 @@ export default {
   onShareAppMessage: function(res) {
     if (res.from == "button") {
     }
+  },
+  onReachBottom() {
+   this.lower();
   },
   methods: {
     lower() {

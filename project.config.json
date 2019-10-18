@@ -49,9 +49,10 @@
 			"current": -1,
 			"list": [
 				{
-					"id": -1,
-					"name": "pages/moduleMy/myTicket/main",
-					"pathName": "pages/moduleMy/myTicket/main",
+					"id": 0,
+					"name": "pages/administrators/ticketDetail/main",
+					"pathName": "pages/administrators/ticketDetail/main",
+					"query": "meeting_id=8&order_id=3&user_id=7",
 					"scene": null
 				}
 			]

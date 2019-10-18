@@ -90,7 +90,7 @@
   </div>
 </template>
 <script>
-import {time} from "../../../utils/validate";
+import {time,toast} from "../../../utils/validate";
 export default {
   data() {
     return {
@@ -198,14 +198,12 @@ export default {
                   "&meeting_id=" +
                   this.meeting_id //会议Id
               });
+            }else if(res.data.status == '400'){
+              toast(res.data.message)
             }
           });
       } else {
-        wx.showToast({
-          title: "请选择人员",
-          icon: "none",
-          duration: 1000
-        });
+        toast("请选择人员");
         return;
       }
     }

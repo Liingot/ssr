@@ -9,42 +9,40 @@
       >{{item}}</div>
     </header>
     <section class="stateContent" v-if="list.length">
-      <scroll-view scroll-y style="height:calc(100vh - 30rpx);" @scrolltolower="lower">
-        <div class="content" v-for="(item,index) in list" :key="index">
-          <div class="contentHeader">
-            <div class="icon">
-              <img src="/static/images/paysStateCode.png" alt />
-            </div>
-            <span class="contentheaderText">订单号：{{item.order_sn}}</span>
+      <div class="content" v-for="(item,index) in list" :key="index">
+        <div class="contentHeader">
+          <div class="icon">
+            <img src="/static/images/paysStateCode.png" alt />
           </div>
-          <section class="listChildren">
-            <!--  @click="details(item)" -->
-            <div class="listPhoto">
-              <img :src="url + item.meeting_cover" alt />
-            </div>
-            <div class="listText">
-              <div class="listTextTop" style="padding-bottom:0;">{{item.meeting_name}}</div>
-              <div class="listTextBottom">
-                <span>{{item.meeting_date}} {{item.meeting_week}}</span>
-                <div class="info">
-                  <div class="infoLogo">
-                    <img src="/static/images/map.png" alt />
-                  </div>
-                  <span>{{item.meeting_address}}</span>
+          <span class="contentheaderText">订单号：{{item.order_sn}}</span>
+        </div>
+        <section class="listChildren">
+          <!--  @click="details(item)" -->
+          <div class="listPhoto">
+            <img :src="url + item.meeting_cover" alt />
+          </div>
+          <div class="listText">
+            <div class="listTextTop" style="padding-bottom:0;">{{item.meeting_name}}</div>
+            <div class="listTextBottom">
+              <span>{{item.meeting_date}} {{item.meeting_week}}</span>
+              <div class="info">
+                <div class="infoLogo">
+                  <img src="/static/images/map.png" alt />
                 </div>
+                <span>{{item.meeting_address}}</span>
               </div>
             </div>
-          </section>
-          <section class="operation">
-            <div class="oper">
-              <span class="pay" v-if="item.gopayIsHide" @click="goPay(item)">去支付</span>
-              <span class="cancel" v-if="item.order_status == '1'" @click="cancel(item,index)">取消订单</span>
-              <!-- <span class="cancel" v-if="item.order_status == '2'" @click="refund">退款</span> -->
-              <!-- <span class="cancel" v-if="item.order_status == '3'">申请开票</span> -->
-            </div>
-          </section>
-        </div>
-      </scroll-view>
+          </div>
+        </section>
+        <section class="operation">
+          <div class="oper">
+            <span class="pay" v-if="item.gopayIsHide" @click="goPay(item)">去支付</span>
+            <span class="cancel" v-if="item.order_status == '1'" @click="cancel(item,index)">取消订单</span>
+            <!-- <span class="cancel" v-if="item.order_status == '2'" @click="refund">退款</span> -->
+            <!-- <span class="cancel" v-if="item.order_status == '3'">申请开票</span> -->
+          </div>
+        </section>
+      </div>
     </section>
     <p class="no" v-else>暂无订单信息</p>
   </div>
@@ -69,6 +67,9 @@ export default {
     this.url = this.domains;
     this.list = [];
     this.init(this.borderIndex ? Number(this.borderIndex) + 1 : 1);
+  },
+  onReachBottom() {
+    this.lower();
   },
   methods: {
     cancel(v, index) {
@@ -111,7 +112,8 @@ export default {
             unique_sn: v.unique_sn,
             username: v.username
           }
-        ] //订单号群
+        ], //订单号群
+        receipt: v.receipt
       };
       wx.navigateTo({
         url: `../../moduleMeeting/pay/main?data=${JSON.stringify(
@@ -119,6 +121,7 @@ export default {
         )}&meeting_id=${v.meeting_id}&soft=${v.amount}`
       });
     },
+
     lower() {
       this.currentPage++;
       if (this.currentPage <= this.lastPage)
@@ -151,7 +154,7 @@ export default {
             console.log(this.lastPage, this.currentPage);
             res.data.data.data.forEach(item => {
               // this.$set(item, "order_ids", item.id);
-              if (item.order_status == '1' && item.is_open_wechat)
+              if (item.order_status == "1" && item.is_open_wechat)
                 this.$set(item, "gopayIsHide", true);
               else this.$set(item, "gopayIsHide", false);
             });
@@ -167,7 +170,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100vh;
-  overflow: auto;
+  /* overflow: auto; */
   background: #f4f4f4;
 }
 .border_bottom {

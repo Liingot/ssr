@@ -8,31 +8,29 @@
       <div class="has" :class="{'border_bottom':!addborder}" @click="border('已使用')">已使用</div>
     </header>
     <section class="myticketMain" v-if="myTicketList.length">
-      <scroll-view scroll-y style="height:calc(100vh - 60rpx);" @scrolltolower="lower">
-        <section
-          class="listChildren"
-          v-for="(item,index) in myTicketList"
-          :key="index"
-          @click="details(item)"
-        >
-          <div class="listPhoto">
-            <img :src="url + item.meeting_cover" alt />
-          </div>
-          <div class="listText">
-            <div class="listTextTop">{{item.meeting_name}}</div>
-            <div class="listTextBottom">
-              <span>{{item.meeting_date}} {{meeting_week}}</span>
-              <div class="info">
-                <div class="infoLogo">
-                  <img src="/static/images/map.png" alt />
-                </div>
-                <span>{{item.meeting_address}}</span>
+      <section
+        class="listChildren"
+        v-for="(item,index) in myTicketList"
+        :key="index"
+        @click="details(item)"
+      >
+        <div class="listPhoto">
+          <img :src="url + item.meeting_cover" alt />
+        </div>
+        <div class="listText">
+          <div class="listTextTop">{{item.meeting_name}}</div>
+          <div class="listTextBottom">
+            <span>{{item.meeting_date}} {{meeting_week}}</span>
+            <div class="info">
+              <div class="infoLogo">
+                <img src="/static/images/map.png" alt />
               </div>
+              <span>{{item.meeting_address}}</span>
             </div>
           </div>
-          <div class="filter" :class="{'useClass':addborder , 'hasClass' : !addborder}"></div>
-        </section>
-      </scroll-view>
+        </div>
+        <div class="filter" :class="{'useClass':addborder , 'hasClass' : !addborder}"></div>
+      </section>
     </section>
     <p class="no" v-else>{{addborder ? '暂无可用票券' :"暂无已使用票券"}}</p>
   </div>
@@ -50,9 +48,16 @@ export default {
       url: ""
     };
   },
+  onUnload() {
+    //页面卸载
+    this.myTicketList = [];
+  },
   mounted() {
     this.url = this.domains;
     this.init();
+  },
+  onReachBottom() {
+    this.lower();
   },
   methods: {
     // status = 0(未使用) 1(已使用)
@@ -70,7 +75,6 @@ export default {
         });
     },
     lower() {
-      console.log(this.lastPage, "xxx");
       this.currentPage++;
       if (this.currentPage <= this.lastPage)
         this.init(this.addborder ? 0 : 1, this.currentPage);

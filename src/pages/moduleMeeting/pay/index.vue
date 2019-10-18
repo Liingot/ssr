@@ -39,12 +39,12 @@
             >订单号：{{item.order_sn}} 姓名：{{item.order_sn}} </p>
             </div>-->
             <div class="order_sn_title">
-              <span>订单号</span>
+              <span style="text-align:left;">订单号</span>
               <span>姓名</span>
             </div>
             <ul class="order_sn_ul">
               <li class="order_sn_lis" v-for="(item,index) in data.order_ids" :key="index">
-                <span class="text">{{item.order_sn}}</span>
+                <span class="text" >{{item.order_sn}}</span>
                 <span class="text">{{item.username}}</span>
               </li>
             </ul>
@@ -83,15 +83,15 @@
         <div class="xxContent">
           <p class="xxcontentText">
             <span class="xxleft">户名</span>
-            <span class="xxright">北京中装商学院有限公司</span>
+            <span class="xxright">{{data.receipt.name}}</span>
           </p>
           <p class="xxcontentText">
             <span class="xxleft">账户</span>
-            <span class="xxright">xxxxxxxx</span>
+            <span class="xxright">{{data.receipt.account}}</span>
           </p>
           <p class="xxcontentText">
             <span class="xxleft">开户行</span>
-            <span class="xxright">招商</span>
+            <span class="xxright">{{data.receipt.bank}}</span>
           </p>
         </div>
       </section>
@@ -110,8 +110,8 @@ import { time, toast } from "../../../utils/validate";
 export default {
   data() {
     return {
-      offline: false, //线下支付
-      wechat: true, //微信支付
+      offline: true, //线下支付
+      wechat: false, //微信支付
       meeting_id: 0, //会议id
       data: null,
       soft: 0, //总价
@@ -134,15 +134,15 @@ export default {
     this.meeting_id = v.meeting_id;
     this.soft = v.soft;
     this.url = this.domains;
-    // console.log(this.data, "data", v);
+    console.log(this.data, "data", v);
     let is_open_wechat = this.data.meeting.is_open_wechat; //是否启用微信缴费0否，1启用
     if (is_open_wechat) {
-      this.is_open_wechat = true;
+      this.is_open_wechat = true; //是否显示微信支付
+       this.offline = true; //默认支付状态是线下支付
+      this.wechat = false; 
+    } else {
       this.offline = false;
       this.wechat = true;
-    } else {
-      this.offline = true;
-      this.wechat = false;
       this.is_open_wechat = false;
     }
   },
@@ -401,6 +401,7 @@ export default {
   font-size: 26rpx;
 }
 .xxleft {
+  width: 80rpx;
   color: #888888;
   margin-right: 35rpx;
 }

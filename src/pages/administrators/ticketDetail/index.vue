@@ -36,12 +36,13 @@
   </div>
 </template>
 <script>
+import { toast } from "../../../utils/validate";
 export default {
   data() {
     return {
       data: {},
       item: null,
-      url:""
+      url: ""
     };
   },
   computed: {
@@ -65,7 +66,7 @@ export default {
   onLoad(v) {
     this.item = JSON.parse(v.data);
     this.url = this.domains;
-    this.init(this.item.order_id, this.meeting_id, this.user_id);
+    this.init(this.item.order_id, this.item.meeting_id, this.item.user_id);
   },
   methods: {
     init(order_id, meeting_id, user_id) {
@@ -99,6 +100,8 @@ export default {
         })
         .then(res => {
           if (res.data.status == "200") {
+          } else if (res.data.status == "400") {
+            toast(res.data.message);
           }
         });
     }
@@ -138,6 +141,9 @@ export default {
   height: 100%;
 }
 .headerText {
+  width: calc(100% - 256rpx);
+  height: 83rpx;
+
   font-size: 30rpx;
   font-weight: 600;
   overflow: hidden;
@@ -199,8 +205,8 @@ export default {
   box-sizing: border-box;
 }
 .icon {
-  width: 220rpx;
-  height: 220rpx;
+  width: 310rpx;
+  height: 310rpx;
   margin: 0 auto;
 
   background: black;
@@ -238,7 +244,7 @@ export default {
 }
 .footer {
   width: 100%;
-  position: absolute;
+  /* position: absolute; */
   bottom: 20rpx;
   left: 0;
   display: flex;

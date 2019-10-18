@@ -79,6 +79,7 @@ export default {
               this.$set(item, "trck", false);
             });
             this.dehighList = res.data.data.video;
+            console.log(this.dehighList, "de******");
           }
         });
     }

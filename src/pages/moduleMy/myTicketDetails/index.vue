@@ -193,8 +193,8 @@ export default {
   box-sizing: border-box;
 }
 .icon {
-  width: 220rpx;
-  height: 220rpx;
+  width: 310rpx;
+  height: 310rpx;
   margin: 0 auto;
 
   background: black;
