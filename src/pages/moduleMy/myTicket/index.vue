@@ -55,8 +55,8 @@ export default {
     this.init();
   },
   methods: {
-    // status = 1(未使用) 2(已使用)
-    init(status = 1, page = 1) {
+    // status = 0(未使用) 1(已使用)
+    init(status = 0, page = 1) {
       this.axios
         .post({
           url: "/api/personal/ticketList",
@@ -72,7 +72,7 @@ export default {
     lower() {
       this.currentPage++;
       if (this.currentPage <= this.lastPage)
-        this.init(this.addborder ? 1 : 2, this.currentPage);
+        this.init(this.addborder ? 0 : 1, this.currentPage);
       else {
         wx.showToast({
           title: "我是有底线的",
@@ -92,7 +92,7 @@ export default {
         this.addborder = false;
         this.myTicketList = [];
         this.currentPage = 1;
-        this.init(2);
+        this.init(1);
       }
       this.currentPage = 1;
     },
