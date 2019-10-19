@@ -58,7 +58,6 @@
   width: 25rpx;
   height: 15rpx;
   margin-left: 15rpx;
-  background: rebeccapurple;
 }
 .el-down img {
   width: 100%;

@@ -41,7 +41,7 @@ export default {
     return {
       use: 1, //未使用数量
       has: 2, //已使用数量
-      addborder: true,
+      addborder: false,
       lastPage: 1,
       myTicketList: [],
       currentPage: 1,
@@ -51,6 +51,7 @@ export default {
   onUnload() {
     //页面卸载
     this.myTicketList = [];
+    this.addborder = false;
   },
   mounted() {
     this.url = this.domains;
@@ -61,7 +62,7 @@ export default {
   },
   methods: {
     // status = 0(未使用) 1(已使用)
-    init(status = 0, page = 1) {
+    init(status = 1, page = 1) {
       this.axios
         .post({
           url: "/api/personal/ticketList",
@@ -92,7 +93,7 @@ export default {
         this.addborder = true;
         this.myTicketList = [];
         this.currentPage = 1;
-        this.init();
+        this.init(0);
       } else {
         this.addborder = false;
         this.myTicketList = [];

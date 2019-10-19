@@ -134,7 +134,7 @@ export default {
   width: 226rpx;
   height: 154rpx;
   margin-right: 30rpx;
-  background: rebeccapurple;
+  /* background: rebeccapurple; */
 }
 .headerLogo img {
   width: 100%;

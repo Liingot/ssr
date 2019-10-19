@@ -172,7 +172,7 @@ export default {
 .back-image {
   width: 25rpx;
   height: 25rpx;
-  background: rebeccapurple;
+  /* background: rebeccapurple; */
 }
 .line {
   display: block;

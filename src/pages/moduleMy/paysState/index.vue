@@ -9,7 +9,7 @@
       >{{item}}</div>
     </header>
     <section class="stateContent" v-if="list.length">
-      <div class="content" v-for="(item,index) in list" :key="index">
+      <div class="content" v-for="(item,index) in list" :key="index" @click="goPay(item)">
         <div class="contentHeader">
           <div class="icon">
             <img src="/static/images/paysStateCode.png" alt />
@@ -36,8 +36,8 @@
         </section>
         <section class="operation">
           <div class="oper">
-            <span class="pay" v-if="item.gopayIsHide" @click="goPay(item)">去支付</span>
-            <span class="cancel" v-if="item.order_status == '1'" @click="cancel(item,index)">取消订单</span>
+            <span class="pay" v-if="item.gopayIsHide" @click.stop="goPay(item)">去支付</span>
+            <span class="cancel" v-if="item.order_status == '1'" @click.stop="cancel(item,index)">取消订单</span>
             <!-- <span class="cancel" v-if="item.order_status == '2'" @click="refund">退款</span> -->
             <!-- <span class="cancel" v-if="item.order_status == '3'">申请开票</span> -->
           </div>
@@ -94,32 +94,37 @@ export default {
       wx.navigateTo({ url: `../refund/main` });
     },
     goPay(v) {
-      let query = {
-        meeting: {
-          title: v.meeting_name, //标题
-          start_time: v.meeting_start_time, //开始时间
-          end_time: v.meeting_end_time, //结束时间
-          meeting_id: v.meeting_id, //会议Id
-          address: v.meeting_detail_address, //地点
-          cover: v.meeting_cover,
-          is_open_wechat: v.is_open_wechat
-        },
-        unique_sn: v.unique_sn, //订单唯一标识
-        order_ids: [
-          {
-            order_sn: v.order_sn,
-            id: v.id,
-            unique_sn: v.unique_sn,
-            username: v.username
-          }
-        ], //订单号群
-        receipt: v.receipt
-      };
-      wx.navigateTo({
-        url: `../../moduleMeeting/pay/main?data=${JSON.stringify(
-          query
-        )}&meeting_id=${v.meeting_id}&soft=${v.amount}`
-      });
+      console.log(v,'vvvvv'); 
+      // order_status判断当前订单状态之前字段为status
+      if (v.order_status == "1") {
+        let query = {
+          meeting: {
+            title: v.meeting_name, //标题
+            start_time: v.meeting_start_time, //开始时间
+            end_time: v.meeting_end_time, //结束时间
+            meeting_id: v.meeting_id, //会议Id
+            address: v.meeting_detail_address, //地点
+            cover: v.meeting_cover,
+            is_open_wechat: v.is_open_wechat
+          },
+          unique_sn: v.unique_sn, //订单唯一标识
+          order_ids: [
+            {
+              order_sn: v.order_sn,
+              id: v.id,
+              unique_sn: v.unique_sn,
+              username: v.username
+            }
+          ], //订单号群
+          receipt: v.receipt ,//线下支付的基本信息
+          channel: v.channel //生成订单的时候用户选择的支付方式  1-线上微信支付，2-线下支付，3现场支付
+        };
+        wx.navigateTo({
+          url: `../../moduleMeeting/pay/main?data=${JSON.stringify(
+            query
+          )}&meeting_id=${v.meeting_id}&soft=${v.amount}`
+        });
+      } else return;
     },
 
     lower() {
@@ -179,7 +184,7 @@ export default {
 .header {
   display: flex;
   justify-content: space-between;
-  padding: 20rpx 20rpx 0 20rpx;
+  padding: 20rpx 40rpx 0 40rpx;
   box-sizing: border-box;
   background: white;
 }

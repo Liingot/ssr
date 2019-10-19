@@ -116,7 +116,7 @@ export default {
       data: null,
       soft: 0, //总价
       url: "",
-      is_open_wechat: 1 //是否启用微信缴费0否，1启用
+      is_open_wechat: false //是否启用微信缴费0否，1启用
     };
   },
   computed: {
@@ -136,14 +136,24 @@ export default {
     this.url = this.domains;
     console.log(this.data, "data", v);
     let is_open_wechat = this.data.meeting.is_open_wechat; //是否启用微信缴费0否，1启用
-    if (is_open_wechat) {
-      this.is_open_wechat = true; //是否显示微信支付
-       this.offline = true; //默认支付状态是线下支付
-      this.wechat = false; 
+    if (is_open_wechat) {   //控制微信支付是否显示
+       this.is_open_wechat = true; //是否显示微信支付
+       //this.offline = true; //默认支付状态是线下支付
+       //this.wechat = false; 
     } else {
-      this.offline = false;
-      this.wechat = true;
-      this.is_open_wechat = false;
+        this.is_open_wechat = false;
+      // this.offline = false;
+        // this.wechat = false;
+    }
+
+    //（从订单列表跳转过来）生成订单的时候用户选择的支付方式 
+    let channel = this.data.channel; //1-线上微信支付，2-线下支付，3现场支付  
+    if(channel == '1'){
+        this.wechat = true;
+        this.offline = false;
+    }else if(channel == '2'){
+      this.wechat = false;
+        this.offline = true;
     }
   },
   methods: {
@@ -247,7 +257,7 @@ export default {
   width: 226rpx;
   height: 154rpx;
   margin-right: 30rpx;
-  background: rebeccapurple;
+  /* background: rebeccapurple; */
 }
 .headerLogo img {
   width: 100%;
