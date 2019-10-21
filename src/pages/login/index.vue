@@ -196,7 +196,7 @@ export default {
   border-bottom: 1px solid #e2e2e2;
 }
 .text {
-  font-size: 33rpx;
+  font-size: 30rpx;
   font-weight: 550;
   margin-right: 80rpx;
 }
@@ -205,7 +205,7 @@ export default {
   align-items: center;
 }
 .getCode {
-  font-size: 33rpx;
+  font-size: 30rpx;
   font-weight: 550;
   color: #0070cc;
   text-align: center;

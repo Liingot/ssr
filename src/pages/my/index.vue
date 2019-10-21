@@ -111,7 +111,7 @@ export default {
         "添加到我的小程序",
         "报错反馈"
       ],
-      avatarUrl: "", //用户头像
+      avatarUrl: "/static/images/avatar.png", //用户头像
       userName: " 登录后体验更多功能", //用户姓名
       company: "点击登录", //公司名字
       trck: false, //判断是否显示当前用户的认证状态
@@ -257,7 +257,7 @@ background: url(https://img-blog.csdnimg.cn/20191010150102879.png?x-oss-process=
 .logo {
   width: 118rpx;
   height: 118rpx;
-  background: #ccc;
+  /* background: #ccc; */
   border-radius: 50%;
   margin-right: 25rpx;
 }

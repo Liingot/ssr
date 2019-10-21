@@ -13,7 +13,8 @@
           <span class="subText">{{companyName}}</span>
         </div>
         <span class="info" @click="infoHide" v-else>
-          <img src="/static/images/noenterprisesEnter.png" alt />
+          <!-- <img src="/static/images/noenterprisesEnter.png" alt /> -->
+          <span class="subText">请选择公司</span>
         </span>
       </li>
       <li class="mainLis">
@@ -31,7 +32,13 @@
       </li>
       <li class="mainLis">
         <span class="text">职位</span>
-        <picker mode="selector" class="position" :range="positionList" @change="positionChange">
+        <picker
+          mode="selector"
+          class="position"
+          :range="positionList"
+          range-key="name"
+          @change="positionChange"
+        >
           <!-- <input
             type="text"
             style="text-align:right;"
@@ -44,7 +51,7 @@
       </li>
       <li class="mainLis">
         <span class="text">省份</span>
-        <picker mode="region" @change="provinceChange">
+        <picker mode="selector" :range="provinceList" @change="provinceChange">
           <!-- <input
             type="text"
             style="text-align:right;"
@@ -114,6 +121,42 @@ export default {
       position: "", //职位
       positionList: ["总经理", "部门经理"],
       province: "北京", //省份
+      provinceList: [
+        "北京 ",
+        "广东",
+        "山东",
+        "江苏",
+        "　河南",
+        ",上海",
+        "河北",
+        "浙江",
+        "香港",
+        "陕西",
+        "湖南",
+        "重庆",
+        "福建",
+        "天津",
+        "云南",
+        "四川",
+        "广西",
+        "安徽",
+        "海南",
+        "江西",
+        "湖北",
+        "山西",
+        "辽宁",
+        "台湾",
+        "黑龙江",
+        "内蒙古",
+        "澳门",
+        "贵州",
+        "甘肃",
+        "青海",
+        "新疆",
+        "西藏",
+        "吉林",
+        "宁夏"
+      ],
       tel: "152****1111", //手机号
       gender: "男",
       genderList: ["男", "女"],
@@ -129,7 +172,7 @@ export default {
     };
   },
   onLoad(v) {
-    this.certification = Number(v.certification);
+    // this.certification = Number(v.certification);
     if (v.certification == 2 || v.certification == 3) {
       this.nameIshide = true;
       this.certificationIsHide = true;
@@ -141,19 +184,21 @@ export default {
   },
   mounted() {
     this.init();
+    this.positionInit();
   },
   components: { vague },
   methods: {
     positionChange(e) {
-      this.position = this.positionList[e.target.value];
+      this.position = this.positionList[e.target.value]["name"];
     },
     genderChange(e) {
       this.gender = this.genderList[e.target.value];
     },
     provinceChange(e) {
-      let value = e.target.value;
-      if (value[0] == value[1]) this.province = value[1] + value[2];
-      else this.province = value[0] + value[1] + value[2];
+      // let value = e.target.value;
+      // if (value[0] == value[1]) this.province = value[1] + value[2];
+      // else this.province = value[0] + value[1] + value[2];
+      this.province = this.provinceList[e.target.value];
     },
     yearChange(e) {
       this.year = e.target.value;
@@ -161,8 +206,19 @@ export default {
     retu() {
       this.vagusIsHide = false;
     },
+    positionInit() {
+      //获取职位列表
+      this.axios
+        .post({
+          url: "/api/company/position"
+        })
+        .then(res => {
+          if (res.data.status == "200") this.positionList = res.data.data;
+          else toast(res.data.message);
+        });
+    },
     submit() {
-      if (this.companyName == "") {
+      if (this.companyName == "" || this.companyName == "请选择公司") {
         toast("公司名称没有填写");
         return;
       }
@@ -227,12 +283,14 @@ export default {
               /(\d{3})\d{4}(\d{4})/,
               "$1****$2"
             );
-            if (data.companyName != "") {
-              this.companyName = data.company_name;
-              this.certification = 3;
-            } else {
-              this.certification = 1;
-            }
+            // if (data.companyName != "") {
+            //   this.companyName = data.company_name;
+            //   // this.certification = 3;
+            // } else {
+            //   // this.certification = 1;
+            // }
+            this.companyName =
+              data.company_name != "" ? data.company_name : "请选择公司";
             this.position = data.position ? data.position : "请选择职位";
             this.name = data.username;
           }
@@ -243,7 +301,7 @@ export default {
       this.vagusIsHide = false;
       this.companyName = item.name;
       this.company_id = item.id;
-      this.certificationIsHide = true;
+      // this.certificationIsHide = true;
     }
   }
 };
@@ -260,7 +318,7 @@ export default {
   width: 100%;
   height: 100%;
 }
-.subText{
+.subText {
   font-weight: 500;
 }
 /* .position > span{
