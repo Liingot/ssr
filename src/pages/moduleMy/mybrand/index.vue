@@ -8,7 +8,7 @@
         </li>
       </ul>
     </div>
-    <p class="no" v-else>暂无企业获奖信息</p>
+    <p class="no" v-else>暂无获奖信息</p>
   </div>
 </template>
 <script>

@@ -1,7 +1,7 @@
 <template>
   <div class="signin">
     <div class="signinBanner">
-      <img :src="url + signinData.cover" alt />
+      <img :src="signinData.cover" alt />
     </div>
     <div class="sinfninmain">
       <section class="basic">
@@ -99,6 +99,7 @@ export default {
         })
         .then(res => {
           if (res.data.status == "200") {
+            res.data.data.cover = this.domains + res.data.data.cover;
             this.signinData = res.data.data;
             
           }

@@ -9,13 +9,14 @@
       </li>
       <li class="mainLis">
         <span class="text">公司</span>
-        <div class="company" v-if="certificationIsHide">
+        <!-- <div class="company" v-if="certificationIsHide">
           <span class="subText">{{companyName}}</span>
-        </div>
-        <span class="info" @click="infoHide" v-else>
-          <!-- <img src="/static/images/noenterprisesEnter.png" alt /> -->
+        </div>-->
+        <!-- <span class="info" @click="infoHide" v-else>
+          <img src="/static/images/noenterprisesEnter.png" alt />
           <span class="subText">请选择公司</span>
-        </span>
+        </span>-->
+        <span class="subText" @click="infoHide">{{companyName}}</span>
       </li>
       <li class="mainLis">
         <span class="text">姓名</span>
@@ -122,12 +123,12 @@ export default {
       positionList: ["总经理", "部门经理"],
       province: "北京", //省份
       provinceList: [
-        "北京 ",
+        "北京",
         "广东",
         "山东",
         "江苏",
-        "　河南",
-        ",上海",
+        "河南",
+        "上海",
         "河北",
         "浙江",
         "香港",
@@ -264,7 +265,9 @@ export default {
         });
     },
     infoHide() {
-      this.vagusIsHide = true;
+      if (this.certificationIsHide) this.vagusIsHide = false;
+      else this.vagusIsHide = true;
+      // this.vagusIsHide = true;
     },
     init() {
       this.axios
@@ -319,6 +322,8 @@ export default {
   height: 100%;
 }
 .subText {
+  display: block;
+  text-align: right;
   font-weight: 500;
 }
 /* .position > span{

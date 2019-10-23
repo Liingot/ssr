@@ -14,7 +14,7 @@ export default {
   data() {
     return {
       list: [],
-      url:""
+      url: ""
     };
   },
   onLoad(v) {

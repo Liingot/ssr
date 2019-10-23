@@ -4,7 +4,7 @@
       <section class="shop">
         <div class="shopHeader">
           <div class="headerLogo" v-if="data.meeting.cover">
-            <img :src="url + data.meeting.cover" alt />
+            <img :src="data.meeting.cover" alt />
           </div>
           <div class="headerText">{{data.meeting.title}}</div>
         </div>
@@ -131,10 +131,10 @@ export default {
   },
   onLoad(v) {
     this.data = JSON.parse(v.data);
+    // this.data.meeting.cover = this.domains + this.data.meeting.cover;
     this.meeting_id = v.meeting_id;
     this.soft = v.soft;
     this.url = this.domains;
-    console.log(this.data, "data", v);
     let is_open_wechat = this.data.meeting.is_open_wechat; //是否启用微信缴费0否，1启用
     if (is_open_wechat) {   //控制微信支付是否显示
        this.is_open_wechat = true; //是否显示微信支付

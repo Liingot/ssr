@@ -19,7 +19,7 @@
         <section class="listChildren">
           <!--  @click="details(item)" -->
           <div class="listPhoto">
-            <img :src="url + item.meeting_cover" alt />
+            <img :src="item.meeting_cover" alt />
           </div>
           <div class="listText">
             <div class="listTextTop" style="padding-bottom:0;">{{item.meeting_name}}</div>
@@ -156,9 +156,10 @@ export default {
         .then(res => {
           if (res.data.status == "200") {
             this.lastPage = res.data.data.last_page;
-            console.log(this.lastPage, this.currentPage);
+         
             res.data.data.data.forEach(item => {
               // this.$set(item, "order_ids", item.id);
+              item.meeting_cover = this.domains + item.meeting_cover
               if (item.order_status == "1" && item.is_open_wechat)
                 this.$set(item, "gopayIsHide", true);
               else this.$set(item, "gopayIsHide", false);

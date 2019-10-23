@@ -23,23 +23,17 @@ export default {
       wx.scanCode({
         success: res => {
           let result = res.result;
-          console.log(result,'result');
           result = result.split("&");
           let data = {
             meeting_id: result[0].split("=")[1],
             order_id: result[1].split("=")[1],
             user_id: result[2].split("=")[1]
           };
-          console.log(data,'data');
-
           wx.navigateTo({
             url: "../ticketDetail/main?data=" + JSON.stringify(data)
           });
         }
       });
-      // wx.navigateTo({
-      //   url: "../ticketDetail/main?data=" + JSON.stringify({ data: 1 })
-      // });
     }
   }
 };

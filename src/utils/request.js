@@ -1,7 +1,7 @@
 // import { hex_md5 } from "../utils/md5"; 加密中文不可以
 const md5 = require('../utils/newmd5');
-const host = 'http://zhong.waterai.cn' //测试地址
-const app = 'zhong';
+// const host = 'http://zhong.waterai.cn' //测试地址
+const host = 'https://zhong.waterai.cn' //正式地址
 function request(url, method, data, header = {}) {
     let copy = data ? JSON.parse(JSON.stringify(data)) : {};
     copy.nonce = String(Math.floor(Math.random() * 3000000) + 100000000);

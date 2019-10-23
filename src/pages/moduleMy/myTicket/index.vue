@@ -15,7 +15,7 @@
         @click="details(item)"
       >
         <div class="listPhoto">
-          <img :src="url + item.meeting_cover" alt />
+          <img :src="item.meeting_cover" alt />
         </div>
         <div class="listText">
           <div class="listTextTop">{{item.meeting_name}}</div>
@@ -71,6 +71,9 @@ export default {
         .then(res => {
           if (res.data.status == "200") {
             this.lastPage = res.data.data.last_page;
+            res.data.data.data.forEach(item => {
+              item.meeting_cover = this.domains + item.meeting_cover;
+            });
             this.myTicketList = [...this.myTicketList, ...res.data.data.data];
           }
         });
@@ -103,10 +106,16 @@ export default {
       this.currentPage = 1;
     },
     details(item) {
-      if (this.addborder) {
-        wx.navigateTo({ url: "../myTicketDetails/main?id=" + item.id });
-      }
       //票卷详情
+      let has;
+      if (this.addborder) {
+        has = 0;
+      } else {
+        has = 1;
+      }
+      wx.navigateTo({
+        url: "../myTicketDetails/main?id=" + item.id + "&has=" + has
+      });
     }
   }
 };
@@ -210,7 +219,9 @@ export default {
   border-radius: 15rpx;
 }
 .useClass {
-  background: url(https://img-blog.csdnimg.cn/20191010150537433.png) no-repeat
+  /* background: url(https://img-blog.csdnimg.cn/20191010150537433.png) no-repeat
+    95% rgba(255, 255, 255, 0.5); */
+  background: url(https://img-blog.csdnimg.cn/20191023092733895.png) no-repeat
     95% rgba(255, 255, 255, 0.5);
   background-size: 20%;
 }

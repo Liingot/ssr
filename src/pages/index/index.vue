@@ -24,7 +24,7 @@
             @click="details(item)"
           >
             <div class="listPhoto">
-              <img :src="url + item.cover" alt />
+              <img :src="item.cover" alt />
             </div>
             <div class="listText">
               <div class="listTextTop" style="padding-bottom:0;">{{item.title}}</div>
@@ -89,6 +89,9 @@ export default {
         })
         .then(res => {
           if (res.data.status == "200") {
+            res.data.data.meetingList.data.forEach(item=>{
+                  item.cover = this.domains + item.cover;
+            });
             this.meetingList = [
               ...res.data.data.meetingList.data,
               ...this.meetingList

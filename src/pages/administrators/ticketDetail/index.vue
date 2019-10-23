@@ -4,7 +4,7 @@
     <div class="mainHeader">
       <div class="shopHeader">
         <div class="headerLogo">
-          <img :src=" url + data.meeting_cover" alt />
+          <img :src="data.meeting_cover" alt />
         </div>
         <div class="headerText">{{data.meeting_name}}</div>
       </div>
@@ -13,7 +13,7 @@
       <h3 class="codeH3">入场码</h3>
       <div class="codeIcon">
         <div class="icon">
-          <img :src="url +  '/' + data.qrcode" alt />
+          <img :src="data.qrcode" alt />
         </div>
       </div>
       <div class="userInfo">
@@ -82,6 +82,8 @@ export default {
         })
         .then(res => {
           if (res.data.status == "200") {
+             res.data.data.meeting_cover = this.domains + res.data.data.meeting_cover;
+            res.data.data.qrcode = this.domains + '/' + res.data.data.qrcode;
             this.data = res.data.data;
           }
         });
@@ -100,6 +102,10 @@ export default {
         })
         .then(res => {
           if (res.data.status == "200") {
+            toast(res.data.message);
+            wx.navigateBack({
+              delta: 1
+            });
           } else if (res.data.status == "400") {
             toast(res.data.message);
           }

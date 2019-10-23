@@ -3,11 +3,9 @@
     <div class="mainHeader">
       <div class="shopHeader">
         <div class="headerLogo">
-          <img :src="url + data.meeting_cover" alt />
+          <img :src="data.meeting_cover" alt />
         </div>
-        <div
-          class="headerText"
-        >{{data.meeting_name}}</div>
+        <div class="headerText">{{data.meeting_name}}</div>
       </div>
       <p class="time border">
         <span class="timeLogo">
@@ -26,7 +24,10 @@
       <h3 class="codeH3">入场码</h3>
       <div class="codeIcon">
         <div class="icon" v-if="data.qrcode">
-          <img :src="url + '/'+ data.qrcode" alt />
+          <img :src="data.qrcode" alt />
+          <div class="hasClass" v-if="has == 1">
+            <img src="/static/images/has.png" alt />
+          </div>
         </div>
       </div>
       <div class="userInfo">
@@ -50,7 +51,8 @@ export default {
   data() {
     return {
       data: {},
-      url: ""
+      url: "",
+      has: false
     };
   },
   computed: {
@@ -79,6 +81,7 @@ export default {
   },
   onLoad(v) {
     this.url = this.domains;
+    this.has = v.has;
     this.init(v.id);
   },
   methods: {
@@ -90,6 +93,9 @@ export default {
         })
         .then(res => {
           if (res.data.status == "200") {
+            res.data.data.meeting_cover =
+              this.domains + res.data.data.meeting_cover;
+            res.data.data.qrcode = this.domains + "/" + res.data.data.qrcode;
             this.data = res.data.data;
           }
         });
@@ -196,7 +202,7 @@ export default {
   width: 310rpx;
   height: 310rpx;
   margin: 0 auto;
-
+  position: relative;
   background: black;
 }
 .icon img {
@@ -229,5 +235,17 @@ export default {
 }
 .green {
   color: #09bb07;
+}
+.hasClass {
+  width: 150rpx;
+  height: 150rpx;
+  position: absolute;
+  right: -10%;
+  bottom: 0;
+  z-index: 99;
+}
+.hasClass > img {
+  width: 100%;
+  height: 100%;
 }
 </style>

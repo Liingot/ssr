@@ -3,7 +3,7 @@
     <section class="shop">
       <div class="shopHeader">
         <div class="headerLogo">
-          <img :src="url + item.meeting.cover" alt />
+          <img :src="item.meeting.cover" alt />
         </div>
         <div class="headerText">{{item.meeting.title}}</div>
       </div>
@@ -90,7 +90,7 @@
   </div>
 </template>
 <script>
-import {time,toast} from "../../../utils/validate";
+import { time, toast } from "../../../utils/validate";
 export default {
   data() {
     return {
@@ -100,13 +100,14 @@ export default {
       userList: [],
       userListIndex: 0,
       item: {},
-      url:""
+      url: ""
     };
   },
   onLoad(v) {
     this.url = this.domains;
     this.meeting_id = v.meeting_id;
     this.item = JSON.parse(v.item);
+    this.item.meeting.cover = this.domains + this.item.meeting.cover;
   },
   onShow() {
     this.userList = [];
@@ -123,7 +124,7 @@ export default {
     },
     end_time() {
       //结束时间
-       return time(this.item.meeting.end_time);
+      return time(this.item.meeting.end_time);
     }
   },
   methods: {
@@ -156,8 +157,8 @@ export default {
       this.userList.pop();
     },
     add() {
-      this.number ++ ;
-          this.userList.push({
+      this.number++;
+      this.userList.push({
         username: "选择人员",
         position: "",
         id: ""
@@ -175,7 +176,11 @@ export default {
       if (this.userList.length && doc) {
         let userList = [];
         this.userList.forEach(item => {
-          userList.push({ id: item.id, phone: item.phone ,username:item.username });
+          userList.push({
+            id: item.id,
+            phone: item.phone,
+            username: item.username
+          });
         });
         let query = {
           meeting_id: this.meeting_id, //会议id
@@ -189,6 +194,8 @@ export default {
           })
           .then(res => {
             if (res.data.status == "200") {
+              res.data.data.meeting.cover =
+                this.domains + res.data.data.meeting.cover;
               wx.navigateTo({
                 url:
                   "../pay/main?soft=" +
@@ -198,8 +205,8 @@ export default {
                   "&meeting_id=" +
                   this.meeting_id //会议Id
               });
-            }else if(res.data.status == '400'){
-              toast(res.data.message)
+            } else if (res.data.status == "400") {
+              toast(res.data.message);
             }
           });
       } else {

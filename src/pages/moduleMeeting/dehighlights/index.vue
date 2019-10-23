@@ -2,7 +2,7 @@
   <div class="dehighlights">
     <div v-if="dehighList.length">
       <section class="radioTemplate" v-for="(item,index) in dehighList" :key="index">
-        <video :src="url + item.video_url" class="video" ></video>
+        <video :src="item.video_url" class="video" @error="error"></video>
         <div class="likeTemplate">
           <span class="text">{{item.title}}</span>
           <div class="linkNum">
@@ -38,6 +38,9 @@ export default {
     this.loggetIsHide = false;
   },
   methods: {
+    error(e) {
+      console.log(e, "error*********");
+    },
     give(item) {
       let url = "/api/meeting/like";
       this.like(item.id, url).then(res => {
@@ -77,6 +80,7 @@ export default {
           if (res.data.status == "200") {
             res.data.data.video.forEach(item => {
               this.$set(item, "trck", false);
+              item.video_url = this.domains + item.video_url;
             });
             this.dehighList = res.data.data.video;
             console.log(this.dehighList, "de******");
