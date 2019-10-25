@@ -32,7 +32,9 @@
       </section>
       <section class="details">
         <h3 class="detailsH3">会议详情</h3>
-        <div class="detailsText">{{signinData.content}}</div>
+        <div class="detailsText">
+          <rich-text :nodes="signinData.content"></rich-text>
+        </div>
       </section>
     </div>
     <section class="reservation">
