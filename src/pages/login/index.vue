@@ -16,7 +16,7 @@
         <span class="text">验证码</span>
         <div class="codeEdit">
           <input type="number" placeholder="请输入验证码" v-model="code" />
-          <span class="getCode" @click="getCode">{{codeText == '获取验证码'? '获取验证码' :againCode }}</span>
+          <span class="getCode" @click="getCode">{{codeText == '获取'? '获取' :againCode }}</span>
         </div>
       </div>
     </section>
@@ -33,7 +33,7 @@ export default {
     return {
       phone: "",
       code: "",
-      codeText: "获取验证码",
+      codeText: "获取",
       timer: null
     };
   },

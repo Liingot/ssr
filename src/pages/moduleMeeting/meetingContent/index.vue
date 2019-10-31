@@ -87,9 +87,7 @@ export default {
           break;
         case "报名参会":
           wx.navigateTo({
-            url:
-              "../../moduleMeeting/signin/main?id=" +
-             this.item.id
+            url: "../../moduleMeeting/signin/main?id=" + this.item.id
           });
           break;
         case "会议集锦":
@@ -101,10 +99,10 @@ export default {
           wx.navigateTo({
             url: "../../moduleMeeting/brand/main?id=" + this.item.id
           });
-        default:
-          wx.navigateTo({
-            url: "../../moduleMeeting/signin/main"
-          });
+        // default:
+        //   wx.navigateTo({
+        //     url: "../../moduleMeeting/signin/main"
+        //   });
       }
     }
   }

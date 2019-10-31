@@ -33,7 +33,7 @@
       <section class="details">
         <h3 class="detailsH3">会议详情</h3>
         <div class="detailsText">
-          <rich-text :nodes="signinData.content"></rich-text>
+          <rich-text :nodes="signinData.content" ></rich-text>
         </div>
       </section>
     </div>
@@ -90,6 +90,7 @@ export default {
   onLoad(v) {
     this.url = this.domains;
     this.meeting_id = v.id;
+    this.signinData = {};
     this.init(v.id);
   },
   methods: {
@@ -103,7 +104,7 @@ export default {
           if (res.data.status == "200") {
             res.data.data.cover = this.domains + res.data.data.cover;
             this.signinData = res.data.data;
-            
+            console.log("signinData",res.data.data);
           }
         });
     },
@@ -305,7 +306,7 @@ export default {
 .endTrck {
   background: #ccc !important;
 }
-.moneyTop{
+.moneyTop {
   margin-top: 50rpx;
 }
 </style>

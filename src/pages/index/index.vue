@@ -17,28 +17,28 @@
         </button>
       </div>
       <div class="list">
-          <section
-            class="listChildren"
-            v-for="(item,index) in meetingList"
-            :key="index"
-            @click="details(item)"
-          >
-            <div class="listPhoto">
-              <img :src="item.cover" alt />
-            </div>
-            <div class="listText">
-              <div class="listTextTop" style="padding-bottom:0;">{{item.title}}</div>
-              <div class="listTextBottom">
-                <span>{{item.date}} {{item.week}}</span>
-                <div class="info">
-                  <div class="infoLogo">
-                    <img src="/static/images/map.png" alt />
-                  </div>
-                  <span>{{item.address}}</span>
+        <section
+          class="listChildren"
+          v-for="(item,index) in meetingList"
+          :key="index"
+          @click="details(item)"
+        >
+          <div class="listPhoto">
+            <img :src="item.cover" alt />
+          </div>
+          <div class="listText">
+            <div class="listTextTop" style="padding-bottom:0;">{{item.title}}</div>
+            <div class="listTextBottom">
+              <span>{{item.date}} {{item.week}}</span>
+              <div class="info">
+                <div class="infoLogo">
+                  <img src="/static/images/map.png" alt />
                 </div>
+                <span>{{item.address}}</span>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
       </div>
     </section>
   </div>
@@ -57,9 +57,15 @@ export default {
       url: ""
     };
   },
+  onShow() {
+    this.meetingList = [];
+    this.bannerList = [];
+    this.currentPage = 1;
+    this.init();
+  },
   mounted() {
     this.url = this.domains;
-    this.init();
+
     wx.showShareMenu({
       withShareTicket: true
     });
@@ -69,7 +75,7 @@ export default {
     }
   },
   onReachBottom() {
-   this.lower();
+    this.lower();
   },
   methods: {
     lower() {
@@ -89,8 +95,8 @@ export default {
         })
         .then(res => {
           if (res.data.status == "200") {
-            res.data.data.meetingList.data.forEach(item=>{
-                  item.cover = this.domains + item.cover;
+            res.data.data.meetingList.data.forEach(item => {
+              item.cover = this.domains + item.cover;
             });
             this.meetingList = [
               ...res.data.data.meetingList.data,

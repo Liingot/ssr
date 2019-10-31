@@ -32,7 +32,8 @@ export default {
         })
         .then(res => {
           if (res.data.status == "200") {
-            this.company = res.data.data.company;
+            this.company =
+              res.data.data.company == "" ? [] : res.data.data.company;
           } else if (res.data.status == "400") {
             wx.showToast({
               title: res.data.message,
